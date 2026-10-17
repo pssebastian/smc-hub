@@ -113,9 +113,38 @@
     }
   }
 
+  const desktopSearchContainer = document.getElementById("desktopSearchContainer");
+  const mobileSearchDrawer = document.getElementById("mobileSearchDrawer");
+  const searchBoxWrapper = document.getElementById("searchBoxWrapper");
+
   // --- 3. Header Controls & Drawers (Mobile Search & Filter Toggle) ---
+  function updateSearchPlacement() {
+    const isMobile = window.innerWidth <= 640;
+    if (!searchBoxWrapper || !desktopSearchContainer || !mobileSearchDrawer) return;
+
+    if (isMobile) {
+      if (!mobileSearchDrawer.contains(searchBoxWrapper)) {
+        mobileSearchDrawer.appendChild(searchBoxWrapper);
+      }
+    } else {
+      if (!desktopSearchContainer.contains(searchBoxWrapper)) {
+        desktopSearchContainer.appendChild(searchBoxWrapper);
+      }
+      if (siteHeader) {
+        siteHeader.classList.remove("is-search-open");
+      }
+      if (mobileSearchToggleBtn) {
+        mobileSearchToggleBtn.classList.remove("active");
+        mobileSearchToggleBtn.setAttribute("aria-expanded", "false");
+      }
+    }
+  }
+
   function initHeaderControls() {
-    // Mobile search toggle button
+    updateSearchPlacement();
+    window.addEventListener("resize", updateSearchPlacement);
+
+    // Mobile search toggle button (Exact same smooth drawer scheme as filter button)
     if (mobileSearchToggleBtn && siteHeader) {
       mobileSearchToggleBtn.addEventListener("click", () => {
         const willOpen = !siteHeader.classList.contains("is-search-open");
@@ -124,7 +153,7 @@
         mobileSearchToggleBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
 
         if (willOpen && searchInput) {
-          setTimeout(() => searchInput.focus(), 80);
+          setTimeout(() => searchInput.focus(), 100);
         }
       });
     }
