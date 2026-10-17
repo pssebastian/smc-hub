@@ -39,8 +39,12 @@
   const resetFiltersBtn = document.getElementById("resetFiltersBtn");
   const statusCountEl = document.getElementById("statusCount");
   const activeCategoryLabel = document.getElementById("activeCategoryLabel");
+  const viewGridBtn = document.getElementById("viewGridBtn");
+  const viewListBtn = document.getElementById("viewListBtn");
   const backToTopBtn = document.getElementById("backToTopBtn");
   const currentYearEl = document.getElementById("currentYear");
+
+  let viewMode = localStorage.getItem("smc-view-mode") || "grid";
 
   // --- 1. Theme Management ---
   function initTheme() {
@@ -317,10 +321,38 @@
     }
   }
 
-  // --- 7. Application Entrypoint ---
+  // --- 7. Layout View Mode (Grid vs List) ---
+  function setViewMode(mode) {
+    viewMode = mode;
+    localStorage.setItem("smc-view-mode", mode);
+    if (!formsGrid) return;
+
+    if (mode === "list") {
+      formsGrid.classList.add("list-view");
+      if (viewListBtn) viewListBtn.classList.add("active");
+      if (viewGridBtn) viewGridBtn.classList.remove("active");
+    } else {
+      formsGrid.classList.remove("list-view");
+      if (viewGridBtn) viewGridBtn.classList.add("active");
+      if (viewListBtn) viewListBtn.classList.remove("active");
+    }
+  }
+
+  function initViewToggle() {
+    setViewMode(viewMode);
+    if (viewGridBtn) {
+      viewGridBtn.addEventListener("click", () => setViewMode("grid"));
+    }
+    if (viewListBtn) {
+      viewListBtn.addEventListener("click", () => setViewMode("list"));
+    }
+  }
+
+  // --- 8. Application Entrypoint ---
   function init() {
     initTheme();
     initBranding();
+    initViewToggle();
     renderCategories();
     initSearch();
     renderCards();
