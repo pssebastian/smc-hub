@@ -22,8 +22,8 @@
 
 const FORMS_CONFIG = {
   // Website branding
-  siteTitle: "SMC Forms Directory",
-  siteSubtitle: "Quick and easy access to congregation forms, applications, and requests.",
+  siteTitle: "SMC Forms",
+  siteSubtitle: "",
   announcement: {
     enabled: false,
     message: "Welcome! Please bookmark this page for easy access to all congregation links.",

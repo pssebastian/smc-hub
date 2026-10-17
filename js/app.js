@@ -27,10 +27,15 @@
   const config = window.FORMS_CONFIG || { siteTitle: "SMC Forms", siteSubtitle: "", forms: [], categories: [] };
 
   // --- DOM Elements ---
-  const themeToggleBtn = document.getElementById("themeToggleBtn");
+  const siteHeader = document.getElementById("siteHeader");
   const siteTitleEl = document.getElementById("siteTitle");
-  const siteSubtitleEl = document.getElementById("siteSubtitle");
+  const brandLink = document.getElementById("brandLink");
   const announcementBanner = document.getElementById("announcementBanner");
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+  const mobileSearchToggleBtn = document.getElementById("mobileSearchToggleBtn");
+  const filterToggleBtn = document.getElementById("filterToggleBtn");
+  const filterActiveDot = document.getElementById("filterActiveDot");
+  const filterDrawer = document.getElementById("filterDrawer");
   const searchInput = document.getElementById("searchInput");
   const searchClearBtn = document.getElementById("searchClearBtn");
   const categoriesFilterBar = document.getElementById("categoriesFilterBar");
@@ -39,12 +44,8 @@
   const resetFiltersBtn = document.getElementById("resetFiltersBtn");
   const statusCountEl = document.getElementById("statusCount");
   const activeCategoryLabel = document.getElementById("activeCategoryLabel");
-  const viewGridBtn = document.getElementById("viewGridBtn");
-  const viewListBtn = document.getElementById("viewListBtn");
-  const backToTopBtn = document.getElementById("backToTopBtn");
+  const floatingBackToTopBtn = document.getElementById("floatingBackToTopBtn");
   const currentYearEl = document.getElementById("currentYear");
-
-  let viewMode = localStorage.getItem("smc-view-mode") || "grid";
 
   // --- 1. Theme Management ---
   function initTheme() {
@@ -86,9 +87,6 @@
       siteTitleEl.textContent = config.siteTitle;
       document.title = config.siteTitle;
     }
-    if (siteSubtitleEl && config.siteSubtitle) {
-      siteSubtitleEl.textContent = config.siteSubtitle;
-    }
     if (currentYearEl) {
       currentYearEl.textContent = new Date().getFullYear();
     }
@@ -100,9 +98,49 @@
         announcementBanner.classList.add(config.announcement.type);
       }
     }
+
+    if (brandLink) {
+      brandLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (searchInput && searchQuery) {
+          searchInput.value = "";
+          searchQuery = "";
+          if (searchClearBtn) searchClearBtn.classList.remove("visible");
+        }
+        selectCategory("All");
+      });
+    }
   }
 
-  // --- 3. Render Categories Filter ---
+  // --- 3. Header Controls & Drawers (Mobile Search & Filter Toggle) ---
+  function initHeaderControls() {
+    // Mobile search toggle button
+    if (mobileSearchToggleBtn && siteHeader) {
+      mobileSearchToggleBtn.addEventListener("click", () => {
+        const willOpen = !siteHeader.classList.contains("is-search-open");
+        siteHeader.classList.toggle("is-search-open", willOpen);
+        mobileSearchToggleBtn.classList.toggle("active", willOpen);
+        mobileSearchToggleBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+
+        if (willOpen && searchInput) {
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      });
+    }
+
+    // Filter drawer toggle button (Desktop & Mobile)
+    if (filterToggleBtn && siteHeader) {
+      filterToggleBtn.addEventListener("click", () => {
+        const willOpen = !siteHeader.classList.contains("is-filter-open");
+        siteHeader.classList.toggle("is-filter-open", willOpen);
+        filterToggleBtn.classList.toggle("active", willOpen);
+        filterToggleBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      });
+    }
+  }
+
+  // --- 4. Render Categories Filter ---
   function renderCategories() {
     if (!categoriesFilterBar) return;
     categoriesFilterBar.innerHTML = "";
@@ -156,14 +194,24 @@
       }
     });
 
+    // Update status indicator
     if (activeCategoryLabel) {
       activeCategoryLabel.textContent = categoryName === "All" ? "All Categories" : categoryName;
+    }
+
+    // Update Filter Active Dot on filter button
+    const isFiltered = categoryName !== "All";
+    if (filterActiveDot) {
+      filterActiveDot.classList.toggle("visible", isFiltered);
+    }
+    if (filterToggleBtn) {
+      filterToggleBtn.classList.toggle("has-active-filter", isFiltered);
     }
 
     renderCards();
   }
 
-  // --- 4. Render Form Cards ---
+  // --- 5. Render Form Cards (Grid by default, responsive) ---
   function renderCards() {
     if (!formsGrid) return;
     const allForms = config.forms || [];
@@ -190,9 +238,9 @@
     if (statusCountEl) {
       const totalCount = allForms.length;
       if (filtered.length === totalCount) {
-        statusCountEl.textContent = `Showing all ${totalCount} forms`;
+        statusCountEl.textContent = `${totalCount} forms`;
       } else {
-        statusCountEl.textContent = `Showing ${filtered.length} of ${totalCount} forms`;
+        statusCountEl.textContent = `${filtered.length} of ${totalCount} forms`;
       }
     }
 
@@ -255,18 +303,17 @@
     formsGrid.appendChild(fragment);
   }
 
-  // --- 5. Search Controls ---
+  // --- 6. Search Controls ---
   function initSearch() {
     if (!searchInput) return;
 
     searchInput.addEventListener("input", (e) => {
       searchQuery = e.target.value;
       if (searchClearBtn) {
-        if (searchQuery.length > 0) {
-          searchClearBtn.classList.add("visible");
-        } else {
-          searchClearBtn.classList.remove("visible");
-        }
+        searchClearBtn.classList.toggle("visible", searchQuery.length > 0);
+      }
+      if (mobileSearchToggleBtn) {
+        mobileSearchToggleBtn.classList.toggle("has-search-term", searchQuery.length > 0);
       }
       renderCards();
     });
@@ -276,6 +323,9 @@
         searchInput.value = "";
         searchQuery = "";
         searchClearBtn.classList.remove("visible");
+        if (mobileSearchToggleBtn) {
+          mobileSearchToggleBtn.classList.remove("has-search-term");
+        }
         searchInput.focus();
         renderCards();
       });
@@ -286,6 +336,7 @@
         searchInput.value = "";
         searchQuery = "";
         if (searchClearBtn) searchClearBtn.classList.remove("visible");
+        if (mobileSearchToggleBtn) mobileSearchToggleBtn.classList.remove("has-search-term");
         selectCategory("All");
       });
     }
@@ -294,6 +345,13 @@
     window.addEventListener("keydown", (e) => {
       if ((e.key === "/" && document.activeElement !== searchInput) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
         e.preventDefault();
+        if (siteHeader && window.innerWidth <= 640) {
+          siteHeader.classList.add("is-search-open");
+          if (mobileSearchToggleBtn) {
+            mobileSearchToggleBtn.classList.add("active");
+            mobileSearchToggleBtn.setAttribute("aria-expanded", "true");
+          }
+        }
         searchInput.focus();
         searchInput.select();
       } else if (e.key === "Escape" && document.activeElement === searchInput) {
@@ -302,7 +360,24 @@
     });
   }
 
-  // --- 6. Helper Utilities ---
+  // --- 7. Floating Back to Top Button ---
+  function initBackToTop() {
+    if (!floatingBackToTopBtn) return;
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 180) {
+        floatingBackToTopBtn.classList.add("visible");
+      } else {
+        floatingBackToTopBtn.classList.remove("visible");
+      }
+    }, { passive: true });
+
+    floatingBackToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  // --- 8. Helper Utilities ---
   function escapeHtml(text) {
     if (!text) return "";
     return String(text)
@@ -313,46 +388,11 @@
       .replace(/'/g, "&#039;");
   }
 
-  function initBackToTop() {
-    if (backToTopBtn) {
-      backToTopBtn.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-  }
-
-  // --- 7. Layout View Mode (Grid vs List) ---
-  function setViewMode(mode) {
-    viewMode = mode;
-    localStorage.setItem("smc-view-mode", mode);
-    if (!formsGrid) return;
-
-    if (mode === "list") {
-      formsGrid.classList.add("list-view");
-      if (viewListBtn) viewListBtn.classList.add("active");
-      if (viewGridBtn) viewGridBtn.classList.remove("active");
-    } else {
-      formsGrid.classList.remove("list-view");
-      if (viewGridBtn) viewGridBtn.classList.add("active");
-      if (viewListBtn) viewListBtn.classList.remove("active");
-    }
-  }
-
-  function initViewToggle() {
-    setViewMode(viewMode);
-    if (viewGridBtn) {
-      viewGridBtn.addEventListener("click", () => setViewMode("grid"));
-    }
-    if (viewListBtn) {
-      viewListBtn.addEventListener("click", () => setViewMode("list"));
-    }
-  }
-
-  // --- 8. Application Entrypoint ---
+  // --- 9. Application Entrypoint ---
   function init() {
     initTheme();
     initBranding();
-    initViewToggle();
+    initHeaderControls();
     renderCategories();
     initSearch();
     renderCards();
