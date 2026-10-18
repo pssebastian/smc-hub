@@ -8,14 +8,15 @@
  * No HTML or CSS changes needed!
  * 
  * Each form item supports:
- *  - id:          Unique identifier (e.g. "cart-shift-request")
+ *  - id:          Unique identifier (e.g. "meeting-attendance")
  *  - title:       Display name of the form
  *  - description: Brief explanation of what this form is for
  *  - category:    Category name (must match one in `categories` list)
- *  - url:         Full URL to the form (Google Forms, external link, etc.)
- *  - badge:       (Optional) Short badge text like "Popular", "New", "Important"
+ *  - url:         Full URL to the form
+ *  - comingSoon:  (Optional) Set to true if link is not yet ready
+ *  - badge:       (Optional) Short badge text like "Popular", "Coming Soon"
  *  - icon:        (Optional) Icon keyword: "form", "calendar", "map", "cart",
- *                            "user", "mic", "file", "clipboard", "message"
+ *                            "truck", "bank", "user", "mic", "file", "clipboard", "message"
  *  - tags:        (Optional) Additional keywords for search filtering
  * ====================================================================
  */
@@ -26,97 +27,160 @@ const FORMS_CONFIG = {
   siteSubtitle: "",
   announcement: {
     enabled: false,
-    message: "Welcome! Please bookmark this page for easy access to all congregation links.",
+    message: "Welcome! Please bookmark this page for quick access to congregation forms.",
     type: "info" // "info", "warning", or "success"
   },
 
   // Available categories for the filter tabs
   // "All" is always added automatically as the first option.
   categories: [
-    "Ministry & Cart",
-    "Territories",
-    "Meetings & Hall",
-    "General & Administration"
+    "Meetings",
+    "Financial",
+    "Ministry",
+    "Assemblies & Conventions",
+    "Expand Service"
   ],
 
-  // List of forms
-  // Replace the URLs and titles below with your actual form links!
+  // Official List of Congregation Forms
   forms: [
+    // ------------------------------------------------------------------
+    // MEETINGS
+    // ------------------------------------------------------------------
     {
-      id: "cart-witnessing-shift",
-      title: "Public Cart Witnessing Shift Request",
-      description: "Request an authorized shift or reserve a schedule slot for public cart witnessing.",
-      category: "Ministry & Cart",
-      url: "https://docs.google.com/forms/d/e/example-cart-shift/viewform",
-      badge: "Popular",
-      icon: "cart",
-      tags: ["cart", "schedule", "witnessing", "shift", "public", "ministry"]
-    },
-    {
-      id: "cart-followup-intake",
-      title: "Public Witnessing Return Visit / Follow-up Intake",
-      description: "Submit details of interested persons contacted during cart witnessing for local follow-up.",
-      category: "Ministry & Cart",
-      url: "https://docs.google.com/forms/d/e/example-cart-followup/viewform",
-      badge: "Important",
-      icon: "message",
-      tags: ["follow up", "return visit", "contact", "intake", "interested"]
-    },
-    {
-      id: "territory-request",
-      title: "Personal Territory Request",
-      description: "Request a personal territory assignment, commercial area, or report territory completion.",
-      category: "Territories",
-      url: "https://docs.google.com/forms/d/e/example-territory-request/viewform",
-      badge: "Active",
-      icon: "map",
-      tags: ["territory", "map", "request", "assignment", "coverage", "personal"]
-    },
-    {
-      id: "territory-house-update",
-      title: "Territory / House Marker Update",
-      description: "Report changes to addresses, relocated gates, or non-residential properties in mapped sections.",
-      category: "Territories",
-      url: "https://docs.google.com/forms/d/e/example-territory-update/viewform",
+      id: "meeting-attendance-log",
+      title: "Meeting Attendance Log",
+      description: "Record weekly attendance counts for congregation midweek and weekend meetings.",
+      category: "Meetings",
+      url: "https://myn8n.webredirect.org/form/8c3c6718-e80a-4de5-95ba-26dc1c42c261",
       icon: "clipboard",
-      tags: ["territory", "boundary", "marker", "house", "correction", "update"]
+      tags: ["attendance", "meeting", "count", "log", "midweek", "weekend"]
+    },
+
+    // ------------------------------------------------------------------
+    // FINANCIAL
+    // ------------------------------------------------------------------
+    {
+      id: "transaction-record-s24",
+      title: "Transaction Record (S-24)",
+      description: "Record congregation receipts, disbursements, and financial accounting transactions.",
+      category: "Financial",
+      url: "https://myn8n.webredirect.org/form/transaction-record",
+      icon: "bank",
+      tags: ["financial", "accounts", "transaction", "s-24", "funds", "receipt", "disbursement"]
+    },
+
+    // ------------------------------------------------------------------
+    // MINISTRY
+    // ------------------------------------------------------------------
+    {
+      id: "field-service-report-s4",
+      title: "Field Service Report (S-4)",
+      description: "Submit monthly field service activity report for congregation publishers.",
+      category: "Ministry",
+      url: "https://myn8n.webredirect.org/form/field-service-report",
+      icon: "form",
+      tags: ["ministry", "report", "s-4", "hours", "field service", "publisher"]
     },
     {
-      id: "auxiliary-pioneer-application",
-      title: "Auxiliary Pioneer Application",
-      description: "Submit your application to serve as an auxiliary pioneer for upcoming months.",
-      category: "Ministry & Cart",
-      url: "https://docs.google.com/forms/d/e/example-aux-pioneer/viewform",
+      id: "territory-map-card-s12",
+      title: "Territory Map Card (S-12)",
+      description: "Access interactive digital territory maps, house markers, and territory coverage cards.",
+      category: "Ministry",
+      url: "https://smc-territory-hub.lovable.app/",
+      badge: "Hub",
+      icon: "map",
+      tags: ["territory", "map", "s-12", "card", "hub", "section", "boundaries"]
+    },
+    {
+      id: "please-follow-up-s43",
+      title: "Please Follow-up Form (S-43)",
+      description: "Request follow-up on an interested person who speaks another language or lives elsewhere.",
+      category: "Ministry",
+      url: "https://myn8n.webredirect.org/form/please-follow-up",
+      icon: "message",
+      tags: ["follow-up", "s-43", "interested", "return visit", "language", "transfer"]
+    },
+
+    // ------------------------------------------------------------------
+    // ASSEMBLIES & CONVENTIONS
+    // ------------------------------------------------------------------
+    {
+      id: "request-service-vehicle",
+      title: "Request for Service Vehicle",
+      description: "Submit transportation and service vehicle requests for circuit assemblies and regional conventions.",
+      category: "Assemblies & Conventions",
+      url: "#",
+      comingSoon: true,
+      badge: "Coming Soon",
+      icon: "truck",
+      tags: ["vehicle", "transport", "assembly", "convention", "service vehicle", "car"]
+    },
+
+    // ------------------------------------------------------------------
+    // EXPAND SERVICE
+    // ------------------------------------------------------------------
+    {
+      id: "auxiliary-pioneer-application-s205b",
+      title: "Application for Auxiliary Pioneer Service (S-205b)",
+      description: "Submit your application to serve as an auxiliary pioneer for one or more months.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/auxiliary-pioneer-application",
       icon: "calendar",
-      tags: ["pioneer", "auxiliary", "application", "service", "hours"]
+      tags: ["auxiliary", "pioneer", "s-205b", "application", "service", "hours"]
     },
     {
-      id: "audio-video-av-availability",
-      title: "Sound & Video Department Availability",
-      description: "Submit availability and scheduling preferences for congregation sound, stage, and zoom duties.",
-      category: "Meetings & Hall",
-      url: "https://docs.google.com/forms/d/e/example-av-availability/viewform",
-      icon: "mic",
-      tags: ["sound", "video", "av", "zoom", "stage", "meeting", "hall"]
+      id: "regular-pioneer-application-s205",
+      title: "Application for Regular Pioneer Service (S-205)",
+      description: "Apply for appointment as a regular pioneer in the local congregation.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/expand-your-service",
+      icon: "calendar",
+      tags: ["regular", "pioneer", "s-205", "application", "full-time", "service"]
     },
     {
-      id: "hall-maintenance-report",
-      title: "Kingdom Hall Maintenance & Supply Report",
-      description: "Report maintenance issues, supplies needed, or safety concerns regarding the hall.",
-      category: "Meetings & Hall",
-      url: "https://docs.google.com/forms/d/e/example-hall-maintenance/viewform",
-      icon: "file",
-      tags: ["hall", "maintenance", "repairs", "supplies", "cleaning"]
-    },
-    {
-      id: "contact-information-update",
-      title: "Publisher Contact Information Update",
-      description: "Update your mobile number, email address, or residential address for congregation records.",
-      category: "General & Administration",
-      url: "https://docs.google.com/forms/d/e/example-contact-update/viewform",
-      badge: "Annual",
+      id: "volunteer-program-application-a19",
+      title: "Application for Volunteer Program (A-19)",
+      description: "Apply to volunteer for local branch, assembly hall, and special theocratic construction projects.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/expand-your-service",
       icon: "user",
-      tags: ["contact", "publisher", "profile", "phone", "email", "address", "update"]
+      tags: ["volunteer", "a-19", "application", "program", "bethel", "assembly hall"]
+    },
+    {
+      id: "special-full-time-servants-a8",
+      title: "Application to Become a Member of the Worldwide Order of Special Full-Time Servants of Jehovah's Witnesses (A-8)",
+      description: "Application for special full-time service arrangement worldwide.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/expand-your-service",
+      icon: "form",
+      tags: ["order", "a-8", "special", "full-time", "servants", "worldwide", "bethel"]
+    },
+    {
+      id: "expand-theocratic-service-a2",
+      title: "Application to Expand Your Theocratic Service (A-2)",
+      description: "Express availability to serve where the need is greater or assist other theocratic activities.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/expand-your-service",
+      icon: "form",
+      tags: ["expand", "a-2", "theocratic", "need is greater", "service"]
+    },
+    {
+      id: "local-design-construction-dc50",
+      title: "Local Design/Construction Volunteer Application (DC-50)",
+      description: "Apply to participate in Local Design/Construction (LDC) kingdom hall construction and maintenance.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/expand-your-service",
+      icon: "clipboard",
+      tags: ["ldc", "dc-50", "construction", "design", "maintenance", "kingdom hall", "volunteer"]
+    },
+    {
+      id: "school-kingdom-evangelizers-g8",
+      title: "Application to Attend the School for Kingdom Evangelizers (G-8)",
+      description: "Application for single brothers, single sisters, and married couples to attend SKE.",
+      category: "Expand Service",
+      url: "https://myn8n.webredirect.org/form/expand-your-service",
+      icon: "file",
+      tags: ["ske", "g-8", "school", "kingdom evangelizers", "training", "application"]
     }
   ]
 };
@@ -128,4 +192,3 @@ if (typeof window !== "undefined") {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = FORMS_CONFIG;
 }
-

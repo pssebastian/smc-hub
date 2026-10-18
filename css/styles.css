@@ -616,6 +616,47 @@ input:focus-visible {
   color: var(--badge-important-text);
 }
 
+.special-badge.coming-soon {
+  background: var(--bg-surface-hover);
+  color: var(--text-muted);
+}
+
+.special-badge.hub {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+[data-theme="dark"] .special-badge.hub {
+  background: #064e3b;
+  color: #a7f3d0;
+}
+
+/* Coming Soon Card State */
+.form-card.is-coming-soon {
+  cursor: default;
+  opacity: 0.82;
+}
+
+.form-card.is-coming-soon:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-subtle);
+}
+
+.form-card.is-coming-soon:hover .card-title {
+  color: var(--text-main);
+}
+
+.form-card.is-coming-soon:hover .card-icon-box {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.form-card.is-coming-soon .card-cta {
+  color: var(--text-muted);
+}
+
+
 .card-body {
   flex: 1;
   margin-bottom: 1rem;
