@@ -23,7 +23,7 @@
 
 const FORMS_CONFIG = {
   // Website branding
-  siteTitle: "SMC Forms",
+  siteTitle: "SMC Hub",
   siteSubtitle: "",
   announcement: {
     enabled: false,
