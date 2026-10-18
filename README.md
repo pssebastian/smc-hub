@@ -44,13 +44,19 @@ Set the `icon` property to any of the following presets:
 - `"bank"` (Financial records / accounts / S-24)
 - `"truck"` (Service vehicle / transportation)
 - `"map"` (Territory / boundaries / hub map)
-- `"calendar"` (Date / schedule / pioneer application)
+- `"calendar"` (Date / schedule)
 - `"clipboard"` (Attendance / checklist / report)
-- `"user"` (Volunteer / publisher profile)
-- `"message"` (Follow-up / inquiries)
+- `"user"` (Person / volunteer / publisher profile / A-2)
+- `"message"` (Follow-up / inquiries / S-43)
 - `"file"` (General documents / applications)
 - `"mic"` (Sound, stage, video, AV equipment)
 - `"cart"` (Public witnessing cart)
+- `"hardhat"` (Safety helmet / construction / A-19 volunteer program)
+- `"world"` (Globe / worldwide service / A-8 Worldwide Order)
+- `"briefcase"` (Classic briefcase / S-205b Auxiliary Pioneer)
+- `"briefcase-star"` (Upgraded briefcase with star emblem / S-205 Regular Pioneer)
+- `"bulldozer"` (Heavy equipment / LDC DC-50)
+- `"university"` (University columns / SKE G-8 School for Kingdom Evangelizers)
 
 ---
 

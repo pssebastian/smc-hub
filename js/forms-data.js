@@ -16,7 +16,8 @@
  *  - comingSoon:  (Optional) Set to true if link is not yet ready
  *  - badge:       (Optional) Short badge text like "Popular", "Coming Soon"
  *  - icon:        (Optional) Icon keyword: "form", "calendar", "map", "cart",
- *                            "truck", "bank", "user", "mic", "file", "clipboard", "message"
+ *                            "truck", "bank", "user", "mic", "file", "clipboard", "message",
+ *                            "hardhat", "world", "briefcase", "briefcase-star", "bulldozer", "university"
  *  - tags:        (Optional) Additional keywords for search filtering
  * ====================================================================
  */
@@ -125,7 +126,7 @@ const FORMS_CONFIG = {
       description: "Submit your application to serve as an auxiliary pioneer for one or more months.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/auxiliary-pioneer-application",
-      icon: "calendar",
+      icon: "briefcase",
       tags: ["auxiliary", "pioneer", "s-205b", "application", "service", "hours"]
     },
     {
@@ -134,7 +135,7 @@ const FORMS_CONFIG = {
       description: "Apply for appointment as a regular pioneer in the local congregation.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/expand-your-service",
-      icon: "calendar",
+      icon: "briefcase-star",
       tags: ["regular", "pioneer", "s-205", "application", "full-time", "service"]
     },
     {
@@ -143,8 +144,8 @@ const FORMS_CONFIG = {
       description: "Apply to volunteer for local branch, assembly hall, and special theocratic construction projects.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/expand-your-service",
-      icon: "user",
-      tags: ["volunteer", "a-19", "application", "program", "bethel", "assembly hall"]
+      icon: "hardhat",
+      tags: ["volunteer", "a-19", "application", "program", "bethel", "assembly hall", "construction"]
     },
     {
       id: "special-full-time-servants-a8",
@@ -152,7 +153,7 @@ const FORMS_CONFIG = {
       description: "Application for special full-time service arrangement worldwide.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/expand-your-service",
-      icon: "form",
+      icon: "world",
       tags: ["order", "a-8", "special", "full-time", "servants", "worldwide", "bethel"]
     },
     {
@@ -161,7 +162,7 @@ const FORMS_CONFIG = {
       description: "Express availability to serve where the need is greater or assist other theocratic activities.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/expand-your-service",
-      icon: "form",
+      icon: "user",
       tags: ["expand", "a-2", "theocratic", "need is greater", "service"]
     },
     {
@@ -170,8 +171,8 @@ const FORMS_CONFIG = {
       description: "Apply to participate in Local Design/Construction (LDC) kingdom hall construction and maintenance.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/expand-your-service",
-      icon: "clipboard",
-      tags: ["ldc", "dc-50", "construction", "design", "maintenance", "kingdom hall", "volunteer"]
+      icon: "bulldozer",
+      tags: ["ldc", "dc-50", "construction", "design", "maintenance", "kingdom hall", "volunteer", "heavy equipment"]
     },
     {
       id: "school-kingdom-evangelizers-g8",
@@ -179,8 +180,8 @@ const FORMS_CONFIG = {
       description: "Application for single brothers, single sisters, and married couples to attend SKE.",
       category: "Expand Service",
       url: "https://myn8n.webredirect.org/form/expand-your-service",
-      icon: "file",
-      tags: ["ske", "g-8", "school", "kingdom evangelizers", "training", "application"]
+      icon: "university",
+      tags: ["ske", "g-8", "school", "kingdom evangelizers", "training", "application", "university"]
     }
   ]
 };
