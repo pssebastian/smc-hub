@@ -1289,9 +1289,75 @@ body:not(.is-forms-view) .forms-action-btn {
   color: #ffffff;
 }
 
+/* Forms Portal Card Specific Styling */
 .portal-card.portal-card-forms .portal-card-icon {
-  background: var(--primary-light);
-  color: var(--primary);
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.portal-card.portal-card-forms:hover {
+  border-color: #3b82f6;
+  background: linear-gradient(180deg, #f0f7ff 0%, var(--bg-card) 100%);
+  box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.22), 0 4px 10px -2px rgba(37, 99, 235, 0.12);
+}
+
+.portal-card.portal-card-forms:hover::before {
+  background: #2563eb;
+}
+
+.portal-card.portal-card-forms:hover .portal-card-icon {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transform: scale(1.06);
+}
+
+.portal-card.portal-card-forms:hover .portal-card-title {
+  color: #1d4ed8;
+}
+
+.portal-card.portal-card-forms:hover .portal-card-arrow {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Forms Portal Card - Dark Mode Distinct Highlighting */
+[data-theme="dark"] .portal-card.portal-card-forms .portal-card-icon {
+  background: rgba(37, 99, 235, 0.24);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+}
+
+[data-theme="dark"] .portal-card.portal-card-forms:hover {
+  border-color: #60a5fa;
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.22) 0%, rgba(30, 41, 59, 0.95) 100%);
+  box-shadow: 0 16px 32px -4px rgba(37, 99, 235, 0.45), 0 0 24px rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="dark"] .portal-card.portal-card-forms:hover::before {
+  background: #60a5fa;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+}
+
+[data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-icon {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #93c5fd;
+  box-shadow: 0 0 18px rgba(59, 130, 246, 0.65);
+  transform: scale(1.06);
+}
+
+[data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-title {
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-arrow {
+  background: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
 }
 
 .portal-card.portal-card-reports .portal-card-icon {
@@ -1535,6 +1601,75 @@ body:not(.is-forms-view) .forms-action-btn {
   color: var(--primary);
   background: var(--primary-light);
   border-color: var(--primary-border);
+}
+
+/* Guidelines JW Hub Login Note */
+.guidelines-auth-note {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.15rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 3.5px solid var(--primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-size: 0.86rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-note-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.auth-note-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.auth-note-text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.auth-note-text strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.auth-note-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+}
+
+.auth-note-link:hover {
+  color: var(--primary-hover);
+}
+
+[data-theme="dark"] .guidelines-auth-note {
+  background: rgba(30, 41, 59, 0.75);
+  border-color: rgba(59, 130, 246, 0.25);
+  border-left-color: #60a5fa;
+}
+
+[data-theme="dark"] .auth-note-icon {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .auth-note-link {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .auth-note-link:hover {
+  color: #93c5fd;
 }
 
 /* Accounting Section Blocks & Section Labels */
