@@ -1424,10 +1424,6 @@ body:not(.is-forms-view) .forms-action-btn {
 .portal-card.portal-card-guidelines:hover .portal-card-title {
   color: #047857;
 }
-.portal-card.portal-card-guidelines:hover .portal-card-arrow {
-  background: #10b981;
-  color: #ffffff;
-}
 
 [data-theme="dark"] .portal-card.portal-card-guidelines .portal-card-icon {
   background: rgba(16, 185, 129, 0.18);
@@ -1445,10 +1441,6 @@ body:not(.is-forms-view) .forms-action-btn {
 }
 [data-theme="dark"] .portal-card.portal-card-guidelines:hover .portal-card-title {
   color: #6ee7b7;
-}
-[data-theme="dark"] .portal-card.portal-card-guidelines:hover .portal-card-arrow {
-  background: #10b981;
-  color: #ffffff;
 }
 
 /* Forms Portal Card Specific Styling (Rose / Coral Theme - Not Blue) */
@@ -1469,11 +1461,6 @@ body:not(.is-forms-view) .forms-action-btn {
 
 .portal-card.portal-card-forms:hover .portal-card-title {
   color: #e11d48;
-}
-
-.portal-card.portal-card-forms:hover .portal-card-arrow {
-  background: #e11d48;
-  color: #ffffff;
 }
 
 /* Forms Portal Card - Dark Mode Highlighting */
@@ -1498,11 +1485,6 @@ body:not(.is-forms-view) .forms-action-btn {
 
 [data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-title {
   color: #fda4af;
-}
-
-[data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-arrow {
-  background: #e11d48;
-  color: #ffffff;
 }
 
 .portal-card.portal-card-reports .portal-card-icon {
@@ -1565,18 +1547,36 @@ body:not(.is-forms-view) .forms-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--bg-surface);
-  color: var(--text-muted);
-  transition: all var(--transition-fast);
+  background: transparent;
+  color: var(--primary);
+  transition: transform var(--transition-fast);
+}
+
+.portal-card-arrow svg {
+  width: 15px;
+  height: 15px;
+  transition: transform var(--transition-fast);
 }
 
 .portal-card:hover .portal-card-arrow {
-  background: var(--primary);
-  color: #ffffff;
-  transform: translateX(3px);
+  background: transparent;
+  transform: translate(2px, -2px);
+}
+
+.portal-card.portal-card-guidelines .portal-card-arrow {
+  color: #059669;
+}
+
+[data-theme="dark"] .portal-card.portal-card-guidelines .portal-card-arrow {
+  color: #34d399;
+}
+
+.portal-card.portal-card-forms .portal-card-arrow {
+  color: #e11d48;
+}
+
+[data-theme="dark"] .portal-card.portal-card-forms .portal-card-arrow {
+  color: #fb7185;
 }
 
 /* Portal Card - Coming Soon / Unavailable State */
@@ -1631,23 +1631,13 @@ body:not(.is-forms-view) .forms-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--bg-surface);
+  background: transparent;
   color: var(--text-muted);
-  transition: all var(--transition-fast);
 }
 
 .portal-card-clock svg {
-  width: 14px;
-  height: 14px;
-}
-
-.portal-card.is-coming-soon:hover .portal-card-clock {
-  transform: none;
-  background: var(--bg-surface);
-  color: var(--text-muted);
+  width: 15px;
+  height: 15px;
 }
 
 /* ==========================================================================
@@ -2652,29 +2642,6 @@ body:not(.is-forms-view) .forms-action-btn {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Footer & Support Contacts */
-.footer-support-info {
-  margin-top: 0.45rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.footer-support-label {
-  font-weight: 600;
-  color: var(--text-main);
-  margin-right: 0.25rem;
-}
-
-.footer-contact-link {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.footer-contact-link:hover {
-  text-decoration: underline;
-}
-
 /* Admin Footer Actions */
 .admin-footer-actions {
   display: flex;
@@ -2901,14 +2868,9 @@ body:not(.is-forms-view) .forms-action-btn {
     font-size: 0.74rem;
   }
 
-  .portal-card-arrow {
-    width: 20px;
-    height: 20px;
-  }
-
   .portal-card-arrow svg {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
   }
 
   .mode-indicator-bar {

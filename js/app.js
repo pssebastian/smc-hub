@@ -171,8 +171,6 @@
   const adminLogoPreviewBox = document.getElementById("adminLogoPreviewBox");
   const adminLogoDarkPreviewBox = document.getElementById("adminLogoDarkPreviewBox");
   const adminFaviconPreviewBox = document.getElementById("adminFaviconPreviewBox");
-  const adminContactEmail = document.getElementById("adminContactEmail");
-  const adminContactPhone = document.getElementById("adminContactPhone");
   const adminMaintenanceToggle = document.getElementById("adminMaintenanceToggle");
   const adminBannerToggle = document.getElementById("adminBannerToggle");
   const adminBannerMessage = document.getElementById("adminBannerMessage");
@@ -183,7 +181,6 @@
   const adminHeaderBtn = document.getElementById("adminHeaderBtn");
   const maintenanceBanner = document.getElementById("maintenanceBanner");
   const brandIconBox = document.getElementById("brandIconBox");
-  const footerSupportInfo = document.getElementById("footerSupportInfo");
   const accountingChangeModeBtn = document.getElementById("accountingChangeModeBtn");
 
   const passkeyModal = document.getElementById("passkeyModal");
@@ -356,8 +353,6 @@
     siteLogoUrl: "", // direct image URL (light mode / default)
     siteLogoDarkUrl: "", // direct image URL for dark mode
     faviconUrl: "", // direct icon/image URL
-    contactEmail: "",
-    contactPhone: "",
     maintenanceMode: false,
     accountType: "bank", // "bank" or "cashbox"
     announcement: {
@@ -427,23 +422,7 @@
       }
     }
 
-    // 6. Footer Support Contact Information
-    if (footerSupportInfo) {
-      const email = (settings.contactEmail || "").trim();
-      const phone = (settings.contactPhone || "").trim();
-      if (email || phone) {
-        let parts = [];
-        if (email) parts.push(`<a href="mailto:${escapeHtml(email)}" class="footer-contact-link">${escapeHtml(email)}</a>`);
-        if (phone) parts.push(`<a href="tel:${escapeHtml(phone)}" class="footer-contact-link">${escapeHtml(phone)}</a>`);
-        footerSupportInfo.innerHTML = `<span class="footer-support-label">Support:</span> ${parts.join(" &bull; ")}`;
-        footerSupportInfo.style.display = "block";
-      } else {
-        footerSupportInfo.style.display = "none";
-        footerSupportInfo.innerHTML = "";
-      }
-    }
-
-    // 7. Site Announcement Banner
+    // 6. Site Announcement Banner
     updateAnnouncementBanner();
   }
 
@@ -917,27 +896,17 @@
 
       const iconSvg = ICONS[module.icon] || ICONS.book;
 
-      // Only display top badge if explicitly marked as coming soon
-      let badgeHtml = "";
-      if (isComingSoon) {
-        badgeHtml = `<span class="special-badge coming-soon">Coming Soon</span>`;
-      }
-
       const footerHtml = isComingSoon
         ? `
           <div class="portal-card-footer portal-card-footer-coming-soon">
             <span class="portal-card-action-text">Coming Soon</span>
-            <span class="portal-card-clock" aria-hidden="true">
-              ${ICONS.clock}
-            </span>
+            <span class="portal-card-clock" aria-hidden="true">${ICONS.clock}</span>
           </div>
         `
         : `
           <div class="portal-card-footer">
             <span class="portal-card-action-text">${escapeHtml(module.actionText || "Open Module")}</span>
-            <span class="portal-card-arrow" aria-hidden="true">
-              ${ICONS.arrowRight}
-            </span>
+            <span class="portal-card-arrow" aria-hidden="true">${ICONS.arrowRight}</span>
           </div>
         `;
 
@@ -946,7 +915,6 @@
           <div class="portal-card-icon" aria-hidden="true">
             ${iconSvg}
           </div>
-          ${badgeHtml}
         </div>
 
         <div class="portal-card-body">
@@ -1460,8 +1428,6 @@
     if (adminSiteLogoUrl) adminSiteLogoUrl.value = settings.siteLogoUrl || "";
     if (adminSiteLogoDarkUrl) adminSiteLogoDarkUrl.value = settings.siteLogoDarkUrl || "";
     if (adminFaviconUrl) adminFaviconUrl.value = settings.faviconUrl || "";
-    if (adminContactEmail) adminContactEmail.value = settings.contactEmail || "";
-    if (adminContactPhone) adminContactPhone.value = settings.contactPhone || "";
 
     // Live image previews
     updateAdminImagePreviews();
@@ -1576,8 +1542,6 @@
         if (adminSiteLogoUrl) settings.siteLogoUrl = adminSiteLogoUrl.value.trim();
         if (adminSiteLogoDarkUrl) settings.siteLogoDarkUrl = adminSiteLogoDarkUrl.value.trim();
         if (adminFaviconUrl) settings.faviconUrl = adminFaviconUrl.value.trim();
-        if (adminContactEmail) settings.contactEmail = adminContactEmail.value.trim();
-        if (adminContactPhone) settings.contactPhone = adminContactPhone.value.trim();
         if (adminMaintenanceToggle) settings.maintenanceMode = adminMaintenanceToggle.checked;
 
         settings.accountType = selectedAccountType || "bank";
