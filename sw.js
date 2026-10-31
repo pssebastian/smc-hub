@@ -1,9 +1,10 @@
-const CACHE_NAME = 'smc-hub-v10';
+const CACHE_NAME = 'smc-hub-v11';
 const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
   './css/styles.css',
+  './js/site-config.js',
   './js/app.js',
   './js/forms-data.js',
   './js/guidelines-data.js',

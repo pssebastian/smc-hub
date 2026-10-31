@@ -1200,21 +1200,15 @@ body:not(.is-forms-view) .forms-action-btn {
   transform: scale(1.02);
 }
 
-/* Admin Header Button */
-.admin-header-btn {
+/* Lock Site Header Button */
+.lock-site-btn {
   color: var(--text-muted);
   text-decoration: none;
 }
 
-.admin-header-btn:hover {
-  color: var(--primary);
+.lock-site-btn:hover {
+  color: #ef4444;
   background: var(--bg-surface-hover);
-}
-
-.admin-header-btn.active {
-  color: var(--primary);
-  background: var(--primary-light);
-  border-color: var(--primary-border);
 }
 
 /* ==========================================================================

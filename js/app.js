@@ -102,9 +102,7 @@
   let activeRole = null;
   let currentRoute = "home";
 
-  // --- Passkey Security State ---
-  const SITE_PASSCODE = "sanmig3673";
-  const ADMIN_PASSKEY = "hub_admin_3673";
+  // --- Security & Session Persistence ---
   const AUTH_DURATION_MS = 30 * 24 * 60 * 60 * 1000; // 30 Days Persistent Session
 
   // --- Welcome Gateway Elements ---
@@ -114,6 +112,7 @@
   const welcomePasscodeForm = document.getElementById("welcomePasscodeForm");
   const welcomePasscodeError = document.getElementById("welcomePasscodeError");
   const adminLockSiteBtn = document.getElementById("adminLockSiteBtn");
+  const lockSiteBtn = document.getElementById("lockSiteBtn");
 
   // --- DOM Elements ---
   const siteHeader = document.getElementById("siteHeader");
@@ -153,7 +152,6 @@
   const roleVideosView = document.getElementById("roleVideosView");
   const announcementsView = document.getElementById("announcementsView");
   const reportsView = document.getElementById("reportsView");
-  const adminView = document.getElementById("adminView");
 
   const portalGrid = document.getElementById("portalGrid");
   const guidelinesGrid = document.getElementById("guidelinesGrid");
@@ -167,37 +165,10 @@
   const resetVideoSearchBtn = document.getElementById("resetVideoSearchBtn");
   const videoCountBadge = document.getElementById("videoCountBadge");
 
-  // Admin Elements, Views & Passkey Modal
+  // Maintenance & Branding Elements
   const maintenanceView = document.getElementById("maintenanceView");
-  const maintenanceAdminBtn = document.getElementById("maintenanceAdminBtn");
-  const adminToggleBank = document.getElementById("adminToggleBank");
-  const adminToggleCashbox = document.getElementById("adminToggleCashbox");
-  const adminSiteTitle = document.getElementById("adminSiteTitle");
-  const adminShowTitleToggle = document.getElementById("adminShowTitleToggle");
-  const adminSiteTagline = document.getElementById("adminSiteTagline");
-  const adminSiteLogoUrl = document.getElementById("adminSiteLogoUrl");
-  const adminSiteLogoDarkUrl = document.getElementById("adminSiteLogoDarkUrl");
-  const adminFaviconUrl = document.getElementById("adminFaviconUrl");
-  const adminLogoPreviewBox = document.getElementById("adminLogoPreviewBox");
-  const adminLogoDarkPreviewBox = document.getElementById("adminLogoDarkPreviewBox");
-  const adminFaviconPreviewBox = document.getElementById("adminFaviconPreviewBox");
-  const adminMaintenanceToggle = document.getElementById("adminMaintenanceToggle");
-  const adminBannerToggle = document.getElementById("adminBannerToggle");
-  const adminBannerMessage = document.getElementById("adminBannerMessage");
-  const adminBannerType = document.getElementById("adminBannerType");
-  const adminBannerInputsGroup = document.getElementById("adminBannerInputsGroup");
-  const adminSaveBtn = document.getElementById("adminSaveBtn");
-  const adminResetBtn = document.getElementById("adminResetBtn");
-  const adminHeaderBtn = document.getElementById("adminHeaderBtn");
   const maintenanceBanner = document.getElementById("maintenanceBanner");
   const brandIconBox = document.getElementById("brandIconBox");
-  const accountingChangeModeBtn = document.getElementById("accountingChangeModeBtn");
-
-  const passkeyModal = document.getElementById("passkeyModal");
-  const passkeyInput = document.getElementById("passkeyInput");
-  const passkeyForm = document.getElementById("passkeyForm");
-  const passkeyError = document.getElementById("passkeyError");
-  const passkeyModalCloseBtn = document.getElementById("passkeyModalCloseBtn");
 
   // Default Hub SVG Icon
   const LOGO_ICONS = {
@@ -221,9 +192,9 @@
 
   // Site Logo dynamic processor (Handles light & dark mode image links)
   function applySiteLogo(logoLightUrl, logoDarkUrl) {
-    const settings = getAdminSettings();
-    const rawLight = (logoLightUrl !== undefined ? logoLightUrl : settings.siteLogoUrl || "").trim();
-    const rawDark = (logoDarkUrl !== undefined ? logoDarkUrl : settings.siteLogoDarkUrl || "").trim();
+    const settings = getSiteConfig();
+    const rawLight = (logoLightUrl !== undefined ? logoLightUrl : (settings.logoLightUrl || settings.siteLogoUrl || "")).trim();
+    const rawDark = (logoDarkUrl !== undefined ? logoDarkUrl : (settings.logoDarkUrl || settings.siteLogoDarkUrl || "")).trim();
 
     const light = normalizeImageUrl(rawLight) || "./images/logo-light.png";
     const dark = normalizeImageUrl(rawDark) || "./images/logo-dark.png";
@@ -297,9 +268,9 @@
 
   function handleLogoError(imgEl) {
     if (!imgEl) return;
-    const settings = getAdminSettings();
-    const light = normalizeImageUrl(settings.siteLogoUrl || "") || "./images/logo-light.png";
-    const dark = normalizeImageUrl(settings.siteLogoDarkUrl || "") || "./images/logo-dark.png";
+    const settings = getSiteConfig();
+    const light = normalizeImageUrl(settings.logoLightUrl || settings.siteLogoUrl || "") || "./images/logo-light.png";
+    const dark = normalizeImageUrl(settings.logoDarkUrl || settings.siteLogoDarkUrl || "") || "./images/logo-dark.png";
     const currentSrc = imgEl.getAttribute("src");
 
     // If dark logo failed to load, fallback to light logo
@@ -336,123 +307,55 @@
     link.href = url;
   }
 
-  // Live Image Previews in Admin Settings Form
-  function updateAdminImagePreviews() {
-    // 1. Light Mode Logo Preview
-    if (adminLogoPreviewBox && adminSiteLogoUrl) {
-      const rawUrl = adminSiteLogoUrl.value.trim();
-      const logoUrl = normalizeImageUrl(rawUrl) || "./images/logo-light.png";
-      if (logoUrl) {
-        adminLogoPreviewBox.innerHTML = `
-          <img
-            src="${escapeHtml(logoUrl)}"
-            alt="Light Logo Preview"
-            onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#dc2626;font-weight:600;\\'>Invalid</span>';"
-          />
-        `;
-      } else {
-        adminLogoPreviewBox.innerHTML = LOGO_ICONS.hub;
-      }
-    }
-
-    // 2. Dark Mode Logo Preview
-    if (adminLogoDarkPreviewBox && adminSiteLogoDarkUrl) {
-      const rawDarkUrl = adminSiteLogoDarkUrl.value.trim();
-      const darkLogoUrl = normalizeImageUrl(rawDarkUrl) || "./images/logo-dark.png";
-      if (darkLogoUrl) {
-        adminLogoDarkPreviewBox.innerHTML = `
-          <img
-            src="${escapeHtml(darkLogoUrl)}"
-            alt="Dark Logo Preview"
-            onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#ef4444;font-weight:600;\\'>Invalid</span>';"
-          />
-        `;
-      } else {
-        const rawLightUrl = adminSiteLogoUrl ? adminSiteLogoUrl.value.trim() : "";
-        const lightLogoUrl = normalizeImageUrl(rawLightUrl) || "./images/logo-light.png";
-        if (lightLogoUrl) {
-          adminLogoDarkPreviewBox.innerHTML = `
-            <img
-              src="${escapeHtml(lightLogoUrl)}"
-              alt="Inherited Light Logo"
-              style="opacity: 0.55;"
-              title="Inherits light mode logo"
-              onerror="this.onerror=null; this.parentElement.innerHTML=LOGO_ICONS.hub;"
-            />
-          `;
-        } else {
-          adminLogoDarkPreviewBox.innerHTML = LOGO_ICONS.hub;
-        }
-      }
-    }
-
-    // 3. Favicon Preview
-    if (adminFaviconPreviewBox && adminFaviconUrl) {
-      const rawFavUrl = adminFaviconUrl.value.trim();
-      const favUrl = normalizeImageUrl(rawFavUrl) || "./images/favicon.png";
-      if (favUrl) {
-        adminFaviconPreviewBox.innerHTML = `
-          <img
-            src="${escapeHtml(favUrl)}"
-            alt="Favicon Preview"
-            onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#dc2626;font-weight:600;\\'>Invalid</span>';"
-          />
-        `;
-      } else {
-        adminFaviconPreviewBox.innerHTML = LOGO_ICONS.hub;
-      }
-    }
-  }
-
-  // --- 1. Admin Settings Manager (localStorage) ---
-  const DEFAULT_ADMIN_SETTINGS = {
+  // --- 1. Central Site Configuration Manager (Codebase as Single Source of Truth) ---
+  const DEFAULT_SITE_CONFIG = {
     siteTitle: "SMC Hub",
+    showSiteTitleInHeader: false,
     siteTagline: "Congregation Forms & Guidelines Hub",
-    showSiteTitle: false, // Default false: logo already contains congregation name
-    siteLogoUrl: "./images/logo-light.png", // Built-in direct logo (light mode)
-    siteLogoDarkUrl: "./images/logo-dark.png", // Built-in direct logo (dark mode)
-    faviconUrl: "./images/favicon.png", // Built-in direct favicon
+    logoLightUrl: "./images/logo-light.png",
+    logoDarkUrl: "./images/logo-dark.png",
+    faviconUrl: "./images/favicon.png",
+    accountType: "bank",
     maintenanceMode: false,
-    accountType: "bank", // "bank" or "cashbox"
+    maintenanceMessage: "The San Miguel Congregation Hub is temporarily undergoing maintenance, system updates, or improvements. Please check back shortly.",
     announcement: {
       enabled: false,
       message: "Welcome to SMC Hub! Access congregation forms, guidelines, and announcements.",
       type: "info"
-    }
+    },
+    sitePasscode: "sanmig3673",
+    adminPasskey: "hub_admin_3673"
   };
 
-  function getAdminSettings() {
+  function getSiteConfig() {
     try {
-      const saved = localStorage.getItem("smc-admin-settings");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        // Normalize any old Google Drive links or missing paths
-        if (!parsed.siteLogoUrl || parsed.siteLogoUrl.includes("drive.google.com/file")) {
-          parsed.siteLogoUrl = DEFAULT_ADMIN_SETTINGS.siteLogoUrl;
-        }
-        if (!parsed.siteLogoDarkUrl || parsed.siteLogoDarkUrl.includes("drive.google.com/file")) {
-          parsed.siteLogoDarkUrl = DEFAULT_ADMIN_SETTINGS.siteLogoDarkUrl;
-        }
-        if (!parsed.faviconUrl || parsed.faviconUrl.includes("drive.google.com/file")) {
-          parsed.faviconUrl = DEFAULT_ADMIN_SETTINGS.faviconUrl;
-        }
-        if (parsed.showSiteTitle === undefined) {
-          parsed.showSiteTitle = false;
-        }
-        return { ...DEFAULT_ADMIN_SETTINGS, ...parsed };
-      }
-    } catch (e) {
-      console.warn("Could not parse saved admin settings:", e);
+      // Clear legacy client-side admin settings from localStorage so codebase config takes precedence
+      localStorage.removeItem("smc-admin-settings");
+    } catch (e) {}
+
+    const cfg = (typeof SITE_CONFIG !== "undefined" && SITE_CONFIG) ? SITE_CONFIG : {};
+    const merged = { ...DEFAULT_SITE_CONFIG, ...cfg };
+    if (merged.logoLightUrl === undefined && merged.siteLogoUrl !== undefined) {
+      merged.logoLightUrl = merged.siteLogoUrl;
     }
-    return { ...DEFAULT_ADMIN_SETTINGS };
+    if (merged.logoDarkUrl === undefined && merged.siteLogoDarkUrl !== undefined) {
+      merged.logoDarkUrl = merged.siteLogoDarkUrl;
+    }
+    if (merged.showSiteTitleInHeader === undefined && merged.showSiteTitle !== undefined) {
+      merged.showSiteTitleInHeader = merged.showSiteTitle;
+    }
+    return merged;
   }
 
-  function applySiteSettings(settings) {
-    if (!settings) settings = getAdminSettings();
+  // Alias for backward compatibility
+  const getAdminSettings = getSiteConfig;
+
+  function applySiteSettings() {
+    const config = getSiteConfig();
 
     // 1. Site Title & Document Title (with option to hide text in header)
-    const siteTitle = settings.siteTitle || (formsConfig && formsConfig.siteTitle) || "SMC Hub";
-    const shouldShowTitle = settings.showSiteTitle !== false;
+    const siteTitle = config.siteTitle || (formsConfig && formsConfig.siteTitle) || "SMC Hub";
+    const shouldShowTitle = Boolean(config.showSiteTitleInHeader);
     if (siteTitleEl) {
       siteTitleEl.textContent = siteTitle;
       siteTitleEl.style.display = shouldShowTitle ? "" : "none";
@@ -464,31 +367,26 @@
     }
 
     // 2. Tagline / Meta Description
-    if (settings.siteTagline) {
+    if (config.siteTagline) {
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
-        metaDesc.setAttribute("content", `${siteTitle} - ${settings.siteTagline}`);
+        metaDesc.setAttribute("content", `${siteTitle} - ${config.siteTagline}`);
       }
     }
 
     // 3. Site Logo Image Links (Light & Dark Mode)
-    applySiteLogo(settings.siteLogoUrl, settings.siteLogoDarkUrl);
+    applySiteLogo(config.logoLightUrl, config.logoDarkUrl);
 
     // 4. Favicon Image Link
-    applyFavicon(settings.faviconUrl);
+    applyFavicon(config.faviconUrl);
 
     // 5. Maintenance Mode Banner & Text
     if (maintenanceBanner) {
-      if (settings.maintenanceMode) {
+      if (config.maintenanceMode) {
         maintenanceBanner.style.display = "block";
-        const isAdmin = isPasskeyAuthenticated();
         const bannerTextEl = maintenanceBanner.querySelector(".maintenance-banner-text");
         if (bannerTextEl) {
-          if (isAdmin) {
-            bannerTextEl.innerHTML = `<strong>Maintenance Mode Active:</strong> The website is currently in maintenance mode (Admin Preview). Visitors see the maintenance notice. <a href="#admin" class="maintenance-admin-link">Admin Settings</a>`;
-          } else {
-            bannerTextEl.innerHTML = `<strong>Site Under Maintenance:</strong> The website is currently undergoing maintenance. Please check back shortly.`;
-          }
+          bannerTextEl.innerHTML = `<strong>Site Under Maintenance:</strong> ${escapeHtml(config.maintenanceMessage || "The website is currently undergoing maintenance. Please check back shortly.")}`;
         }
       } else {
         maintenanceBanner.style.display = "none";
@@ -497,27 +395,6 @@
 
     // 6. Site Announcement Banner
     updateAnnouncementBanner();
-  }
-
-  function saveAdminSettings(newSettings, showFeedback = true) {
-    try {
-      localStorage.setItem("smc-admin-settings", JSON.stringify(newSettings));
-      applySiteSettings(newSettings);
-      if (showFeedback) {
-        showToast("Settings saved and applied immediately!");
-      }
-      // Re-render views that depend on settings
-      if (currentRoute === "guidelines/accounting") {
-        renderAccountingRoles();
-      } else if (currentRoute.startsWith("guidelines/accounting/")) {
-        renderRoleVideos();
-      }
-      // Re-evaluate routes immediately (e.g. if maintenance mode state changed)
-      handleRouteChange();
-      renderAdminView();
-    } catch (e) {
-      console.error("Failed to save admin settings:", e);
-    }
   }
 
   function showToast(message) {
@@ -637,17 +514,20 @@
 
   function verifyWelcomePasscode() {
     if (!welcomePasscodeInput) return;
+    const config = getSiteConfig();
+    const sitePasscode = config.sitePasscode || "sanmig3673";
+    const adminPasskey = config.adminPasskey || "hub_admin_3673";
     const val = welcomePasscodeInput.value.trim();
     const expiryTimestamp = (Date.now() + AUTH_DURATION_MS).toString();
 
-    if (val === SITE_PASSCODE) {
+    if (val === sitePasscode) {
       try {
         sessionStorage.setItem("smc-site-auth", "true");
         localStorage.setItem("smc-site-auth", "true");
         localStorage.setItem("smc-site-auth-expiry", expiryTimestamp);
       } catch (e) {}
       unlockSite();
-    } else if (val === ADMIN_PASSKEY) {
+    } else if (val === adminPasskey) {
       try {
         sessionStorage.setItem("smc-site-auth", "true");
         sessionStorage.setItem("smc-admin-auth", "true");
@@ -657,7 +537,7 @@
         localStorage.setItem("smc-admin-auth-expiry", expiryTimestamp);
       } catch (e) {}
       unlockSite();
-      showToast("Admin access granted (30-day session active).");
+      showToast("Access granted (30-day session active).");
     } else {
       if (welcomePasscodeError) {
         welcomePasscodeError.textContent = "Incorrect passcode. Please try again.";
@@ -676,8 +556,11 @@
     if (welcomePasscodeInput) {
       welcomePasscodeInput.addEventListener("input", (e) => {
         if (welcomePasscodeError) welcomePasscodeError.style.display = "none";
+        const config = getSiteConfig();
+        const sitePasscode = config.sitePasscode || "sanmig3673";
+        const adminPasskey = config.adminPasskey || "hub_admin_3673";
         const val = e.target.value.trim();
-        if (val === SITE_PASSCODE || val === ADMIN_PASSKEY) {
+        if (val === sitePasscode || val === adminPasskey) {
           verifyWelcomePasscode();
         }
       });
@@ -695,141 +578,12 @@
         lockSite();
       });
     }
-  }
 
-  function openPasskeyModal(targetHash = "#admin") {
-    if (isPasskeyAuthenticated()) {
-      window.location.hash = targetHash;
-      return;
-    }
-    if (!passkeyModal || !passkeyInput) return;
-    passkeyModal.setAttribute("data-target-hash", targetHash);
-    passkeyInput.value = "";
-    if (passkeyError) passkeyError.style.display = "none";
-    passkeyModal.style.display = "flex";
-    setTimeout(() => {
-      passkeyInput.focus();
-    }, 60);
-  }
-
-  function closePasskeyModal() {
-    if (!passkeyModal) return;
-    passkeyModal.style.display = "none";
-    if (passkeyInput) {
-      passkeyInput.value = "";
-      passkeyInput.classList.remove("input-error");
-    }
-    if (passkeyError) passkeyError.style.display = "none";
-
-    // If currently on #admin without authentication, revert to home
-    if (parseHashRoute() === "admin" && !isPasskeyAuthenticated()) {
-      window.location.hash = "#home";
-    }
-  }
-
-  function verifyPasskey() {
-    if (!passkeyInput) return;
-    const val = passkeyInput.value.trim();
-    if (val === ADMIN_PASSKEY) {
-      const expiryTimestamp = (Date.now() + AUTH_DURATION_MS).toString();
-      try {
-        sessionStorage.setItem("smc-admin-auth", "true");
-        sessionStorage.setItem("smc-site-auth", "true");
-        localStorage.setItem("smc-admin-auth", "true");
-        localStorage.setItem("smc-admin-auth-expiry", expiryTimestamp);
-        localStorage.setItem("smc-site-auth", "true");
-        localStorage.setItem("smc-site-auth-expiry", expiryTimestamp);
-        document.documentElement.classList.add("is-authenticated");
-        if (document.body) document.body.classList.add("is-authenticated");
-      } catch (e) {}
-      const target = (passkeyModal && passkeyModal.getAttribute("data-target-hash")) || "#admin";
-      closePasskeyModal();
-      window.location.hash = target;
-      showToast("Admin access granted (30-day session active).");
-    } else {
-      if (passkeyError) {
-        passkeyError.textContent = "Incorrect passkey. Please try again.";
-        passkeyError.style.display = "block";
-      }
-      passkeyInput.classList.add("input-error");
-      setTimeout(() => {
-        if (passkeyInput) passkeyInput.classList.remove("input-error");
-      }, 500);
-      if (passkeyInput.focus) passkeyInput.focus();
-      if (passkeyInput.select) passkeyInput.select();
-    }
-  }
-
-  function initPasskeyModal() {
-    if (adminHeaderBtn) {
-      adminHeaderBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (isPasskeyAuthenticated()) {
-          window.location.hash = "#admin";
-        } else {
-          openPasskeyModal("#admin");
-        }
+    if (lockSiteBtn) {
+      lockSiteBtn.addEventListener("click", () => {
+        lockSite();
       });
     }
-
-    if (maintenanceAdminBtn) {
-      maintenanceAdminBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (isPasskeyAuthenticated()) {
-          window.location.hash = "#admin";
-        } else {
-          openPasskeyModal("#admin");
-        }
-      });
-    }
-
-    if (accountingChangeModeBtn) {
-      accountingChangeModeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (isPasskeyAuthenticated()) {
-          window.location.hash = "#admin";
-        } else {
-          openPasskeyModal("#admin");
-        }
-      });
-    }
-
-    if (passkeyInput) {
-      passkeyInput.addEventListener("input", (e) => {
-        if (passkeyError) passkeyError.style.display = "none";
-        if (e.target.value === ADMIN_PASSKEY) {
-          verifyPasskey();
-        }
-      });
-    }
-
-    if (passkeyForm) {
-      passkeyForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        verifyPasskey();
-      });
-    }
-
-    if (passkeyModalCloseBtn) {
-      passkeyModalCloseBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        closePasskeyModal();
-      });
-    }
-
-    if (passkeyModal) {
-      passkeyModal.addEventListener("click", (e) => {
-        if (e.target === passkeyModal) {
-          closePasskeyModal();
-        }
-      });
-    }
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && passkeyModal && passkeyModal.style.display === "flex") {
-        closePasskeyModal();
-      }
-    });
   }
 
   // --- 3. Theme Management ---
@@ -976,25 +730,18 @@
       if (filterToggleBtn) filterToggleBtn.classList.remove("active");
     }
 
-    // Passkey Guard for Admin Route
-    if (route === "admin" && !isPasskeyAuthenticated()) {
-      openPasskeyModal("#admin");
+    // If route is admin, redirect to home
+    if (route === "admin") {
+      window.location.hash = "#home";
       return;
     }
 
-    const settings = getAdminSettings();
-    const isMaintenance = Boolean(settings.maintenanceMode);
-    const isAdmin = isPasskeyAuthenticated();
-    const isMaintenanceBlocked = isMaintenance && !isAdmin && route !== "admin";
+    const config = getSiteConfig();
+    const isMaintenance = Boolean(config.maintenanceMode);
 
     // Update body class for conditional header search/filters
-    const isForms = route === "forms" && !isMaintenanceBlocked;
+    const isForms = route === "forms" && !isMaintenance;
     document.body.classList.toggle("is-forms-view", isForms);
-
-    // Active state for admin header button
-    if (adminHeaderBtn) {
-      adminHeaderBtn.classList.toggle("active", route === "admin");
-    }
 
     // Hide all view sections first
     const views = [
@@ -1005,15 +752,20 @@
       roleVideosView,
       announcementsView,
       reportsView,
-      adminView,
       maintenanceView
     ];
     views.forEach(v => { if (v) v.style.display = "none"; });
 
-    // If site is in maintenance mode and visitor is not admin, show maintenance screen
-    if (isMaintenanceBlocked) {
+    // If site is in maintenance mode, show maintenance screen
+    if (isMaintenance) {
       if (portalNavContainer) portalNavContainer.style.display = "none";
-      if (maintenanceView) maintenanceView.style.display = "block";
+      if (maintenanceView) {
+        maintenanceView.style.display = "block";
+        const descEl = maintenanceView.querySelector(".coming-soon-text");
+        if (descEl && config.maintenanceMessage) {
+          descEl.textContent = config.maintenanceMessage;
+        }
+      }
       return;
     }
 
@@ -1043,9 +795,6 @@
       if (announcementsView) announcementsView.style.display = "block";
     } else if (route === "reports") {
       if (reportsView) reportsView.style.display = "block";
-    } else if (route === "admin") {
-      if (adminView) adminView.style.display = "block";
-      renderAdminView();
     } else {
       // Default fallback
       if (portalHomeView) portalHomeView.style.display = "block";
@@ -1064,7 +813,7 @@
     portalNavContainer.style.display = "flex";
 
     // Configure Back button destination & text
-    if (route === "forms" || route === "guidelines" || route === "announcements" || route === "reports" || route === "admin") {
+    if (route === "forms" || route === "guidelines" || route === "announcements" || route === "reports") {
       portalBackBtn.href = "#home";
       portalBackText.textContent = "Back to Portal";
     } else if (route === "guidelines/accounting") {
@@ -1096,8 +845,6 @@
       crumbs.push({ label: "Announcements", active: true });
     } else if (route === "reports") {
       crumbs.push({ label: "Reports", active: true });
-    } else if (route === "admin") {
-      crumbs.push({ label: "Admin Settings", active: true });
     }
 
     portalBreadcrumbs.innerHTML = crumbs.map((crumb, idx) => {
@@ -1653,160 +1400,6 @@
     }
   }
 
-  // --- 12. VIEW 8: Render & Handle Admin Control Panel ---
-  let selectedAccountType = "bank";
-
-  function renderAdminView() {
-    const settings = getAdminSettings();
-    selectedAccountType = settings.accountType || "bank";
-
-    // Text inputs
-    if (adminSiteTitle) adminSiteTitle.value = settings.siteTitle || "SMC Hub";
-    if (adminShowTitleToggle) {
-      adminShowTitleToggle.checked = settings.showSiteTitle !== false;
-    }
-    if (adminSiteTagline) adminSiteTagline.value = settings.siteTagline || "";
-    if (adminSiteLogoUrl) adminSiteLogoUrl.value = settings.siteLogoUrl || "";
-    if (adminSiteLogoDarkUrl) adminSiteLogoDarkUrl.value = settings.siteLogoDarkUrl || "";
-    if (adminFaviconUrl) adminFaviconUrl.value = settings.faviconUrl || "";
-
-    // Live image previews
-    updateAdminImagePreviews();
-
-    // Maintenance Mode checkbox
-    if (adminMaintenanceToggle) {
-      adminMaintenanceToggle.checked = Boolean(settings.maintenanceMode);
-    }
-
-    // Announcement Banner
-    if (adminBannerToggle && settings.announcement) {
-      const enabled = Boolean(settings.announcement.enabled);
-      adminBannerToggle.checked = enabled;
-      if (adminBannerInputsGroup) {
-        adminBannerInputsGroup.style.display = enabled ? "block" : "none";
-      }
-    }
-    if (adminBannerMessage && settings.announcement) {
-      adminBannerMessage.value = settings.announcement.message || "";
-    }
-    if (adminBannerType && settings.announcement) {
-      adminBannerType.value = settings.announcement.type || "info";
-    }
-
-    // Congregation Account Type simple toggle buttons
-    if (adminToggleBank && adminToggleCashbox) {
-      const isBank = selectedAccountType === "bank";
-      adminToggleBank.classList.toggle("is-active", isBank);
-      adminToggleBank.setAttribute("aria-pressed", isBank ? "true" : "false");
-      adminToggleCashbox.classList.toggle("is-active", !isBank);
-      adminToggleCashbox.setAttribute("aria-pressed", !isBank ? "true" : "false");
-    }
-  }
-
-  function initAdminControls() {
-    // 1. Congregation Account Mode Toggle: Bank
-    if (adminToggleBank) {
-      adminToggleBank.addEventListener("click", () => {
-        if (selectedAccountType !== "bank") {
-          selectedAccountType = "bank";
-          adminToggleBank.classList.add("is-active");
-          adminToggleBank.setAttribute("aria-pressed", "true");
-          if (adminToggleCashbox) {
-            adminToggleCashbox.classList.remove("is-active");
-            adminToggleCashbox.setAttribute("aria-pressed", "false");
-          }
-          const settings = getAdminSettings();
-          settings.accountType = "bank";
-          saveAdminSettings(settings);
-        }
-      });
-    }
-
-    // Congregation Account Mode Toggle: Cashbox
-    if (adminToggleCashbox) {
-      adminToggleCashbox.addEventListener("click", () => {
-        if (selectedAccountType !== "cashbox") {
-          selectedAccountType = "cashbox";
-          adminToggleCashbox.classList.add("is-active");
-          adminToggleCashbox.setAttribute("aria-pressed", "true");
-          if (adminToggleBank) {
-            adminToggleBank.classList.remove("is-active");
-            adminToggleBank.setAttribute("aria-pressed", "false");
-          }
-          const settings = getAdminSettings();
-          settings.accountType = "cashbox";
-          saveAdminSettings(settings);
-        }
-      });
-    }
-
-    // 2. Real-time Image preview & Title toggle listeners
-    if (adminShowTitleToggle) {
-      adminShowTitleToggle.addEventListener("change", () => {
-        if (siteTitleEl) {
-          siteTitleEl.style.display = adminShowTitleToggle.checked ? "" : "none";
-        }
-      });
-    }
-    if (adminSiteLogoUrl) {
-      adminSiteLogoUrl.addEventListener("input", () => {
-        updateAdminImagePreviews();
-        applySiteLogo(adminSiteLogoUrl.value, adminSiteLogoDarkUrl ? adminSiteLogoDarkUrl.value : "");
-      });
-    }
-    if (adminSiteLogoDarkUrl) {
-      adminSiteLogoDarkUrl.addEventListener("input", () => {
-        updateAdminImagePreviews();
-        applySiteLogo(adminSiteLogoUrl ? adminSiteLogoUrl.value : "", adminSiteLogoDarkUrl.value);
-      });
-    }
-    if (adminFaviconUrl) {
-      adminFaviconUrl.addEventListener("input", updateAdminImagePreviews);
-    }
-
-    // 3. Announcement Banner checkbox toggle
-    if (adminBannerToggle) {
-      adminBannerToggle.addEventListener("change", () => {
-        if (adminBannerInputsGroup) {
-          adminBannerInputsGroup.style.display = adminBannerToggle.checked ? "block" : "none";
-        }
-      });
-    }
-
-    // 4. Save All Settings Button (Immediate implementation of all settings)
-    if (adminSaveBtn) {
-      adminSaveBtn.addEventListener("click", () => {
-        const settings = getAdminSettings();
-        if (adminSiteTitle) settings.siteTitle = adminSiteTitle.value.trim() || "SMC Hub";
-        if (adminShowTitleToggle) settings.showSiteTitle = adminShowTitleToggle.checked;
-        if (adminSiteTagline) settings.siteTagline = adminSiteTagline.value.trim();
-        if (adminSiteLogoUrl) settings.siteLogoUrl = normalizeImageUrl(adminSiteLogoUrl.value.trim()) || "./images/logo-light.png";
-        if (adminSiteLogoDarkUrl) settings.siteLogoDarkUrl = normalizeImageUrl(adminSiteLogoDarkUrl.value.trim()) || "./images/logo-dark.png";
-        if (adminFaviconUrl) settings.faviconUrl = normalizeImageUrl(adminFaviconUrl.value.trim()) || "./images/favicon.png";
-        if (adminMaintenanceToggle) settings.maintenanceMode = adminMaintenanceToggle.checked;
-
-        settings.accountType = selectedAccountType || "bank";
-
-        if (!settings.announcement) settings.announcement = {};
-        if (adminBannerToggle) settings.announcement.enabled = adminBannerToggle.checked;
-        if (adminBannerMessage) settings.announcement.message = adminBannerMessage.value.trim();
-        if (adminBannerType) settings.announcement.type = adminBannerType.value;
-
-        saveAdminSettings(settings);
-      });
-    }
-
-    // 5. Reset Button
-    if (adminResetBtn) {
-      adminResetBtn.addEventListener("click", () => {
-        if (confirm("Reset all settings to default values?")) {
-          saveAdminSettings({ ...DEFAULT_ADMIN_SETTINGS });
-          showToast("All settings reset to defaults.");
-        }
-      });
-    }
-  }
-
   // --- 13. Search Controls (Forms Directory) ---
   function initSearch() {
     if (!searchInput) return;
@@ -2032,8 +1625,6 @@
     initHeaderControls();
     initSearch();
     initVideoSearch();
-    initAdminControls();
-    initPasskeyModal();
     initWelcomeGateway();
     initBackToTop();
 
