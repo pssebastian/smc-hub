@@ -1676,8 +1676,109 @@
       .replace(/'/g, "&#039;");
   }
 
-  // --- 17. Application Entrypoint ---
+  // --- 17. Progressive Web App (PWA) & Mobile Installation ---
+  function initPWA() {
+    // 1. Register Service Worker
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .then((registration) => {
+            console.log("[PWA] Service Worker registered with scope:", registration.scope);
+          })
+          .catch((error) => {
+            console.warn("[PWA] Service Worker registration failed:", error);
+          });
+      });
+    }
+
+    // 2. Install Prompt Elements
+    let deferredPrompt = null;
+    const pwaInstallBanner = document.getElementById("pwaInstallBanner");
+    const pwaInstallBtn = document.getElementById("pwaInstallBtn");
+    const pwaDismissBtn = document.getElementById("pwaDismissBtn");
+    const pwaInstallHeaderBtn = document.getElementById("pwaInstallHeaderBtn");
+    const pwaInstallDesc = document.getElementById("pwaInstallDesc");
+
+    // Check if the app is already running in standalone mode (already installed)
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    if (isStandalone) {
+      return;
+    }
+
+    // Check if user dismissed prompt in this session
+    const wasDismissed = sessionStorage.getItem("smc-pwa-dismissed");
+
+    // Android / Chrome / Edge native install prompt listener
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // Show header install button
+      if (pwaInstallHeaderBtn) {
+        pwaInstallHeaderBtn.style.display = "inline-flex";
+      }
+
+      // Show floating bottom banner if not dismissed this session
+      if (pwaInstallBanner && !wasDismissed) {
+        pwaInstallBanner.style.display = "block";
+      }
+    });
+
+    // Detect iOS Safari
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isIOS && isSafari && !isStandalone) {
+      if (pwaInstallHeaderBtn) {
+        pwaInstallHeaderBtn.style.display = "inline-flex";
+      }
+      if (pwaInstallBanner && !wasDismissed) {
+        if (pwaInstallDesc) {
+          pwaInstallDesc.innerHTML = `Tap <svg style="display:inline-block;vertical-align:middle;margin:0 2px;" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg> <strong>Share</strong>, then select <strong>'Add to Home Screen'</strong>.`;
+        }
+        pwaInstallBanner.style.display = "block";
+      }
+    }
+
+    function triggerInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            if (pwaInstallBanner) pwaInstallBanner.style.display = "none";
+            if (pwaInstallHeaderBtn) pwaInstallHeaderBtn.style.display = "none";
+          }
+          deferredPrompt = null;
+        });
+      } else if (isIOS) {
+        alert("To install SMC Hub on iOS:\n\n1. Tap the Share button at the bottom of Safari.\n2. Scroll down and tap 'Add to Home Screen'.");
+      }
+    }
+
+    if (pwaInstallBtn) {
+      pwaInstallBtn.addEventListener("click", triggerInstall);
+    }
+    if (pwaInstallHeaderBtn) {
+      pwaInstallHeaderBtn.addEventListener("click", triggerInstall);
+    }
+
+    if (pwaDismissBtn) {
+      pwaDismissBtn.addEventListener("click", () => {
+        if (pwaInstallBanner) pwaInstallBanner.style.display = "none";
+        sessionStorage.setItem("smc-pwa-dismissed", "true");
+      });
+    }
+
+    // App installed event
+    window.addEventListener("appinstalled", () => {
+      if (pwaInstallBanner) pwaInstallBanner.style.display = "none";
+      if (pwaInstallHeaderBtn) pwaInstallHeaderBtn.style.display = "none";
+      showToast("SMC Hub app installed successfully!");
+    });
+  }
+
+  // --- 18. Application Entrypoint ---
   function init() {
+    initPWA();
     initTheme();
     initBranding();
     initHeaderControls();

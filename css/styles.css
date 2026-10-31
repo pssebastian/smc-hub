@@ -3041,3 +3041,155 @@ body:not(.is-forms-view) .forms-action-btn {
   20%, 60% { transform: translateX(-6px); }
   40%, 80% { transform: translateX(6px); }
 }
+
+/* ==========================================================================
+   PWA Installation Banner & Header Controls
+   ========================================================================== */
+.pwa-install-header-btn {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+  gap: 0.35rem;
+  padding: 0 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  font-size: 0.78rem;
+  height: 32px;
+}
+
+.pwa-install-header-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .pwa-install-header-btn {
+  background: rgba(37, 99, 235, 0.2);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+[data-theme="dark"] .pwa-install-header-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.pwa-install-btn-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* Floating Bottom Install Banner */
+.pwa-install-banner {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
+  max-width: 520px;
+  z-index: 100;
+  animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.pwa-install-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1.15rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.pwa-install-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.pwa-app-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pwa-install-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pwa-install-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+.pwa-install-desc {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.pwa-install-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.pwa-dismiss-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.4rem 0.55rem;
+  border-radius: var(--radius-xs);
+  transition: all var(--transition-fast);
+}
+
+.pwa-dismiss-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-surface-hover);
+}
+
+.pwa-install-action-btn {
+  padding: 0.45rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+}
+
+@media (max-width: 480px) {
+  .pwa-install-card {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+  }
+  .pwa-install-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.1rem;
+  }
+}

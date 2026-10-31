@@ -7,6 +7,16 @@
   <meta name="theme-color" content="#2563eb" />
   <title>SMC Hub</title>
 
+  <!-- Progressive Web App (PWA) Manifest & Mobile App Capabilities -->
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="SMC Hub" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192x192.png" />
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -87,6 +97,14 @@
             </svg>
             <span class="filter-btn-text desktop-only">Filters</span>
             <span id="filterActiveDot" class="filter-active-dot" aria-hidden="true"></span>
+          </button>
+
+          <!-- PWA Mobile App Install Button -->
+          <button id="pwaInstallHeaderBtn" class="header-icon-btn pwa-install-header-btn" type="button" aria-label="Install App" title="Install SMC Hub App" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            <span class="desktop-only pwa-install-btn-text">Install App</span>
           </button>
 
           <!-- Light / Dark Theme Switcher Button -->
@@ -524,6 +542,23 @@
         />
         <div id="passkeyError" class="passkey-error-message" style="display: none;">Incorrect passkey. Please try again.</div>
       </form>
+    </div>
+  </div>
+
+  <!-- PWA Install Prompt Banner (Mobile & Desktop) -->
+  <div id="pwaInstallBanner" class="pwa-install-banner" role="dialog" aria-labelledby="pwaInstallTitle" style="display: none;">
+    <div class="pwa-install-card">
+      <div class="pwa-install-icon-box" aria-hidden="true">
+        <img src="./icons/icon-192x192.png" alt="SMC Hub" class="pwa-app-icon" />
+      </div>
+      <div class="pwa-install-info">
+        <h3 id="pwaInstallTitle" class="pwa-install-title">Install SMC Hub App</h3>
+        <p class="pwa-install-desc" id="pwaInstallDesc">Add to your Home screen for quick access and offline use.</p>
+      </div>
+      <div class="pwa-install-actions">
+        <button id="pwaDismissBtn" class="pwa-dismiss-btn" type="button" aria-label="Dismiss install prompt">Not now</button>
+        <button id="pwaInstallBtn" class="btn-primary pwa-install-action-btn" type="button">Install</button>
+      </div>
     </div>
   </div>
 
