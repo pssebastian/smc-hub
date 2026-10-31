@@ -157,15 +157,20 @@
   const resetVideoSearchBtn = document.getElementById("resetVideoSearchBtn");
   const videoCountBadge = document.getElementById("videoCountBadge");
 
-  // Admin Elements & Passkey Modal
+  // Admin Elements, Views & Passkey Modal
+  const maintenanceView = document.getElementById("maintenanceView");
+  const maintenanceAdminBtn = document.getElementById("maintenanceAdminBtn");
   const adminToggleBank = document.getElementById("adminToggleBank");
   const adminToggleCashbox = document.getElementById("adminToggleCashbox");
   const adminSiteTitle = document.getElementById("adminSiteTitle");
   const adminSiteTagline = document.getElementById("adminSiteTagline");
+  const adminSiteLogoUrl = document.getElementById("adminSiteLogoUrl");
+  const adminFaviconUrl = document.getElementById("adminFaviconUrl");
+  const adminLogoPreviewBox = document.getElementById("adminLogoPreviewBox");
+  const adminFaviconPreviewBox = document.getElementById("adminFaviconPreviewBox");
   const adminContactEmail = document.getElementById("adminContactEmail");
   const adminContactPhone = document.getElementById("adminContactPhone");
   const adminMaintenanceToggle = document.getElementById("adminMaintenanceToggle");
-  const adminLogoPicker = document.getElementById("adminLogoPicker");
   const adminBannerToggle = document.getElementById("adminBannerToggle");
   const adminBannerMessage = document.getElementById("adminBannerMessage");
   const adminBannerType = document.getElementById("adminBannerType");
@@ -184,17 +189,33 @@
   const passkeyError = document.getElementById("passkeyError");
   const passkeyModalCloseBtn = document.getElementById("passkeyModalCloseBtn");
 
-  // Logo SVG Icon Presets
+  // Default Hub SVG Icon
   const LOGO_ICONS = {
-    hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`,
-    building: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" /></svg>`,
-    book: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>`,
-    document: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>`,
-    users: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`
+    hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`
   };
 
-  // Favicon dynamic updater
-  function updateFavicon(logoKey) {
+  // Site Logo dynamic processor (Handles user-provided image link)
+  function applySiteLogo(logoUrl) {
+    if (!brandIconBox) return;
+    const url = (logoUrl || "").trim();
+    if (url) {
+      brandIconBox.classList.add("has-custom-img");
+      brandIconBox.innerHTML = `
+        <img
+          src="${escapeHtml(url)}"
+          alt="Site Logo"
+          class="brand-logo-img"
+          onerror="this.onerror=null; this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub;"
+        />
+      `;
+    } else {
+      brandIconBox.classList.remove("has-custom-img");
+      brandIconBox.innerHTML = LOGO_ICONS.hub;
+    }
+  }
+
+  // Favicon dynamic processor (Handles user-provided image link)
+  function applyFavicon(faviconUrl) {
     let link = document.getElementById("siteFavicon");
     if (!link) {
       link = document.createElement("link");
@@ -202,22 +223,54 @@
       link.rel = "icon";
       document.head.appendChild(link);
     }
-    const svgMap = {
-      hub: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2zm10-10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2z" fill="white"/></svg>`,
-      building: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M12 3 3 9v12h18V9l-9-6zm-4 15H6v-6h2v6zm5 0h-2v-6h2v6zm5 0h-2v-6h2v6z" fill="white"/></svg>`,
-      book: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M12 6.5A7.5 7.5 0 0 0 4.5 4v14.5A7.5 7.5 0 0 1 12 21a7.5 7.5 0 0 1 7.5-2.5V4A7.5 7.5 0 0 0 12 6.5z" fill="white"/></svg>`,
-      document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7 1.5V9h4.5L13 4.5z" fill="white"/></svg>`,
-      users: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><circle cx="9" cy="8" r="3.5" fill="white"/><circle cx="16" cy="10" r="2.5" fill="white"/><path d="M2.5 19.5c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5v1h-13v-1zm12 0c0-2.2 1.5-3.8 3.5-4.2 2 .4 3.5 2 3.5 4.2v1H14.5v-1z" fill="white"/></svg>`
-    };
-    const svgCode = svgMap[logoKey] || svgMap.hub;
-    link.href = `data:image/svg+xml,${encodeURIComponent(svgCode)}`;
+    const url = (faviconUrl || "").trim();
+    if (url) {
+      link.href = url;
+    } else {
+      const defaultSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2zm10-10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2z" fill="white"/></svg>`;
+      link.href = `data:image/svg+xml,${encodeURIComponent(defaultSvg)}`;
+    }
+  }
+
+  // Live Image Previews in Admin Settings Form
+  function updateAdminImagePreviews() {
+    if (adminLogoPreviewBox && adminSiteLogoUrl) {
+      const logoUrl = adminSiteLogoUrl.value.trim();
+      if (logoUrl) {
+        adminLogoPreviewBox.innerHTML = `
+          <img
+            src="${escapeHtml(logoUrl)}"
+            alt="Logo Preview"
+            onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#dc2626;font-weight:600;\\'>Invalid</span>';"
+          />
+        `;
+      } else {
+        adminLogoPreviewBox.innerHTML = LOGO_ICONS.hub;
+      }
+    }
+
+    if (adminFaviconPreviewBox && adminFaviconUrl) {
+      const favUrl = adminFaviconUrl.value.trim();
+      if (favUrl) {
+        adminFaviconPreviewBox.innerHTML = `
+          <img
+            src="${escapeHtml(favUrl)}"
+            alt="Favicon Preview"
+            onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#dc2626;font-weight:600;\\'>Invalid</span>';"
+          />
+        `;
+      } else {
+        adminFaviconPreviewBox.innerHTML = LOGO_ICONS.hub;
+      }
+    }
   }
 
   // --- 1. Admin Settings Manager (localStorage) ---
   const DEFAULT_ADMIN_SETTINGS = {
     siteTitle: "SMC Hub",
     siteTagline: "Congregation Forms & Guidelines Hub",
-    siteLogo: "hub", // "hub", "building", "book", "document", "users"
+    siteLogoUrl: "", // direct image URL
+    faviconUrl: "", // direct icon/image URL
     contactEmail: "",
     contactPhone: "",
     maintenanceMode: false,
@@ -251,19 +304,39 @@
     }
     document.title = siteTitle;
 
-    // 2. Site Logo & Favicon
-    const logoKey = settings.siteLogo || "hub";
-    if (brandIconBox && LOGO_ICONS[logoKey]) {
-      brandIconBox.innerHTML = LOGO_ICONS[logoKey];
+    // 2. Tagline / Meta Description
+    if (settings.siteTagline) {
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute("content", `${siteTitle} - ${settings.siteTagline}`);
+      }
     }
-    updateFavicon(logoKey);
 
-    // 3. Maintenance Mode Alert Banner
+    // 3. Site Logo Image Link
+    applySiteLogo(settings.siteLogoUrl);
+
+    // 4. Favicon Image Link
+    applyFavicon(settings.faviconUrl);
+
+    // 5. Maintenance Mode Banner & Text
     if (maintenanceBanner) {
-      maintenanceBanner.style.display = settings.maintenanceMode ? "block" : "none";
+      if (settings.maintenanceMode) {
+        maintenanceBanner.style.display = "block";
+        const isAdmin = isPasskeyAuthenticated();
+        const bannerTextEl = maintenanceBanner.querySelector(".maintenance-banner-text");
+        if (bannerTextEl) {
+          if (isAdmin) {
+            bannerTextEl.innerHTML = `<strong>Maintenance Mode Active:</strong> The website is currently in maintenance mode (Admin Preview). Visitors see the maintenance notice. <a href="#admin" class="maintenance-admin-link">Admin Settings</a>`;
+          } else {
+            bannerTextEl.innerHTML = `<strong>Site Under Maintenance:</strong> The website is currently undergoing maintenance. Please check back shortly.`;
+          }
+        }
+      } else {
+        maintenanceBanner.style.display = "none";
+      }
     }
 
-    // 4. Footer Support Contact Information
+    // 6. Footer Support Contact Information
     if (footerSupportInfo) {
       const email = (settings.contactEmail || "").trim();
       const phone = (settings.contactPhone || "").trim();
@@ -279,8 +352,29 @@
       }
     }
 
-    // 5. Site Announcement Banner
+    // 7. Site Announcement Banner
     updateAnnouncementBanner();
+  }
+
+  function saveAdminSettings(newSettings, showFeedback = true) {
+    try {
+      localStorage.setItem("smc-admin-settings", JSON.stringify(newSettings));
+      applySiteSettings(newSettings);
+      if (showFeedback) {
+        showToast("Settings saved and applied immediately!");
+      }
+      // Re-render views that depend on settings
+      if (currentRoute === "guidelines/accounting") {
+        renderAccountingRoles();
+      } else if (currentRoute.startsWith("guidelines/accounting/")) {
+        renderRoleVideos();
+      }
+      // Re-evaluate routes immediately (e.g. if maintenance mode state changed)
+      handleRouteChange();
+      renderAdminView();
+    } catch (e) {
+      console.error("Failed to save admin settings:", e);
+    }
   }
 
   function saveAdminSettings(newSettings, showFeedback = true) {
@@ -378,6 +472,17 @@
   function initPasskeyModal() {
     if (adminHeaderBtn) {
       adminHeaderBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (isPasskeyAuthenticated()) {
+          window.location.hash = "#admin";
+        } else {
+          openPasskeyModal("#admin");
+        }
+      });
+    }
+
+    if (maintenanceAdminBtn) {
+      maintenanceAdminBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (isPasskeyAuthenticated()) {
           window.location.hash = "#admin";
@@ -564,8 +669,13 @@
       return;
     }
 
+    const settings = getAdminSettings();
+    const isMaintenance = Boolean(settings.maintenanceMode);
+    const isAdmin = isPasskeyAuthenticated();
+    const isMaintenanceBlocked = isMaintenance && !isAdmin && route !== "admin";
+
     // Update body class for conditional header search/filters
-    const isForms = route === "forms";
+    const isForms = route === "forms" && !isMaintenanceBlocked;
     document.body.classList.toggle("is-forms-view", isForms);
 
     // Active state for admin header button
@@ -582,9 +692,17 @@
       roleVideosView,
       announcementsView,
       reportsView,
-      adminView
+      adminView,
+      maintenanceView
     ];
     views.forEach(v => { if (v) v.style.display = "none"; });
+
+    // If site is in maintenance mode and visitor is not admin, show maintenance screen
+    if (isMaintenanceBlocked) {
+      if (portalNavContainer) portalNavContainer.style.display = "none";
+      if (maintenanceView) maintenanceView.style.display = "block";
+      return;
+    }
 
     // Update Breadcrumbs & Navigation Bar
     updateBreadcrumbs(route);
@@ -1234,19 +1352,22 @@
   }
 
   // --- 12. VIEW 8: Render & Handle Admin Control Panel ---
-  let selectedAdminLogo = "hub";
   let selectedAccountType = "bank";
 
   function renderAdminView() {
     const settings = getAdminSettings();
     selectedAccountType = settings.accountType || "bank";
-    selectedAdminLogo = settings.siteLogo || "hub";
 
     // Text inputs
     if (adminSiteTitle) adminSiteTitle.value = settings.siteTitle || "SMC Hub";
     if (adminSiteTagline) adminSiteTagline.value = settings.siteTagline || "";
+    if (adminSiteLogoUrl) adminSiteLogoUrl.value = settings.siteLogoUrl || "";
+    if (adminFaviconUrl) adminFaviconUrl.value = settings.faviconUrl || "";
     if (adminContactEmail) adminContactEmail.value = settings.contactEmail || "";
     if (adminContactPhone) adminContactPhone.value = settings.contactPhone || "";
+
+    // Live image previews
+    updateAdminImagePreviews();
 
     // Maintenance Mode checkbox
     if (adminMaintenanceToggle) {
@@ -1266,16 +1387,6 @@
     }
     if (adminBannerType && settings.announcement) {
       adminBannerType.value = settings.announcement.type || "info";
-    }
-
-    // Logo Buttons
-    if (adminLogoPicker) {
-      const buttons = adminLogoPicker.querySelectorAll(".logo-pick-btn");
-      buttons.forEach((btn) => {
-        const isMatch = btn.getAttribute("data-logo") === selectedAdminLogo;
-        btn.classList.toggle("is-active", isMatch);
-        btn.setAttribute("aria-checked", isMatch ? "true" : "false");
-      });
     }
 
     // Congregation Account Type simple toggle buttons
@@ -1325,25 +1436,12 @@
       });
     }
 
-    // 2. Logo Picker buttons
-    if (adminLogoPicker) {
-      const buttons = adminLogoPicker.querySelectorAll(".logo-pick-btn");
-      buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          buttons.forEach((b) => {
-            b.classList.remove("is-active");
-            b.setAttribute("aria-checked", "false");
-          });
-          btn.classList.add("is-active");
-          btn.setAttribute("aria-checked", "true");
-          selectedAdminLogo = btn.getAttribute("data-logo") || "hub";
-          // Preview immediately in header
-          if (brandIconBox && LOGO_ICONS[selectedAdminLogo]) {
-            brandIconBox.innerHTML = LOGO_ICONS[selectedAdminLogo];
-          }
-          updateFavicon(selectedAdminLogo);
-        });
-      });
+    // 2. Real-time Image preview listeners
+    if (adminSiteLogoUrl) {
+      adminSiteLogoUrl.addEventListener("input", updateAdminImagePreviews);
+    }
+    if (adminFaviconUrl) {
+      adminFaviconUrl.addEventListener("input", updateAdminImagePreviews);
     }
 
     // 3. Announcement Banner checkbox toggle
@@ -1355,17 +1453,18 @@
       });
     }
 
-    // 4. Save All Settings Button
+    // 4. Save All Settings Button (Immediate implementation of all settings)
     if (adminSaveBtn) {
       adminSaveBtn.addEventListener("click", () => {
         const settings = getAdminSettings();
         if (adminSiteTitle) settings.siteTitle = adminSiteTitle.value.trim() || "SMC Hub";
         if (adminSiteTagline) settings.siteTagline = adminSiteTagline.value.trim();
+        if (adminSiteLogoUrl) settings.siteLogoUrl = adminSiteLogoUrl.value.trim();
+        if (adminFaviconUrl) settings.faviconUrl = adminFaviconUrl.value.trim();
         if (adminContactEmail) settings.contactEmail = adminContactEmail.value.trim();
         if (adminContactPhone) settings.contactPhone = adminContactPhone.value.trim();
         if (adminMaintenanceToggle) settings.maintenanceMode = adminMaintenanceToggle.checked;
 
-        settings.siteLogo = selectedAdminLogo || "hub";
         settings.accountType = selectedAccountType || "bank";
 
         if (!settings.announcement) settings.announcement = {};
