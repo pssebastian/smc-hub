@@ -1,11 +1,5 @@
-/**
- * SMC Hub - Service Worker for Progressive Web App (PWA)
- * Enables offline access, fast loading, and native app installability.
- */
-
-const CACHE_NAME = 'smc-hub-v4';
-
-const PRECACHE_ASSETS = [
+const CACHE_NAME = 'smc-hub-v10';
+const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
@@ -18,32 +12,24 @@ const PRECACHE_ASSETS = [
   './images/logo-dark.png',
   './images/favicon.png',
   './icons/icon-192x192.png',
-  './icons/icon-512x512.png',
-  './icons/icon-maskable-192x192.png',
-  './icons/icon-maskable-512x512.png',
-  './icons/apple-touch-icon.png',
-  './icons/icon.svg'
+  './icons/icon-512x512.png'
 ];
 
-// 1. Install Event: Pre-cache application shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS).catch((err) => {
-        console.warn('[SW] Pre-caching partial error:', err);
-      });
+      return cache.addAll(PRECACHE_URLS);
     }).then(() => self.skipWaiting())
   );
 });
 
-// 2. Activate Event: Clean up outdated caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map((name) => {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
       );
@@ -51,44 +37,30 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 3. Fetch Event: Network-first with cache fallback
 self.addEventListener('fetch', (event) => {
-  const req = event.request;
-
   // Only handle GET requests
-  if (req.method !== 'GET') return;
+  if (event.request.method !== 'GET') {
+    return;
+  }
 
-  // Skip chrome-extension or unsupported protocols
-  if (!req.url.startsWith('http://') && !req.url.startsWith('https://')) return;
-
+  // Network first, fallback to cache for offline availability
   event.respondWith(
-    fetch(req)
+    fetch(event.request)
       .then((networkResponse) => {
-        // If valid network response, clone and cache it for offline use
-        if (networkResponse && networkResponse.status === 200) {
+        if (networkResponse && networkResponse.status === 200 && event.request.url.startsWith('http')) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(req, responseToCache);
+            cache.put(event.request, responseToCache);
           });
         }
         return networkResponse;
       })
-      .catch(async () => {
-        // Offline: try serving from cache
-        const cachedResponse = await caches.match(req);
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        // If requesting a page/navigation offline, fallback to index.html
-        if (req.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-
-        return new Response('Network error and asset not cached.', {
-          status: 503,
-          statusText: 'Service Unavailable',
-          headers: new Headers({ 'Content-Type': 'text/plain' })
+      .catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
+            return caches.match('./index.html') || caches.match('index.html') || caches.match('./');
+          }
         });
       })
   );

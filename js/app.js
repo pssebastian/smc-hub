@@ -1922,15 +1922,21 @@
   function initPWA() {
     // 1. Register Service Worker
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
+      const registerSW = () => {
+        navigator.serviceWorker.register("sw.js")
           .then((registration) => {
             console.log("[PWA] Service Worker registered with scope:", registration.scope);
           })
           .catch((error) => {
             console.warn("[PWA] Service Worker registration failed:", error);
           });
-      });
+      };
+
+      if (document.readyState === "complete") {
+        registerSW();
+      } else {
+        window.addEventListener("load", registerSW);
+      }
     }
 
     // 2. Install Prompt Elements
