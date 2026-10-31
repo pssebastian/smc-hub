@@ -25,11 +25,17 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="./css/styles.css" />
 
-  <!-- Zero-FOUC Authentication State Initializer -->
+  <!-- Zero-FOUC Authentication State Initializer (Supports 30-Day Persistent Login) -->
   <script>
     (function() {
       try {
-        if (sessionStorage.getItem("smc-site-auth") === "true" || sessionStorage.getItem("smc-admin-auth") === "true") {
+        var now = Date.now();
+        var adminExp = parseInt(localStorage.getItem("smc-admin-auth-expiry") || "0", 10);
+        var siteExp = parseInt(localStorage.getItem("smc-site-auth-expiry") || "0", 10);
+        var isAuth = (adminExp > now) || (siteExp > now) ||
+                     (sessionStorage.getItem("smc-site-auth") === "true") ||
+                     (sessionStorage.getItem("smc-admin-auth") === "true");
+        if (isAuth) {
           document.documentElement.classList.add("is-authenticated");
         }
       } catch (e) {}

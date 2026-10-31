@@ -105,6 +105,7 @@
   // --- Passkey Security State ---
   const SITE_PASSCODE = "sanmig3673";
   const ADMIN_PASSKEY = "hub_admin_3673";
+  const AUTH_DURATION_MS = 30 * 24 * 60 * 60 * 1000; // 30 Days Persistent Session
 
   // --- Welcome Gateway Elements ---
   const welcomeView = document.getElementById("welcomeView");
@@ -499,18 +500,41 @@
     }, 3200);
   }
 
-  // --- 2. Passkey Authentication Management ---
-  function isSiteAuthenticated() {
+  // --- 2. Passkey Authentication Management (30-Day Persistence) ---
+  function isPasskeyAuthenticated() {
     try {
-      return sessionStorage.getItem("smc-site-auth") === "true" || sessionStorage.getItem("smc-admin-auth") === "true";
+      const expiry = localStorage.getItem("smc-admin-auth-expiry");
+      if (expiry) {
+        const expTime = parseInt(expiry, 10);
+        if (expTime && Date.now() < expTime) {
+          return true;
+        } else {
+          localStorage.removeItem("smc-admin-auth");
+          localStorage.removeItem("smc-admin-auth-expiry");
+        }
+      }
+      return sessionStorage.getItem("smc-admin-auth") === "true";
     } catch (e) {
       return false;
     }
   }
 
-  function isPasskeyAuthenticated() {
+  function isSiteAuthenticated() {
     try {
-      return sessionStorage.getItem("smc-admin-auth") === "true";
+      // If admin session is active, user is also site-authenticated
+      if (isPasskeyAuthenticated()) return true;
+
+      const expiry = localStorage.getItem("smc-site-auth-expiry");
+      if (expiry) {
+        const expTime = parseInt(expiry, 10);
+        if (expTime && Date.now() < expTime) {
+          return true;
+        } else {
+          localStorage.removeItem("smc-site-auth");
+          localStorage.removeItem("smc-site-auth-expiry");
+        }
+      }
+      return sessionStorage.getItem("smc-site-auth") === "true" || sessionStorage.getItem("smc-admin-auth") === "true";
     } catch (e) {
       return false;
     }
@@ -570,28 +594,41 @@
     try {
       sessionStorage.removeItem("smc-site-auth");
       sessionStorage.removeItem("smc-admin-auth");
+      localStorage.removeItem("smc-site-auth");
+      localStorage.removeItem("smc-site-auth-expiry");
+      localStorage.removeItem("smc-admin-auth");
+      localStorage.removeItem("smc-admin-auth-expiry");
     } catch (e) {}
+    document.documentElement.classList.remove("is-authenticated");
+    if (document.body) document.body.classList.remove("is-authenticated");
     window.location.hash = "#home";
     showWelcomeScreen();
-    showToast("Website locked. Passcode required to enter.");
+    showToast("Signed out. Passcode required to enter.");
   }
 
   function verifyWelcomePasscode() {
     if (!welcomePasscodeInput) return;
     const val = welcomePasscodeInput.value.trim();
+    const expiryTimestamp = (Date.now() + AUTH_DURATION_MS).toString();
 
     if (val === SITE_PASSCODE) {
       try {
         sessionStorage.setItem("smc-site-auth", "true");
+        localStorage.setItem("smc-site-auth", "true");
+        localStorage.setItem("smc-site-auth-expiry", expiryTimestamp);
       } catch (e) {}
       unlockSite();
     } else if (val === ADMIN_PASSKEY) {
       try {
         sessionStorage.setItem("smc-site-auth", "true");
         sessionStorage.setItem("smc-admin-auth", "true");
+        localStorage.setItem("smc-site-auth", "true");
+        localStorage.setItem("smc-site-auth-expiry", expiryTimestamp);
+        localStorage.setItem("smc-admin-auth", "true");
+        localStorage.setItem("smc-admin-auth-expiry", expiryTimestamp);
       } catch (e) {}
       unlockSite();
-      showToast("Admin access granted.");
+      showToast("Admin access granted (30-day session active).");
     } else {
       if (welcomePasscodeError) {
         welcomePasscodeError.textContent = "Incorrect passcode. Please try again.";
@@ -665,16 +702,21 @@
     if (!passkeyInput) return;
     const val = passkeyInput.value.trim();
     if (val === ADMIN_PASSKEY) {
+      const expiryTimestamp = (Date.now() + AUTH_DURATION_MS).toString();
       try {
         sessionStorage.setItem("smc-admin-auth", "true");
         sessionStorage.setItem("smc-site-auth", "true");
+        localStorage.setItem("smc-admin-auth", "true");
+        localStorage.setItem("smc-admin-auth-expiry", expiryTimestamp);
+        localStorage.setItem("smc-site-auth", "true");
+        localStorage.setItem("smc-site-auth-expiry", expiryTimestamp);
         document.documentElement.classList.add("is-authenticated");
         if (document.body) document.body.classList.add("is-authenticated");
       } catch (e) {}
       const target = (passkeyModal && passkeyModal.getAttribute("data-target-hash")) || "#admin";
       closePasskeyModal();
       window.location.hash = target;
-      showToast("Admin access granted.");
+      showToast("Admin access granted (30-day session active).");
     } else {
       if (passkeyError) {
         passkeyError.textContent = "Incorrect passkey. Please try again.";
