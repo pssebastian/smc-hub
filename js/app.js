@@ -1,6 +1,15 @@
 /**
  * ====================================================================
- * SMC FORMS DIRECTORY - APPLICATION LOGIC
+ * SMC HUB - APPLICATION CONTROLLER & ROUTER
+ * ====================================================================
+ * Features:
+ *  - 4-Option Grid Homepage (Announcements, Guidelines, Forms, Reports)
+ *  - Forms Directory with Search & Category Filters (Retained layout)
+ *  - Guidelines Directory (First option: Accounting)
+ *  - Accounting Guidelines with Role Selection & Video Guides List
+ *  - Admin Settings for Congregation Account Type (Bank vs Cashbox)
+ *  - Hash-Based Router with Navigation & Breadcrumbs
+ *  - Dark / Light Theme & Responsive Mobile Controls
  * ====================================================================
  */
 
@@ -16,28 +25,85 @@
     clipboard: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" /></svg>`,
     file: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>`,
     user: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>`,
+    users: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`,
     message: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>`,
     form: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>`,
     truck: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.25V3.75A1.125 1.125 0 0 0 13.125 2.625h-9.75A1.125 1.125 0 0 0 2.25 3.75v10.5c0 .621.504 1.125 1.125 1.125h1.5" /></svg>`,
     bank: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" /></svg>`,
+    box: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>`,
     clock: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
     externalLink: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>`,
     hardhat: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5M4 15v-3a6 6 0 0 1 6-6M14 6a6 6 0 0 1 6 6v3" /></svg>`,
     world: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><circle cx="12" cy="12" r="9.25" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 2.75a14.5 14.5 0 0 0 0 18.5 14.5 14.5 0 0 0 0-18.5ZM2.75 12h18.5M3.9 7.5h16.2M3.9 16.5h16.2" /></svg>`,
-    globe: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><circle cx="12" cy="12" r="9.25" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 2.75a14.5 14.5 0 0 0 0 18.5 14.5 14.5 0 0 0 0-18.5ZM2.75 12h18.5M3.9 7.5h16.2M3.9 16.5h16.2" /></svg>`,
     briefcase: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><rect width="18" height="13" x="3" y="7.5" rx="2" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 7.5V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2.5M3 13h18M10.5 12v2.5h3V12" /></svg>`,
-    "briefcase-star": `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><rect width="18" height="13" x="3" y="7.5" rx="2" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 7.5V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2.5M3 13.5h5.5M15.5 13.5h5.5" /><polygon points="12,10.6 13.05,12.75 15.4,13.1 13.7,14.75 14.1,17.1 12,16 9.9,17.1 10.3,14.75 8.6,13.1 10.95,12.75" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round" /></svg>`,
-    briefcaseStar: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><rect width="18" height="13" x="3" y="7.5" rx="2" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 7.5V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2.5M3 13.5h5.5M15.5 13.5h5.5" /><polygon points="12,10.6 13.05,12.75 15.4,13.1 13.7,14.75 14.1,17.1 12,16 9.9,17.1 10.3,14.75 8.6,13.1 10.95,12.75" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round" /></svg>`,
-    bulldozer: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2 17.5a2.5 2.5 0 0 0 2.5 2.5h7a2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5h-7A2.5 2.5 0 0 0 2 17.5Z" /><circle cx="4.5" cy="17.5" r="0.75" fill="currentColor" /><circle cx="8" cy="17.5" r="0.75" fill="currentColor" /><circle cx="11.5" cy="17.5" r="0.75" fill="currentColor" /><path stroke-linecap="round" stroke-linejoin="round" d="M3.5 15V8.5A1.5 1.5 0 0 1 5 7h4a1.5 1.5 0 0 1 1.5 1.5V12h3.5v3M5 10.5h3.5M9 7V4.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M10 17.5h6M15 14l2 3.5M21 11.5c-.8 3-.8 6.5 0 9" /></svg>`,
-    "heavy-equipment": `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2 17.5a2.5 2.5 0 0 0 2.5 2.5h7a2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5h-7A2.5 2.5 0 0 0 2 17.5Z" /><circle cx="4.5" cy="17.5" r="0.75" fill="currentColor" /><circle cx="8" cy="17.5" r="0.75" fill="currentColor" /><circle cx="11.5" cy="17.5" r="0.75" fill="currentColor" /><path stroke-linecap="round" stroke-linejoin="round" d="M3.5 15V8.5A1.5 1.5 0 0 1 5 7h4a1.5 1.5 0 0 1 1.5 1.5V12h3.5v3M5 10.5h3.5M9 7V4.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M10 17.5h6M15 14l2 3.5M21 11.5c-.8 3-.8 6.5 0 9" /></svg>`,
     university: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5 12 3.5l9 6H3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5h18M6 10.5v6.5M10 10.5v6.5M14 10.5v6.5M18 10.5v6.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M3.5 17h17M2 20.5h20" /></svg>`,
-    landmark: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5 12 3.5l9 6H3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5h18M6 10.5v6.5M10 10.5v6.5M14 10.5v6.5M18 10.5v6.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M3.5 17h17M2 20.5h20" /></svg>`
+    megaphone: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.111-1.528-.459a22.253 22.253 0 0 1-1.335-3.666m2.998-.549a48.36 48.36 0 0 0 9.13-1.636 1.125 1.125 0 0 0 .762-1.07V8.67a1.125 1.125 0 0 0-.762-1.07 48.36 48.36 0 0 0-9.13-1.636m0 9.87V5.959" /></svg>`,
+    book: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>`,
+    chart: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>`,
+    video: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9A2.25 2.25 0 0 0 13.5 5.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z" /></svg>`,
+    arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>`,
+    broadcast: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M5.106 18.894c-3.808-3.807-3.808-9.98 0-13.788m13.788 0c3.808 3.807 3.808 9.98 0 13.788M12 12h.008v.008H12V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>`
   };
 
-  // --- State ---
+  // --- Portal Home Modules Definition ---
+  const PORTAL_MODULES = [
+    {
+      id: "announcements",
+      title: "Announcements",
+      description: "Congregation notices, special reminders, weekly schedules, and branch correspondence.",
+      badge: "Coming Soon",
+      badgeType: "coming-soon",
+      icon: "megaphone",
+      url: "#announcements",
+      cardClass: "portal-card-announcements",
+      actionText: "Coming Soon"
+    },
+    {
+      id: "guidelines",
+      title: "Guidelines",
+      description: "Standard congregation procedures, role instructions, and step-by-step video tutorials.",
+      badge: "Active",
+      badgeType: "popular",
+      icon: "book",
+      url: "#guidelines",
+      cardClass: "portal-card-guidelines",
+      actionText: "Explore Guidelines"
+    },
+    {
+      id: "forms",
+      title: "Forms",
+      description: "Official submission forms, meeting attendance logs, territory cards, and service applications.",
+      badge: "Active Directory",
+      badgeType: "active",
+      icon: "form",
+      url: "#forms",
+      cardClass: "portal-card-forms",
+      actionText: "Browse All Forms"
+    },
+    {
+      id: "reports",
+      title: "Reports",
+      description: "Congregation statistics, service summaries, attendance graphs, and monthly accounts overviews.",
+      badge: "Coming Soon",
+      badgeType: "coming-soon",
+      icon: "chart",
+      url: "#reports",
+      cardClass: "portal-card-reports",
+      actionText: "Coming Soon"
+    }
+  ];
+
+  // --- Configuration References ---
+  const formsConfig = window.FORMS_CONFIG || { siteTitle: "SMC Hub", forms: [], categories: [] };
+  const accountingConfig = window.ACCOUNTING_CONFIG || { accountTypes: [], roles: [], videos: [], role2video: [] };
+  const guidelinesConfig = window.GUIDELINES_CONFIG || { title: "Guidelines", categories: [], guidelines: [] };
+
+  // --- Application State ---
   let activeCategory = "All";
   let searchQuery = "";
-  const config = window.FORMS_CONFIG || { siteTitle: "SMC Forms", siteSubtitle: "", forms: [], categories: [] };
+  let videoSearchQuery = "";
+  let activeRole = null;
+  let currentRoute = "home";
 
   // --- DOM Elements ---
   const siteHeader = document.getElementById("siteHeader");
@@ -49,6 +115,9 @@
   const filterToggleBtn = document.getElementById("filterToggleBtn");
   const filterActiveDot = document.getElementById("filterActiveDot");
   const filterDrawer = document.getElementById("filterDrawer");
+  const desktopSearchContainer = document.getElementById("desktopSearchContainer");
+  const mobileSearchDrawer = document.getElementById("mobileSearchDrawer");
+  const searchBoxWrapper = document.getElementById("searchBoxWrapper");
   const searchInput = document.getElementById("searchInput");
   const searchClearBtn = document.getElementById("searchClearBtn");
   const categoriesFilterBar = document.getElementById("categoriesFilterBar");
@@ -59,12 +128,99 @@
   const activeCategoryLabel = document.getElementById("activeCategoryLabel");
   const floatingBackToTopBtn = document.getElementById("floatingBackToTopBtn");
   const currentYearEl = document.getElementById("currentYear");
+  const toastNotification = document.getElementById("toastNotification");
 
-  // --- 1. Theme Management ---
+  // Portal Navigation & Views
+  const portalNavContainer = document.getElementById("portalNavContainer");
+  const portalBackBtn = document.getElementById("portalBackBtn");
+  const portalBackText = document.getElementById("portalBackText");
+  const portalBreadcrumbs = document.getElementById("portalBreadcrumbs");
+
+  const portalHomeView = document.getElementById("portalHomeView");
+  const formsView = document.getElementById("formsView");
+  const guidelinesView = document.getElementById("guidelinesView");
+  const accountingRolesView = document.getElementById("accountingRolesView");
+  const roleVideosView = document.getElementById("roleVideosView");
+  const announcementsView = document.getElementById("announcementsView");
+  const reportsView = document.getElementById("reportsView");
+  const adminView = document.getElementById("adminView");
+
+  const portalGrid = document.getElementById("portalGrid");
+  const guidelinesGrid = document.getElementById("guidelinesGrid");
+  const accountingRolesGrid = document.getElementById("accountingRolesGrid");
+  const roleVideosGrid = document.getElementById("roleVideosGrid");
+  const roleVideosEmptyState = document.getElementById("roleVideosEmptyState");
+  const videoSearchInput = document.getElementById("videoSearchInput");
+  const videoSearchClearBtn = document.getElementById("videoSearchClearBtn");
+  const resetVideoSearchBtn = document.getElementById("resetVideoSearchBtn");
+  const videoCountBadge = document.getElementById("videoCountBadge");
+
+  // Admin View Elements
+  const adminChoiceBank = document.getElementById("adminChoiceBank");
+  const adminChoiceCashbox = document.getElementById("adminChoiceCashbox");
+  const adminAccountSummary = document.getElementById("adminAccountSummary");
+  const adminBannerToggle = document.getElementById("adminBannerToggle");
+  const adminBannerMessage = document.getElementById("adminBannerMessage");
+  const adminBannerType = document.getElementById("adminBannerType");
+  const adminSaveBtn = document.getElementById("adminSaveBtn");
+  const adminResetBtn = document.getElementById("adminResetBtn");
+  const adminHeaderBtn = document.getElementById("adminHeaderBtn");
+
+  // --- 1. Admin Settings Manager (localStorage) ---
+  const DEFAULT_ADMIN_SETTINGS = {
+    accountType: "bank", // "bank" or "cashbox"
+    announcement: {
+      enabled: false,
+      message: "Welcome to SMC Hub! Access congregation forms, guidelines, and announcements.",
+      type: "info"
+    }
+  };
+
+  function getAdminSettings() {
+    try {
+      const saved = localStorage.getItem("smc-admin-settings");
+      if (saved) {
+        return { ...DEFAULT_ADMIN_SETTINGS, ...JSON.parse(saved) };
+      }
+    } catch (e) {
+      console.warn("Could not parse saved admin settings:", e);
+    }
+    return { ...DEFAULT_ADMIN_SETTINGS };
+  }
+
+  function saveAdminSettings(newSettings, showFeedback = true) {
+    try {
+      localStorage.setItem("smc-admin-settings", JSON.stringify(newSettings));
+      updateAnnouncementBanner();
+      if (showFeedback) {
+        showToast(`Settings saved! Account type set to ${newSettings.accountType === "bank" ? "Bank Account" : "Cashbox"}.`);
+      }
+      // Re-render views that depend on settings
+      if (currentRoute === "guidelines/accounting") {
+        renderAccountingRoles();
+      } else if (currentRoute.startsWith("guidelines/accounting/")) {
+        renderRoleVideos();
+      }
+      renderAdminView();
+    } catch (e) {
+      console.error("Failed to save admin settings:", e);
+    }
+  }
+
+  function showToast(message) {
+    if (!toastNotification) return;
+    toastNotification.textContent = message;
+    toastNotification.classList.add("show");
+    setTimeout(() => {
+      toastNotification.classList.remove("show");
+    }, 3200);
+  }
+
+  // --- 2. Theme Management ---
   function initTheme() {
     const savedTheme = localStorage.getItem("smc-theme");
     const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    
+
     if (savedTheme) {
       document.documentElement.setAttribute("data-theme", savedTheme);
     } else if (systemPrefersDark) {
@@ -77,7 +233,6 @@
       themeToggleBtn.addEventListener("click", toggleTheme);
     }
 
-    // Listen for OS theme changes if user has not set a preference
     if (window.matchMedia) {
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
         if (!localStorage.getItem("smc-theme")) {
@@ -94,43 +249,21 @@
     localStorage.setItem("smc-theme", newTheme);
   }
 
-  // --- 2. Branding & Header Initialization ---
-  function initBranding() {
-    if (siteTitleEl && config.siteTitle) {
-      siteTitleEl.textContent = config.siteTitle;
-      document.title = config.siteTitle;
-    }
-    if (currentYearEl) {
-      currentYearEl.textContent = new Date().getFullYear();
-    }
+  // --- 3. Announcement Banner ---
+  function updateAnnouncementBanner() {
+    const settings = getAdminSettings();
+    if (!announcementBanner) return;
 
-    if (announcementBanner && config.announcement && config.announcement.enabled) {
-      announcementBanner.textContent = config.announcement.message;
-      announcementBanner.classList.add("visible");
-      if (config.announcement.type) {
-        announcementBanner.classList.add(config.announcement.type);
-      }
-    }
-
-    if (brandLink) {
-      brandLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        if (searchInput && searchQuery) {
-          searchInput.value = "";
-          searchQuery = "";
-          if (searchClearBtn) searchClearBtn.classList.remove("visible");
-        }
-        selectCategory("All");
-      });
+    if (settings.announcement && settings.announcement.enabled && settings.announcement.message) {
+      announcementBanner.textContent = settings.announcement.message;
+      announcementBanner.className = `announcement-banner visible ${settings.announcement.type || "info"}`;
+    } else {
+      announcementBanner.className = "announcement-banner";
+      announcementBanner.textContent = "";
     }
   }
 
-  const desktopSearchContainer = document.getElementById("desktopSearchContainer");
-  const mobileSearchDrawer = document.getElementById("mobileSearchDrawer");
-  const searchBoxWrapper = document.getElementById("searchBoxWrapper");
-
-  // --- 3. Header Controls & Drawers (Mobile Search & Filter Toggle) ---
+  // --- 4. Responsive Header Controls & Search Drawer Placement ---
   function updateSearchPlacement() {
     const isMobile = window.innerWidth <= 640;
     if (!searchBoxWrapper || !desktopSearchContainer || !mobileSearchDrawer) return;
@@ -157,7 +290,7 @@
     updateSearchPlacement();
     window.addEventListener("resize", updateSearchPlacement);
 
-    // Mobile search toggle button (Exact same smooth drawer scheme as filter button)
+    // Mobile search toggle button
     if (mobileSearchToggleBtn && siteHeader) {
       mobileSearchToggleBtn.addEventListener("click", () => {
         const willOpen = !siteHeader.classList.contains("is-search-open");
@@ -171,7 +304,7 @@
       });
     }
 
-    // Filter drawer toggle button (Desktop & Mobile)
+    // Filter drawer toggle button
     if (filterToggleBtn && siteHeader) {
       filterToggleBtn.addEventListener("click", () => {
         const willOpen = !siteHeader.classList.contains("is-filter-open");
@@ -182,15 +315,203 @@
     }
   }
 
-  // --- 4. Render Categories Filter ---
+  // --- 5. Hash Router & Navigation Flow ---
+  function parseHashRoute() {
+    let hash = window.location.hash || "#home";
+    if (hash.startsWith("#")) hash = hash.slice(1);
+    hash = hash.trim();
+    if (!hash || hash === "/") hash = "home";
+    return hash;
+  }
+
+  function handleRouteChange() {
+    const route = parseHashRoute();
+    currentRoute = route;
+
+    // Scroll smoothly to top on route change
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Close any open mobile header drawers
+    if (siteHeader) {
+      siteHeader.classList.remove("is-search-open", "is-filter-open");
+      if (mobileSearchToggleBtn) mobileSearchToggleBtn.classList.remove("active");
+      if (filterToggleBtn) filterToggleBtn.classList.remove("active");
+    }
+
+    // Update body class for conditional header search/filters
+    const isForms = route === "forms";
+    document.body.classList.toggle("is-forms-view", isForms);
+
+    // Active state for admin header button
+    if (adminHeaderBtn) {
+      adminHeaderBtn.classList.toggle("active", route === "admin");
+    }
+
+    // Hide all view sections first
+    const views = [
+      portalHomeView,
+      formsView,
+      guidelinesView,
+      accountingRolesView,
+      roleVideosView,
+      announcementsView,
+      reportsView,
+      adminView
+    ];
+    views.forEach(v => { if (v) v.style.display = "none"; });
+
+    // Update Breadcrumbs & Navigation Bar
+    updateBreadcrumbs(route);
+
+    // Route Dispatcher
+    if (route === "home") {
+      if (portalHomeView) portalHomeView.style.display = "block";
+      renderPortalHome();
+    } else if (route === "forms") {
+      if (formsView) formsView.style.display = "block";
+      renderCategories();
+      renderCards();
+    } else if (route === "guidelines") {
+      if (guidelinesView) guidelinesView.style.display = "block";
+      renderGuidelines();
+    } else if (route === "guidelines/accounting") {
+      if (accountingRolesView) accountingRolesView.style.display = "block";
+      renderAccountingRoles();
+    } else if (route.startsWith("guidelines/accounting/")) {
+      const roleId = route.replace("guidelines/accounting/", "");
+      activeRole = roleId;
+      if (roleVideosView) roleVideosView.style.display = "block";
+      renderRoleVideos();
+    } else if (route === "announcements") {
+      if (announcementsView) announcementsView.style.display = "block";
+    } else if (route === "reports") {
+      if (reportsView) reportsView.style.display = "block";
+    } else if (route === "admin") {
+      if (adminView) adminView.style.display = "block";
+      renderAdminView();
+    } else {
+      // Default fallback
+      if (portalHomeView) portalHomeView.style.display = "block";
+      renderPortalHome();
+    }
+  }
+
+  function updateBreadcrumbs(route) {
+    if (!portalNavContainer || !portalBackBtn || !portalBreadcrumbs) return;
+
+    if (route === "home") {
+      portalNavContainer.style.display = "none";
+      return;
+    }
+
+    portalNavContainer.style.display = "flex";
+
+    // Configure Back button destination & text
+    if (route === "forms" || route === "guidelines" || route === "announcements" || route === "reports" || route === "admin") {
+      portalBackBtn.href = "#home";
+      portalBackText.textContent = "Back to Portal";
+    } else if (route === "guidelines/accounting") {
+      portalBackBtn.href = "#guidelines";
+      portalBackText.textContent = "Back to Guidelines";
+    } else if (route.startsWith("guidelines/accounting/")) {
+      portalBackBtn.href = "#guidelines/accounting";
+      portalBackText.textContent = "Back to Accounting Roles";
+    }
+
+    // Build breadcrumbs trail
+    const crumbs = [{ label: "Home", url: "#home" }];
+
+    if (route === "forms") {
+      crumbs.push({ label: "Forms Directory", active: true });
+    } else if (route === "guidelines") {
+      crumbs.push({ label: "Guidelines", active: true });
+    } else if (route === "guidelines/accounting") {
+      crumbs.push({ label: "Guidelines", url: "#guidelines" });
+      crumbs.push({ label: "Accounting", active: true });
+    } else if (route.startsWith("guidelines/accounting/")) {
+      const roleId = route.replace("guidelines/accounting/", "");
+      const roleObj = (accountingConfig.roles || []).find(r => r.id === roleId);
+      const roleName = roleObj ? roleObj.name : "Role Videos";
+      crumbs.push({ label: "Guidelines", url: "#guidelines" });
+      crumbs.push({ label: "Accounting", url: "#guidelines/accounting" });
+      crumbs.push({ label: roleName, active: true });
+    } else if (route === "announcements") {
+      crumbs.push({ label: "Announcements", active: true });
+    } else if (route === "reports") {
+      crumbs.push({ label: "Reports", active: true });
+    } else if (route === "admin") {
+      crumbs.push({ label: "Admin Settings", active: true });
+    }
+
+    portalBreadcrumbs.innerHTML = crumbs.map((crumb, idx) => {
+      const isLast = idx === crumbs.length - 1;
+      const separatorHtml = !isLast ? `<span class="breadcrumb-separator" aria-hidden="true">/</span>` : "";
+      if (crumb.active || isLast) {
+        return `<span class="breadcrumb-item"><span class="breadcrumb-current">${escapeHtml(crumb.label)}</span></span>`;
+      }
+      return `
+        <span class="breadcrumb-item">
+          <a href="${crumb.url}" class="breadcrumb-link">${escapeHtml(crumb.label)}</a>
+          ${separatorHtml}
+        </span>
+      `;
+    }).join("");
+  }
+
+  // --- 6. VIEW 1: Render Portal Homepage ---
+  function renderPortalHome() {
+    if (!portalGrid) return;
+    portalGrid.innerHTML = "";
+
+    const formsCount = (formsConfig.forms || []).length;
+    const fragment = document.createDocumentFragment();
+
+    PORTAL_MODULES.forEach(module => {
+      const card = document.createElement("a");
+      card.href = module.url;
+      card.className = `portal-card ${module.cardClass || ""}`;
+      card.setAttribute("aria-label", `${module.title} - ${module.description}`);
+
+      const iconSvg = ICONS[module.icon] || ICONS.book;
+      let badgeText = module.badge;
+      if (module.id === "forms" && formsCount > 0) {
+        badgeText = `${formsCount} Forms`;
+      }
+
+      card.innerHTML = `
+        <div class="portal-card-top">
+          <div class="portal-card-icon" aria-hidden="true">
+            ${iconSvg}
+          </div>
+          <span class="special-badge ${module.badgeType || "active"}">${escapeHtml(badgeText)}</span>
+        </div>
+
+        <div class="portal-card-body">
+          <h3 class="portal-card-title">${escapeHtml(module.title)}</h3>
+          <p class="portal-card-desc">${escapeHtml(module.description)}</p>
+        </div>
+
+        <div class="portal-card-footer">
+          <span class="portal-card-action-text">${escapeHtml(module.actionText || "Open Module")}</span>
+          <span class="portal-card-arrow" aria-hidden="true">
+            ${ICONS.arrowRight}
+          </span>
+        </div>
+      `;
+
+      fragment.appendChild(card);
+    });
+
+    portalGrid.appendChild(fragment);
+  }
+
+  // --- 7. VIEW 2: Render Forms Directory ---
   function renderCategories() {
     if (!categoriesFilterBar) return;
     categoriesFilterBar.innerHTML = "";
 
-    const allForms = config.forms || [];
-    
-    // Build list: "All" + configured categories (plus any unique category from data)
-    const categorySet = new Set(config.categories || []);
+    const allForms = formsConfig.forms || [];
+    const categorySet = new Set(formsConfig.categories || []);
     allForms.forEach(form => {
       if (form.category) categorySet.add(form.category);
     });
@@ -198,7 +519,6 @@
     const categoryList = ["All", ...Array.from(categorySet)];
 
     categoryList.forEach(catName => {
-      // Calculate count
       const count = catName === "All"
         ? allForms.length
         : allForms.filter(f => f.category === catName).length;
@@ -225,7 +545,6 @@
   function selectCategory(categoryName) {
     activeCategory = categoryName;
 
-    // Update active class on chips
     const chips = categoriesFilterBar.querySelectorAll(".category-chip");
     chips.forEach(chip => {
       if (chip.getAttribute("data-category") === categoryName) {
@@ -236,12 +555,10 @@
       }
     });
 
-    // Update status indicator
     if (activeCategoryLabel) {
       activeCategoryLabel.textContent = categoryName === "All" ? "All Categories" : categoryName;
     }
 
-    // Update Filter Active Dot on filter button
     const isFiltered = categoryName !== "All";
     if (filterActiveDot) {
       filterActiveDot.classList.toggle("visible", isFiltered);
@@ -253,18 +570,15 @@
     renderCards();
   }
 
-  // --- 5. Render Form Cards (Grid by default, responsive) ---
   function renderCards() {
     if (!formsGrid) return;
-    const allForms = config.forms || [];
+    const allForms = formsConfig.forms || [];
 
-    // Filter by Category
     let filtered = allForms;
     if (activeCategory !== "All") {
       filtered = filtered.filter(f => f.category === activeCategory);
     }
 
-    // Filter by Search Query
     const query = searchQuery.trim().toLowerCase();
     if (query) {
       filtered = filtered.filter(form => {
@@ -276,7 +590,6 @@
       });
     }
 
-    // Update Counter Status
     if (statusCountEl) {
       const totalCount = allForms.length;
       if (filtered.length === totalCount) {
@@ -286,7 +599,6 @@
       }
     }
 
-    // Check Empty State
     if (filtered.length === 0) {
       formsGrid.innerHTML = "";
       formsGrid.style.display = "none";
@@ -298,14 +610,13 @@
     formsGrid.style.display = "grid";
     formsGrid.innerHTML = "";
 
-    // Generate Cards
     const fragment = document.createDocumentFragment();
 
     filtered.forEach(form => {
       const isComingSoon = form.comingSoon || form.url === "(coming soon)" || !form.url || form.url === "#";
       const card = document.createElement(isComingSoon ? "div" : "a");
       card.className = `form-card ${isComingSoon ? "is-coming-soon" : ""}`;
-      
+
       if (!isComingSoon) {
         card.href = form.url;
         card.target = "_blank";
@@ -317,7 +628,7 @@
       }
 
       const iconSvg = ICONS[form.icon] || ICONS.form;
-      
+
       let badgeText = form.badge || (isComingSoon ? "Coming Soon" : "");
       let badgeHtml = "";
       if (badgeText) {
@@ -353,7 +664,384 @@
     formsGrid.appendChild(fragment);
   }
 
-  // --- 6. Search Controls ---
+  // --- 8. VIEW 3: Render Guidelines Directory ---
+  function renderGuidelines() {
+    if (!guidelinesGrid) return;
+    guidelinesGrid.innerHTML = "";
+
+    const guidelines = guidelinesConfig.guidelines || [];
+    const fragment = document.createDocumentFragment();
+
+    guidelines.forEach(item => {
+      const isComingSoon = item.comingSoon || item.url === "#" || !item.url;
+      const card = document.createElement(isComingSoon ? "div" : "a");
+      card.className = `form-card ${isComingSoon ? "is-coming-soon" : ""}`;
+
+      if (!isComingSoon) {
+        card.href = item.url;
+        if (!item.isInternalRoute) {
+          card.target = "_blank";
+          card.rel = "noopener noreferrer";
+        }
+        card.setAttribute("aria-label", `${item.title} - ${item.description}`);
+      } else {
+        card.setAttribute("aria-label", `${item.title} (Coming soon)`);
+        card.setAttribute("role", "article");
+      }
+
+      const iconSvg = ICONS[item.icon] || ICONS.book;
+      let badgeText = item.badge || (isComingSoon ? "Coming Soon" : "Active");
+      let badgeHtml = "";
+      if (badgeText) {
+        const badgeClass = badgeText.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        badgeHtml = `<span class="special-badge ${badgeClass}">${escapeHtml(badgeText)}</span>`;
+      }
+
+      card.innerHTML = `
+        <div class="card-top-row">
+          <div class="card-icon-box" aria-hidden="true">
+            ${iconSvg}
+          </div>
+          <div class="card-badges">
+            <span class="category-tag">${escapeHtml(item.category || "Guidelines")}</span>
+            ${badgeHtml}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h3 class="card-title">${escapeHtml(item.title)}</h3>
+          <p class="card-description">${escapeHtml(item.description || "")}</p>
+        </div>
+
+        <div class="card-cta">
+          <span class="cta-action-text">${isComingSoon ? "Coming Soon" : "View Roles & Tutorials"}</span>
+          ${isComingSoon ? ICONS.clock : ICONS.arrowRight}
+        </div>
+      `;
+
+      fragment.appendChild(card);
+    });
+
+    guidelinesGrid.appendChild(fragment);
+  }
+
+  // --- 9. VIEW 4: Render Accounting Roles ---
+  function renderAccountingRoles() {
+    if (!accountingRolesGrid) return;
+    accountingRolesGrid.innerHTML = "";
+
+    const settings = getAdminSettings();
+    const accountType = settings.accountType || "bank"; // "bank" or "cashbox"
+
+    // Update Mode Banner
+    const modeBadge = document.getElementById("accountingModeBadge");
+    const modeText = document.getElementById("accountingModeText");
+    const modeDesc = document.getElementById("accountingModeDesc");
+    const modeIcon = document.getElementById("accountingModeIcon");
+
+    if (modeText) {
+      modeText.textContent = `Mode: ${accountType === "bank" ? "Bank Account" : "Cashbox"}`;
+    }
+    if (modeIcon) {
+      modeIcon.innerHTML = accountType === "bank" ? ICONS.bank : ICONS.box;
+    }
+    if (modeDesc) {
+      modeDesc.textContent = accountType === "bank"
+        ? "Congregation operates with an official bank account. Video guides cover bank accounting, branch transfers, and S-26."
+        : "Congregation operates with a cash box and petty cash system. Video guides cover cash agreements, advances, and reconciliations.";
+    }
+
+    // Filter available roles according to accountType
+    const allRoles = accountingConfig.roles || [];
+    const applicableRoles = allRoles.filter(role => {
+      if (role.applicableAccountType === "both") return true;
+      return role.applicableAccountType === accountType;
+    });
+
+    const fragment = document.createDocumentFragment();
+
+    applicableRoles.forEach(role => {
+      // Calculate video count for this role and account type from role2video
+      const roleVideos = (accountingConfig.role2video || []).filter(
+        item => item.accountType === accountType && item.roleId === role.id
+      );
+      const videoCount = roleVideos.length;
+
+      const card = document.createElement("a");
+      card.href = `#guidelines/accounting/${role.id}`;
+      card.className = "form-card";
+      card.setAttribute("aria-label", `${role.name} (${videoCount} tutorial videos)`);
+
+      const iconSvg = ICONS[role.icon] || ICONS.user;
+
+      card.innerHTML = `
+        <div class="card-top-row">
+          <div class="card-icon-box" aria-hidden="true">
+            ${iconSvg}
+          </div>
+          <div class="card-badges">
+            <span class="category-tag">${escapeHtml(role.category || "Role")}</span>
+            <span class="special-badge active">${videoCount} Video Guides</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h3 class="card-title">${escapeHtml(role.name)}</h3>
+          <p class="card-description">${escapeHtml(role.description || "")}</p>
+        </div>
+
+        <div class="card-cta">
+          <span class="cta-action-text">View Guide Videos</span>
+          ${ICONS.arrowRight}
+        </div>
+      `;
+
+      fragment.appendChild(card);
+    });
+
+    accountingRolesGrid.appendChild(fragment);
+  }
+
+  // --- 10. VIEW 5: Render Role Videos List ---
+  function renderRoleVideos() {
+    if (!roleVideosGrid || !activeRole) return;
+
+    const settings = getAdminSettings();
+    const accountType = settings.accountType || "bank";
+
+    // Find Role Object
+    const roleObj = (accountingConfig.roles || []).find(r => r.id === activeRole) || {
+      id: activeRole,
+      name: "Role Tutorials",
+      description: "Official guide videos assigned to this congregation responsibility.",
+      category: "Accounting",
+      icon: "user"
+    };
+
+    // Update Header Card
+    const roleDetailsIcon = document.getElementById("roleDetailsIcon");
+    const roleDetailsCategory = document.getElementById("roleDetailsCategory");
+    const roleDetailsMode = document.getElementById("roleDetailsMode");
+    const roleDetailsTitle = document.getElementById("roleDetailsTitle");
+    const roleDetailsDesc = document.getElementById("roleDetailsDesc");
+
+    if (roleDetailsIcon) roleDetailsIcon.innerHTML = ICONS[roleObj.icon] || ICONS.user;
+    if (roleDetailsCategory) roleDetailsCategory.textContent = roleObj.category || "Role";
+    if (roleDetailsMode) roleDetailsMode.textContent = accountType === "bank" ? "Bank Mode" : "Cashbox Mode";
+    if (roleDetailsTitle) roleDetailsTitle.textContent = roleObj.name;
+    if (roleDetailsDesc) roleDetailsDesc.textContent = roleObj.description || "";
+
+    // Retrieve Videos assigned to this role and account type from role2video
+    const mappings = (accountingConfig.role2video || []).filter(
+      m => m.accountType === accountType && m.roleId === activeRole
+    );
+
+    // Map video codes to full video objects in accountingConfig.videos
+    const videoMap = new Map((accountingConfig.videos || []).map(v => [v.code, v]));
+    const assignedVideos = mappings
+      .map(m => videoMap.get(m.videoCode))
+      .filter(Boolean);
+
+    // Filter by Video Search Query
+    const query = videoSearchQuery.trim().toLowerCase();
+    let filteredVideos = assignedVideos;
+    if (query) {
+      filteredVideos = assignedVideos.filter(video => {
+        const titleMatch = (video.title || "").toLowerCase().includes(query);
+        const codeMatch = (video.code || "").toLowerCase().includes(query);
+        const typeMatch = (video.type || "").toLowerCase().includes(query);
+        return titleMatch || codeMatch || typeMatch;
+      });
+    }
+
+    // Update Video Count Badge
+    if (videoCountBadge) {
+      const total = assignedVideos.length;
+      if (filteredVideos.length === total) {
+        videoCountBadge.textContent = `${total} Videos Available`;
+      } else {
+        videoCountBadge.textContent = `${filteredVideos.length} of ${total} Videos`;
+      }
+    }
+
+    // Check Empty State
+    if (filteredVideos.length === 0) {
+      roleVideosGrid.innerHTML = "";
+      roleVideosGrid.style.display = "none";
+      if (roleVideosEmptyState) roleVideosEmptyState.style.display = "block";
+      return;
+    }
+
+    if (roleVideosEmptyState) roleVideosEmptyState.style.display = "none";
+    roleVideosGrid.style.display = "grid";
+    roleVideosGrid.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+
+    filteredVideos.forEach((video) => {
+      const card = document.createElement("div");
+      card.className = "video-card";
+
+      // Format code (e.g. tca_01 -> TCA-01)
+      const formattedCode = (video.code || "").toUpperCase().replace("_", "-");
+      const typeLabel = video.type === "both" ? "Both Modes" : (video.type === "bank" ? "Bank Account" : "Cashbox");
+
+      card.innerHTML = `
+        <div class="video-card-top">
+          <span class="video-code-pill">${escapeHtml(formattedCode)}</span>
+          <span class="video-type-pill type-${video.type || "both"}">${escapeHtml(typeLabel)}</span>
+        </div>
+
+        <div class="video-card-body">
+          <h3 class="video-card-title">${escapeHtml(video.title)}</h3>
+        </div>
+
+        <div class="video-card-cta">
+          <a href="${escapeHtml(video.link)}" target="_blank" rel="noopener noreferrer" class="btn-watch-video" aria-label="Watch video tutorial: ${escapeHtml(video.title)}">
+            ${ICONS.video}
+            <span>Watch Video</span>
+            ${ICONS.externalLink}
+          </a>
+        </div>
+      `;
+
+      fragment.appendChild(card);
+    });
+
+    roleVideosGrid.appendChild(fragment);
+  }
+
+  function initVideoSearch() {
+    if (!videoSearchInput) return;
+
+    videoSearchInput.addEventListener("input", (e) => {
+      videoSearchQuery = e.target.value;
+      if (videoSearchClearBtn) {
+        videoSearchClearBtn.classList.toggle("visible", videoSearchQuery.length > 0);
+      }
+      renderRoleVideos();
+    });
+
+    if (videoSearchClearBtn) {
+      videoSearchClearBtn.addEventListener("click", () => {
+        videoSearchInput.value = "";
+        videoSearchQuery = "";
+        videoSearchClearBtn.classList.remove("visible");
+        videoSearchInput.focus();
+        renderRoleVideos();
+      });
+    }
+
+    if (resetVideoSearchBtn) {
+      resetVideoSearchBtn.addEventListener("click", () => {
+        videoSearchInput.value = "";
+        videoSearchQuery = "";
+        if (videoSearchClearBtn) videoSearchClearBtn.classList.remove("visible");
+        renderRoleVideos();
+      });
+    }
+  }
+
+  // --- 11. VIEW 8: Render & Handle Admin Control Panel ---
+  function renderAdminView() {
+    const settings = getAdminSettings();
+    const currentAccountType = settings.accountType || "bank";
+
+    // Update Choice Cards active state
+    if (adminChoiceBank) {
+      const isBank = currentAccountType === "bank";
+      adminChoiceBank.classList.toggle("is-selected", isBank);
+      adminChoiceBank.setAttribute("aria-checked", isBank ? "true" : "false");
+    }
+    if (adminChoiceCashbox) {
+      const isCashbox = currentAccountType === "cashbox";
+      adminChoiceCashbox.classList.toggle("is-selected", isCashbox);
+      adminChoiceCashbox.setAttribute("aria-checked", isCashbox ? "true" : "false");
+    }
+
+    // Update Summary Box
+    if (adminAccountSummary) {
+      if (currentAccountType === "bank") {
+        adminAccountSummary.innerHTML = `
+          <strong>Currently Active: Bank Account Mode</strong><br>
+          Applicable Roles: 5 roles (Accounts Servant [21 videos], Secretary [21 videos], COBE [12 videos], BOE [8 videos], Auditor [10 videos]).<br>
+          Features: Includes S-26 bank record transactions, bank payment processing, and bank statement reconciliations.
+        `;
+      } else {
+        adminAccountSummary.innerHTML = `
+          <strong>Currently Active: Cashbox Mode</strong><br>
+          Applicable Roles: 6 roles (Includes Cashbox Holder & Backup [15 videos], Accounts Servant [24 videos], Secretary [24 videos], COBE [16 videos], BOE [9 videos], Auditor [10 videos]).<br>
+          Features: Includes cash box agreements, petty cash advances, cash box reconciliations, and mobile money branch transfers.
+        `;
+      }
+    }
+
+    // Update Announcement Banner form fields
+    if (adminBannerToggle && settings.announcement) {
+      adminBannerToggle.checked = Boolean(settings.announcement.enabled);
+    }
+    if (adminBannerMessage && settings.announcement) {
+      adminBannerMessage.value = settings.announcement.message || "";
+    }
+    if (adminBannerType && settings.announcement) {
+      adminBannerType.value = settings.announcement.type || "info";
+    }
+  }
+
+  function initAdminControls() {
+    if (adminChoiceBank) {
+      adminChoiceBank.addEventListener("click", () => {
+        const settings = getAdminSettings();
+        if (settings.accountType !== "bank") {
+          settings.accountType = "bank";
+          saveAdminSettings(settings);
+        }
+      });
+      adminChoiceBank.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          adminChoiceBank.click();
+        }
+      });
+    }
+
+    if (adminChoiceCashbox) {
+      adminChoiceCashbox.addEventListener("click", () => {
+        const settings = getAdminSettings();
+        if (settings.accountType !== "cashbox") {
+          settings.accountType = "cashbox";
+          saveAdminSettings(settings);
+        }
+      });
+      adminChoiceCashbox.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          adminChoiceCashbox.click();
+        }
+      });
+    }
+
+    if (adminSaveBtn) {
+      adminSaveBtn.addEventListener("click", () => {
+        const settings = getAdminSettings();
+        if (adminBannerToggle) settings.announcement.enabled = adminBannerToggle.checked;
+        if (adminBannerMessage) settings.announcement.message = adminBannerMessage.value.trim();
+        if (adminBannerType) settings.announcement.type = adminBannerType.value;
+        saveAdminSettings(settings);
+      });
+    }
+
+    if (adminResetBtn) {
+      adminResetBtn.addEventListener("click", () => {
+        if (confirm("Reset all settings to default (Bank Account mode)?")) {
+          saveAdminSettings({ ...DEFAULT_ADMIN_SETTINGS });
+          showToast("Settings reset to defaults.");
+        }
+      });
+    }
+  }
+
+  // --- 12. Search Controls (Forms Directory) ---
   function initSearch() {
     if (!searchInput) return;
 
@@ -391,10 +1079,15 @@
       });
     }
 
-    // Keyboard shortcut: Pressing "/" or "Ctrl+K" focuses search
+    // Keyboard shortcut: Pressing "/" or "Ctrl+K" focuses search on Forms
     window.addEventListener("keydown", (e) => {
-      if ((e.key === "/" && document.activeElement !== searchInput) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
+      if ((e.key === "/" && document.activeElement !== searchInput && document.activeElement !== videoSearchInput) ||
+          ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
         e.preventDefault();
+        // If not on forms, navigate to forms
+        if (currentRoute !== "forms") {
+          window.location.hash = "#forms";
+        }
         if (siteHeader && window.innerWidth <= 640) {
           siteHeader.classList.add("is-search-open");
           if (mobileSearchToggleBtn) {
@@ -402,15 +1095,20 @@
             mobileSearchToggleBtn.setAttribute("aria-expanded", "true");
           }
         }
-        searchInput.focus();
-        searchInput.select();
-      } else if (e.key === "Escape" && document.activeElement === searchInput) {
-        searchInput.blur();
+        setTimeout(() => {
+          if (searchInput) {
+            searchInput.focus();
+            searchInput.select();
+          }
+        }, 80);
+      } else if (e.key === "Escape") {
+        if (document.activeElement === searchInput) searchInput.blur();
+        if (document.activeElement === videoSearchInput) videoSearchInput.blur();
       }
     });
   }
 
-  // --- 7. Floating Back to Top Button ---
+  // --- 13. Floating Back to Top Button ---
   function initBackToTop() {
     if (!floatingBackToTopBtn) return;
 
@@ -427,7 +1125,26 @@
     });
   }
 
-  // --- 8. Helper Utilities ---
+  // --- 14. Branding Initialization ---
+  function initBranding() {
+    if (siteTitleEl && formsConfig.siteTitle) {
+      siteTitleEl.textContent = formsConfig.siteTitle;
+      document.title = formsConfig.siteTitle;
+    }
+    if (currentYearEl) {
+      currentYearEl.textContent = new Date().getFullYear();
+    }
+    updateAnnouncementBanner();
+
+    if (brandLink) {
+      brandLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.hash = "#home";
+      });
+    }
+  }
+
+  // --- 15. Helper Utilities ---
   function escapeHtml(text) {
     if (!text) return "";
     return String(text)
@@ -438,15 +1155,21 @@
       .replace(/'/g, "&#039;");
   }
 
-  // --- 9. Application Entrypoint ---
+  // --- 16. Application Entrypoint ---
   function init() {
     initTheme();
     initBranding();
     initHeaderControls();
-    renderCategories();
     initSearch();
-    renderCards();
+    initVideoSearch();
+    initAdminControls();
     initBackToTop();
+
+    // Listen for Hash Changes
+    window.addEventListener("hashchange", handleRouteChange);
+
+    // Initial Route Handling
+    handleRouteChange();
   }
 
   // Run when DOM is ready

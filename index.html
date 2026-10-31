@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SMC Hub - Quick and easy access to congregation forms and links." />
+  <meta name="description" content="SMC Hub - Congregation portal for announcements, guidelines, forms, and reports." />
   <meta name="theme-color" content="#2563eb" />
   <title>SMC Hub</title>
 
@@ -25,12 +25,17 @@
     <div class="container header-container">
       <!-- Main Bar: Title, Search (Desktop), and Actions -->
       <div class="header-main-bar">
-        <!-- Site Title (Strictly 'SMC Hub', logo removed, compact) -->
-        <a href="#" class="brand-link" id="brandLink">
+        <!-- Site Title & Brand Link -->
+        <a href="#home" class="brand-link" id="brandLink" aria-label="SMC Hub Homepage">
+          <span class="brand-icon-box" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+            </svg>
+          </span>
           <h1 id="siteTitle" class="site-title">SMC Hub</h1>
         </a>
 
-        <!-- Desktop Search Bar Container (In-line on Desktop) -->
+        <!-- Desktop Search Bar Container (Active on Forms view) -->
         <div class="desktop-search-container desktop-only" id="desktopSearchContainer">
           <div class="search-box-wrapper" id="searchBoxWrapper">
             <span class="search-icon-left" aria-hidden="true">
@@ -54,23 +59,31 @@
           </div>
         </div>
 
-        <!-- Header Actions: Search Toggle (Mobile), Filter Toggle, Theme Toggle -->
+        <!-- Header Actions: Search Toggle, Filter Toggle, Admin, Theme Toggle -->
         <div class="header-actions">
-          <!-- Mobile Search Toggle Button (Mobile only) -->
-          <button id="mobileSearchToggleBtn" class="header-icon-btn mobile-only-btn" type="button" aria-label="Toggle search bar" aria-expanded="false" title="Search">
+          <!-- Mobile Search Toggle Button (Mobile only, shown on Forms) -->
+          <button id="mobileSearchToggleBtn" class="header-icon-btn mobile-only-btn forms-action-btn" type="button" aria-label="Toggle search bar" aria-expanded="false" title="Search">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
           </button>
 
-          <!-- Filter Toggle Button (Desktop & Mobile) -->
-          <button id="filterToggleBtn" class="header-icon-btn filter-toggle-btn" type="button" aria-label="Toggle category filters" aria-expanded="false" title="Filter forms">
+          <!-- Filter Toggle Button (Desktop & Mobile, shown on Forms) -->
+          <button id="filterToggleBtn" class="header-icon-btn filter-toggle-btn forms-action-btn" type="button" aria-label="Toggle category filters" aria-expanded="false" title="Filter forms">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.539.092 1.003.451 1.144.975.25.927.42 1.884.509 2.859a2.25 2.25 0 0 1-.58 1.638l-4.73 5.09a2.25 2.25 0 0 0-.616 1.545v3.424a2.25 2.25 0 0 1-.659 1.59l-2.072 2.072A.75.75 0 0 1 11.75 22.5v-7.69a2.25 2.25 0 0 0-.616-1.545L6.404 8.17a2.25 2.25 0 0 1-.58-1.638 31.848 31.848 0 0 1 .509-2.859 1.688 1.688 0 0 1 1.144-.975A47.16 47.16 0 0 1 12 3Z" />
             </svg>
             <span class="filter-btn-text desktop-only">Filters</span>
             <span id="filterActiveDot" class="filter-active-dot" aria-hidden="true"></span>
           </button>
+
+          <!-- Admin Page Shortcut Button -->
+          <a href="#admin" id="adminHeaderBtn" class="header-icon-btn admin-header-btn" aria-label="Admin Settings" title="Admin Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="1.9" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </a>
 
           <!-- Light / Dark Theme Switcher Button -->
           <button id="themeToggleBtn" class="header-icon-btn theme-toggle-btn" type="button" aria-label="Toggle Light and Dark Mode" title="Toggle theme">
@@ -86,67 +99,386 @@
         </div>
       </div>
 
-      <!-- Expandable Mobile Search Drawer (Exact same smooth scheme as Filter Drawer) -->
-      <div id="mobileSearchDrawer" class="search-drawer" aria-hidden="true">
-        <!-- Search box is positioned here on mobile <= 640px -->
-      </div>
+      <!-- Expandable Mobile Search Drawer -->
+      <div id="mobileSearchDrawer" class="search-drawer" aria-hidden="true"></div>
 
-      <!-- Expandable Filter Drawer (Displays form types below header when filter icon is toggled) -->
+      <!-- Expandable Filter Drawer (Displays form types below header on Forms view) -->
       <div id="filterDrawer" class="filter-drawer" aria-hidden="true">
-        <nav id="categoriesFilterBar" class="categories-filter-bar" aria-label="Filter by category">
-          <!-- Dynamically generated category chips -->
-        </nav>
+        <nav id="categoriesFilterBar" class="categories-filter-bar" aria-label="Filter by category"></nav>
       </div>
     </div>
   </header>
 
-  <!-- Main Content: Forms Directory Grid -->
-  <main class="main-content">
+  <!-- Main Content Container -->
+  <main class="main-content" id="mainContent">
     <div class="container">
-      <!-- Status row (Active Category & Form count only) -->
-      <div class="directory-status-row">
-        <span id="activeCategoryLabel" class="active-filter-indicator">All Categories</span>
-        <span id="statusCount" class="status-count">Showing forms...</span>
-      </div>
 
-      <!-- Forms Grid (Default: 2-column mobile grid, 3-4 column desktop grid) -->
-      <div id="formsGrid" class="forms-grid" role="region" aria-live="polite">
-        <!-- Dynamically generated cards -->
-      </div>
-
-      <!-- Empty State -->
-      <div id="emptyState" class="empty-state" role="status">
-        <div class="empty-state-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      <!-- Breadcrumbs & Navigation Bar (Sub-pages) -->
+      <div id="portalNavContainer" class="portal-nav-bar" style="display: none;">
+        <a href="#home" id="portalBackBtn" class="portal-back-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
-        </div>
-        <h2 class="empty-state-title">No matching forms found</h2>
-        <p class="empty-state-text">We couldn't find any forms matching your search or active filter. Try using different keywords or reset your filters.</p>
-        <button id="resetFiltersBtn" class="reset-filters-btn" type="button">
-          Reset all filters
-        </button>
+          <span id="portalBackText">Back to Home</span>
+        </a>
+        <nav class="portal-breadcrumbs" id="portalBreadcrumbs" aria-label="Breadcrumb"></nav>
       </div>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 1: PORTAL HOMEPAGE (4 Primary Options in Grid)           -->
+      <!-- ============================================================== -->
+      <section id="portalHomeView" class="view-section" aria-labelledby="portalHeroTitle">
+        <!-- Hero Header -->
+        <div class="portal-hero">
+          <div class="portal-hero-badge">
+            <span class="pulse-indicator"></span> Congregation Directory Portal
+          </div>
+          <h2 id="portalHeroTitle" class="portal-hero-title">Welcome to SMC Hub</h2>
+          <p class="portal-hero-subtitle">Quick and easy access to congregation announcements, procedural guidelines, official forms, and reports.</p>
+        </div>
+
+        <!-- 4-Option Grid: Announcements, Guidelines, Forms, Reports -->
+        <div id="portalGrid" class="portal-grid" role="region" aria-label="Portal Navigation Modules">
+          <!-- Dynamically populated by JS: Announcements, Guidelines, Forms, Reports -->
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 2: FORMS DIRECTORY (Current Forms with Search & Filters)   -->
+      <!-- ============================================================== -->
+      <section id="formsView" class="view-section" style="display: none;" aria-label="Congregation Forms Directory">
+        <!-- Status row (Active Category & Form count) -->
+        <div class="directory-status-row">
+          <span id="activeCategoryLabel" class="active-filter-indicator">All Categories</span>
+          <span id="statusCount" class="status-count">Showing forms...</span>
+        </div>
+
+        <!-- Forms Grid -->
+        <div id="formsGrid" class="forms-grid" role="region" aria-live="polite"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" role="status">
+          <div class="empty-state-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </div>
+          <h3 class="empty-state-title">No matching forms found</h3>
+          <p class="empty-state-text">We couldn't find any forms matching your search or active filter. Try using different keywords or reset your filters.</p>
+          <button id="resetFiltersBtn" class="reset-filters-btn" type="button">Reset all filters</button>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 3: GUIDELINES DIRECTORY (Accounting, etc.)                -->
+      <!-- ============================================================== -->
+      <section id="guidelinesView" class="view-section" style="display: none;" aria-label="Guidelines Directory">
+        <div class="section-intro-header">
+          <h2 class="section-heading">Congregation Guidelines</h2>
+          <p class="section-subtext">Access role-based manuals, standard procedures, and step-by-step congregation tutorials.</p>
+        </div>
+
+        <!-- Guidelines Grid (Cards styled in identical format as Forms) -->
+        <div id="guidelinesGrid" class="forms-grid" role="region" aria-label="Guidelines List"></div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 4: ACCOUNTING GUIDELINES - ROLES SELECTION                -->
+      <!-- ============================================================== -->
+      <section id="accountingRolesView" class="view-section" style="display: none;" aria-label="Accounting Roles">
+        <!-- Active Mode Info Banner -->
+        <div class="mode-indicator-bar" id="accountingModeBanner">
+          <div class="mode-bar-left">
+            <div class="mode-badge-pill" id="accountingModeBadge">
+              <span class="mode-icon-holder" id="accountingModeIcon"></span>
+              <span id="accountingModeText">Mode: Bank Account</span>
+            </div>
+            <p class="mode-bar-desc" id="accountingModeDesc">Showing role-based video tutorials for congregation bank account management.</p>
+          </div>
+          <a href="#admin" class="mode-admin-link" title="Change congregation account type in Admin Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+            Change Mode in Admin
+          </a>
+        </div>
+
+        <div class="section-intro-header">
+          <h2 class="section-heading">Congregation Accounting Roles</h2>
+          <p class="section-subtext">Select your assigned responsibility below to view all official step-by-step video tutorials and guidelines.</p>
+        </div>
+
+        <!-- Roles Grid (Formatted identically to Forms) -->
+        <div id="accountingRolesGrid" class="forms-grid" role="region" aria-label="Accounting Roles List"></div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 5: ROLE VIDEOS LIST (Tutorial Videos with Links)          -->
+      <!-- ============================================================== -->
+      <section id="roleVideosView" class="view-section" style="display: none;" aria-label="Tutorial Videos">
+        <!-- Role Header Card -->
+        <div class="role-details-header" id="roleDetailsHeader">
+          <div class="role-header-top">
+            <div class="role-header-icon" id="roleDetailsIcon"></div>
+            <div class="role-header-info">
+              <div class="role-badges-row">
+                <span class="role-type-tag" id="roleDetailsCategory">Accounts Team</span>
+                <span class="role-mode-tag" id="roleDetailsMode">Bank Mode</span>
+              </div>
+              <h2 class="role-title" id="roleDetailsTitle">Role Name</h2>
+            </div>
+          </div>
+          <p class="role-desc" id="roleDetailsDesc"></p>
+
+          <!-- In-Page Video Search Bar -->
+          <div class="video-search-bar-wrapper">
+            <div class="search-box-wrapper video-search-box">
+              <span class="search-icon-left" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+              </span>
+              <input
+                type="search"
+                id="videoSearchInput"
+                class="search-input"
+                placeholder="Search videos in this role... (e.g. S-24, Pondo, Donasyon, Resolusyon)"
+                autocomplete="off"
+                aria-label="Filter tutorial videos"
+              />
+              <button id="videoSearchClearBtn" class="search-clear-btn" type="button" aria-label="Clear video search input">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="video-count-badge" id="videoCountBadge">Showing videos...</div>
+          </div>
+        </div>
+
+        <!-- Videos Grid -->
+        <div id="roleVideosGrid" class="videos-grid" role="region" aria-live="polite"></div>
+
+        <!-- Video Empty State -->
+        <div id="roleVideosEmptyState" class="empty-state" style="display: none;" role="status">
+          <div class="empty-state-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9A2.25 2.25 0 0 0 13.5 5.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z" />
+            </svg>
+          </div>
+          <h3 class="empty-state-title">No matching tutorial videos</h3>
+          <p class="empty-state-text">No guide videos matched your query for this role. Try different search terms or clear your search.</p>
+          <button id="resetVideoSearchBtn" class="reset-filters-btn" type="button">Clear video search</button>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 6: ANNOUNCEMENTS (Coming Soon)                            -->
+      <!-- ============================================================== -->
+      <section id="announcementsView" class="view-section" style="display: none;" aria-label="Announcements">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon-box announcement-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.111-1.528-.459a22.253 22.253 0 0 1-1.335-3.666m2.998-.549a48.36 48.36 0 0 0 9.13-1.636 1.125 1.125 0 0 0 .762-1.07V8.67a1.125 1.125 0 0 0-.762-1.07 48.36 48.36 0 0 0-9.13-1.636m0 9.87V5.959" />
+            </svg>
+          </div>
+          <span class="special-badge coming-soon">Module In Development</span>
+          <h2 class="coming-soon-title">Announcements Hub Coming Soon</h2>
+          <p class="coming-soon-text">The Announcements hub is currently being prepared and will be available soon. You will be able to view congregation reminders, circuit overseer visit schedules, and branch letters here.</p>
+          <div class="coming-soon-actions">
+            <a href="#home" class="btn-primary">Return to Portal Home</a>
+            <a href="#forms" class="btn-secondary">Browse Congregation Forms</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 7: REPORTS (Coming Soon)                                  -->
+      <!-- ============================================================== -->
+      <section id="reportsView" class="view-section" style="display: none;" aria-label="Reports">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon-box reports-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+            </svg>
+          </div>
+          <span class="special-badge coming-soon">Module In Development</span>
+          <h2 class="coming-soon-title">Congregation Reports Coming Soon</h2>
+          <p class="coming-soon-text">The Reports section is being built and will be available soon. Congregation summaries, monthly S-30 financial statements, and activity overviews will be accessible here.</p>
+          <div class="coming-soon-actions">
+            <a href="#home" class="btn-primary">Return to Portal Home</a>
+            <a href="#guidelines" class="btn-secondary">View Guidelines</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- VIEW 8: ADMIN PAGE (Settings that govern website features)     -->
+      <!-- ============================================================== -->
+      <section id="adminView" class="view-section" style="display: none;" aria-label="Admin Settings">
+        <div class="admin-panel">
+          <div class="admin-header">
+            <div class="admin-title-row">
+              <span class="admin-badge">Admin Control Panel</span>
+            </div>
+            <h2 class="admin-title">Congregation & Hub Settings</h2>
+            <p class="admin-subtitle">Configure global congregation settings that dynamically adapt features, role assignments, and video tutorials available on the website.</p>
+          </div>
+
+          <!-- Setting 1: Congregation Accounts Type (Bank vs Cashbox) -->
+          <div class="admin-section-card">
+            <div class="admin-section-header">
+              <div class="admin-section-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="admin-section-title">Congregation Accounts Type</h3>
+                <p class="admin-section-desc">Select whether your congregation handles funds via an official Bank Account or a Cashbox system. This setting controls which roles and video tutorials are displayed in the Accounting Guidelines.</p>
+              </div>
+            </div>
+
+            <!-- Choice Grid: Bank vs Cashbox -->
+            <div class="admin-options-grid" role="radiogroup" aria-label="Select Congregation Account Type">
+              <!-- Option: Bank -->
+              <div class="admin-choice-card" id="adminChoiceBank" data-account-type="bank" role="radio" aria-checked="true" tabindex="0">
+                <div class="choice-card-top">
+                  <div class="choice-icon-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" />
+                    </svg>
+                  </div>
+                  <div class="choice-check-circle" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </div>
+                </div>
+                <h4 class="choice-title">Bank Account Mode</h4>
+                <p class="choice-desc">Congregation maintains an official bank account for funds, electronic disbursements, and branch transfers.</p>
+                <div class="choice-effects">
+                  <span class="effect-tag">5 Active Roles</span>
+                  <span class="effect-tag">Bank Tutorials (S-26 &amp; Bank Reconcile)</span>
+                  <span class="effect-tag">Excludes Cashbox Holder</span>
+                </div>
+              </div>
+
+              <!-- Option: Cashbox -->
+              <div class="admin-choice-card" id="adminChoiceCashbox" data-account-type="cashbox" role="radio" aria-checked="false" tabindex="0">
+                <div class="choice-card-top">
+                  <div class="choice-icon-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                    </svg>
+                  </div>
+                  <div class="choice-check-circle" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </div>
+                </div>
+                <h4 class="choice-title">Cashbox Mode</h4>
+                <p class="choice-desc">Congregation utilizes a physical cash box and petty cash system for handling local congregation funds.</p>
+                <div class="choice-effects">
+                  <span class="effect-tag">6 Active Roles</span>
+                  <span class="effect-tag">Includes Cashbox Holder &amp; Backup</span>
+                  <span class="effect-tag">Cashbox &amp; Mobile Money Tutorials</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Setting Effect Live Summary -->
+            <div class="admin-live-summary" id="adminAccountSummary">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Setting 2: Site Announcement Banner -->
+          <div class="admin-section-card">
+            <div class="admin-section-header">
+              <div class="admin-section-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="admin-section-title">Site-Wide Announcement Banner</h3>
+                <p class="admin-section-desc">Broadcast an alert or reminder across the top of every page of the website.</p>
+              </div>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-toggle-label">
+                <input type="checkbox" id="adminBannerToggle" class="admin-checkbox" />
+                <span class="admin-toggle-custom"></span>
+                <span class="admin-toggle-text">Enable announcement banner</span>
+              </label>
+            </div>
+
+            <div class="admin-form-group" id="adminBannerInputsGroup">
+              <label for="adminBannerMessage" class="admin-field-label">Banner Message</label>
+              <input type="text" id="adminBannerMessage" class="admin-text-input" placeholder="Enter announcement text..." />
+              
+              <div class="admin-field-row">
+                <label for="adminBannerType" class="admin-field-label">Banner Style</label>
+                <select id="adminBannerType" class="admin-select-input">
+                  <option value="info">Information (Blue)</option>
+                  <option value="warning">Important Notice (Amber)</option>
+                  <option value="success">Success / Update (Green)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Actions & System Tools -->
+          <div class="admin-footer-actions">
+            <button id="adminSaveBtn" class="btn-primary" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              Save Settings
+            </button>
+            <a href="#guidelines/accounting" class="btn-secondary">Test Accounting Guidelines</a>
+            <button id="adminResetBtn" class="btn-text-danger" type="button">Reset All Settings</button>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <!-- Floating Back to Top Button (Mobile & Desktop, appears on scroll) -->
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+
+  <!-- Floating Back to Top Button -->
   <button id="floatingBackToTopBtn" class="floating-back-to-top-btn" type="button" aria-label="Back to top" title="Back to top">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
     </svg>
   </button>
 
-  <!-- Minimal Site Footer -->
+  <!-- Site Footer -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
         <p>&copy; <span id="currentYear">2026</span> SMC Hub. Links open securely in a new tab.</p>
+        <div class="footer-links">
+          <a href="#home" class="footer-link">Home</a>
+          <span class="footer-dot">&bull;</span>
+          <a href="#guidelines" class="footer-link">Guidelines</a>
+          <span class="footer-dot">&bull;</span>
+          <a href="#forms" class="footer-link">Forms</a>
+          <span class="footer-dot">&bull;</span>
+          <a href="#admin" class="footer-link">Admin Settings</a>
+        </div>
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
+  <script src="./js/accounting-data.js"></script>
+  <script src="./js/guidelines-data.js"></script>
   <script src="./js/forms-data.js"></script>
   <script src="./js/app.js"></script>
 </body>
