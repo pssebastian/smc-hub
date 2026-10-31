@@ -163,6 +163,7 @@
   const adminToggleBank = document.getElementById("adminToggleBank");
   const adminToggleCashbox = document.getElementById("adminToggleCashbox");
   const adminSiteTitle = document.getElementById("adminSiteTitle");
+  const adminShowTitleToggle = document.getElementById("adminShowTitleToggle");
   const adminSiteTagline = document.getElementById("adminSiteTagline");
   const adminSiteLogoUrl = document.getElementById("adminSiteLogoUrl");
   const adminFaviconUrl = document.getElementById("adminFaviconUrl");
@@ -269,6 +270,7 @@
   const DEFAULT_ADMIN_SETTINGS = {
     siteTitle: "SMC Hub",
     siteTagline: "Congregation Forms & Guidelines Hub",
+    showSiteTitle: true, // boolean: display site title text in header
     siteLogoUrl: "", // direct image URL
     faviconUrl: "", // direct icon/image URL
     contactEmail: "",
@@ -297,12 +299,18 @@
   function applySiteSettings(settings) {
     if (!settings) settings = getAdminSettings();
 
-    // 1. Site Title & Document Title
+    // 1. Site Title & Document Title (with option to hide text in header)
     const siteTitle = settings.siteTitle || (formsConfig && formsConfig.siteTitle) || "SMC Hub";
+    const shouldShowTitle = settings.showSiteTitle !== false;
     if (siteTitleEl) {
       siteTitleEl.textContent = siteTitle;
+      siteTitleEl.style.display = shouldShowTitle ? "" : "none";
     }
     document.title = siteTitle;
+
+    if (brandLink) {
+      brandLink.setAttribute("aria-label", `${siteTitle} Homepage`);
+    }
 
     // 2. Tagline / Meta Description
     if (settings.siteTagline) {
@@ -1360,6 +1368,9 @@
 
     // Text inputs
     if (adminSiteTitle) adminSiteTitle.value = settings.siteTitle || "SMC Hub";
+    if (adminShowTitleToggle) {
+      adminShowTitleToggle.checked = settings.showSiteTitle !== false;
+    }
     if (adminSiteTagline) adminSiteTagline.value = settings.siteTagline || "";
     if (adminSiteLogoUrl) adminSiteLogoUrl.value = settings.siteLogoUrl || "";
     if (adminFaviconUrl) adminFaviconUrl.value = settings.faviconUrl || "";
@@ -1436,7 +1447,14 @@
       });
     }
 
-    // 2. Real-time Image preview listeners
+    // 2. Real-time Image preview & Title toggle listeners
+    if (adminShowTitleToggle) {
+      adminShowTitleToggle.addEventListener("change", () => {
+        if (siteTitleEl) {
+          siteTitleEl.style.display = adminShowTitleToggle.checked ? "" : "none";
+        }
+      });
+    }
     if (adminSiteLogoUrl) {
       adminSiteLogoUrl.addEventListener("input", updateAdminImagePreviews);
     }
@@ -1458,6 +1476,7 @@
       adminSaveBtn.addEventListener("click", () => {
         const settings = getAdminSettings();
         if (adminSiteTitle) settings.siteTitle = adminSiteTitle.value.trim() || "SMC Hub";
+        if (adminShowTitleToggle) settings.showSiteTitle = adminShowTitleToggle.checked;
         if (adminSiteTagline) settings.siteTagline = adminSiteTagline.value.trim();
         if (adminSiteLogoUrl) settings.siteLogoUrl = adminSiteLogoUrl.value.trim();
         if (adminFaviconUrl) settings.faviconUrl = adminFaviconUrl.value.trim();

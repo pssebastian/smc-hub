@@ -372,8 +372,16 @@
               <div class="admin-form-grid">
                 <!-- Site Name / Title -->
                 <div class="admin-field-group">
-                  <label for="adminSiteTitle" class="admin-field-label">Site Name / Title</label>
+                  <div class="admin-label-with-toggle">
+                    <label for="adminSiteTitle" class="admin-field-label">Site Name / Title</label>
+                    <label class="admin-inline-toggle" title="Toggle visibility of title text in header">
+                      <input type="checkbox" id="adminShowTitleToggle" class="admin-checkbox" checked />
+                      <span class="admin-toggle-custom admin-toggle-custom-sm"></span>
+                      <span class="admin-inline-toggle-text">Show in header</span>
+                    </label>
+                  </div>
                   <input type="text" id="adminSiteTitle" class="admin-text-input" placeholder="e.g. SMC Hub" />
+                  <span class="field-hint">Used for browser tab title and metadata. Uncheck "Show in header" if your logo already contains the name.</span>
                 </div>
 
                 <!-- Tagline / Description -->
