@@ -158,15 +158,24 @@
   const videoCountBadge = document.getElementById("videoCountBadge");
 
   // Admin Elements & Passkey Modal
-  const adminChoiceBank = document.getElementById("adminChoiceBank");
-  const adminChoiceCashbox = document.getElementById("adminChoiceCashbox");
-  const adminAccountSummary = document.getElementById("adminAccountSummary");
+  const adminToggleBank = document.getElementById("adminToggleBank");
+  const adminToggleCashbox = document.getElementById("adminToggleCashbox");
+  const adminSiteTitle = document.getElementById("adminSiteTitle");
+  const adminSiteTagline = document.getElementById("adminSiteTagline");
+  const adminContactEmail = document.getElementById("adminContactEmail");
+  const adminContactPhone = document.getElementById("adminContactPhone");
+  const adminMaintenanceToggle = document.getElementById("adminMaintenanceToggle");
+  const adminLogoPicker = document.getElementById("adminLogoPicker");
   const adminBannerToggle = document.getElementById("adminBannerToggle");
   const adminBannerMessage = document.getElementById("adminBannerMessage");
   const adminBannerType = document.getElementById("adminBannerType");
+  const adminBannerInputsGroup = document.getElementById("adminBannerInputsGroup");
   const adminSaveBtn = document.getElementById("adminSaveBtn");
   const adminResetBtn = document.getElementById("adminResetBtn");
   const adminHeaderBtn = document.getElementById("adminHeaderBtn");
+  const maintenanceBanner = document.getElementById("maintenanceBanner");
+  const brandIconBox = document.getElementById("brandIconBox");
+  const footerSupportInfo = document.getElementById("footerSupportInfo");
   const accountingChangeModeBtn = document.getElementById("accountingChangeModeBtn");
 
   const passkeyModal = document.getElementById("passkeyModal");
@@ -175,8 +184,43 @@
   const passkeyError = document.getElementById("passkeyError");
   const passkeyModalCloseBtn = document.getElementById("passkeyModalCloseBtn");
 
+  // Logo SVG Icon Presets
+  const LOGO_ICONS = {
+    hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`,
+    building: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" /></svg>`,
+    book: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>`,
+    document: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>`,
+    users: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`
+  };
+
+  // Favicon dynamic updater
+  function updateFavicon(logoKey) {
+    let link = document.getElementById("siteFavicon");
+    if (!link) {
+      link = document.createElement("link");
+      link.id = "siteFavicon";
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    const svgMap = {
+      hub: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2zm10-10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2z" fill="white"/></svg>`,
+      building: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M12 3 3 9v12h18V9l-9-6zm-4 15H6v-6h2v6zm5 0h-2v-6h2v6zm5 0h-2v-6h2v6z" fill="white"/></svg>`,
+      book: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M12 6.5A7.5 7.5 0 0 0 4.5 4v14.5A7.5 7.5 0 0 1 12 21a7.5 7.5 0 0 1 7.5-2.5V4A7.5 7.5 0 0 0 12 6.5z" fill="white"/></svg>`,
+      document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7 1.5V9h4.5L13 4.5z" fill="white"/></svg>`,
+      users: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><circle cx="9" cy="8" r="3.5" fill="white"/><circle cx="16" cy="10" r="2.5" fill="white"/><path d="M2.5 19.5c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5v1h-13v-1zm12 0c0-2.2 1.5-3.8 3.5-4.2 2 .4 3.5 2 3.5 4.2v1H14.5v-1z" fill="white"/></svg>`
+    };
+    const svgCode = svgMap[logoKey] || svgMap.hub;
+    link.href = `data:image/svg+xml,${encodeURIComponent(svgCode)}`;
+  }
+
   // --- 1. Admin Settings Manager (localStorage) ---
   const DEFAULT_ADMIN_SETTINGS = {
+    siteTitle: "SMC Hub",
+    siteTagline: "Congregation Forms & Guidelines Hub",
+    siteLogo: "hub", // "hub", "building", "book", "document", "users"
+    contactEmail: "",
+    contactPhone: "",
+    maintenanceMode: false,
     accountType: "bank", // "bank" or "cashbox"
     announcement: {
       enabled: false,
@@ -197,12 +241,54 @@
     return { ...DEFAULT_ADMIN_SETTINGS };
   }
 
+  function applySiteSettings(settings) {
+    if (!settings) settings = getAdminSettings();
+
+    // 1. Site Title & Document Title
+    const siteTitle = settings.siteTitle || (formsConfig && formsConfig.siteTitle) || "SMC Hub";
+    if (siteTitleEl) {
+      siteTitleEl.textContent = siteTitle;
+    }
+    document.title = siteTitle;
+
+    // 2. Site Logo & Favicon
+    const logoKey = settings.siteLogo || "hub";
+    if (brandIconBox && LOGO_ICONS[logoKey]) {
+      brandIconBox.innerHTML = LOGO_ICONS[logoKey];
+    }
+    updateFavicon(logoKey);
+
+    // 3. Maintenance Mode Alert Banner
+    if (maintenanceBanner) {
+      maintenanceBanner.style.display = settings.maintenanceMode ? "block" : "none";
+    }
+
+    // 4. Footer Support Contact Information
+    if (footerSupportInfo) {
+      const email = (settings.contactEmail || "").trim();
+      const phone = (settings.contactPhone || "").trim();
+      if (email || phone) {
+        let parts = [];
+        if (email) parts.push(`<a href="mailto:${escapeHtml(email)}" class="footer-contact-link">${escapeHtml(email)}</a>`);
+        if (phone) parts.push(`<a href="tel:${escapeHtml(phone)}" class="footer-contact-link">${escapeHtml(phone)}</a>`);
+        footerSupportInfo.innerHTML = `<span class="footer-support-label">Support:</span> ${parts.join(" &bull; ")}`;
+        footerSupportInfo.style.display = "block";
+      } else {
+        footerSupportInfo.style.display = "none";
+        footerSupportInfo.innerHTML = "";
+      }
+    }
+
+    // 5. Site Announcement Banner
+    updateAnnouncementBanner();
+  }
+
   function saveAdminSettings(newSettings, showFeedback = true) {
     try {
       localStorage.setItem("smc-admin-settings", JSON.stringify(newSettings));
-      updateAnnouncementBanner();
+      applySiteSettings(newSettings);
       if (showFeedback) {
-        showToast(`Settings saved! Account type set to ${newSettings.accountType === "bank" ? "Bank Account" : "Cashbox"}.`);
+        showToast("Settings saved successfully!");
       }
       // Re-render views that depend on settings
       if (currentRoute === "guidelines/accounting") {
@@ -1148,39 +1234,32 @@
   }
 
   // --- 12. VIEW 8: Render & Handle Admin Control Panel ---
+  let selectedAdminLogo = "hub";
+  let selectedAccountType = "bank";
+
   function renderAdminView() {
     const settings = getAdminSettings();
-    const currentAccountType = settings.accountType || "bank";
+    selectedAccountType = settings.accountType || "bank";
+    selectedAdminLogo = settings.siteLogo || "hub";
 
-    if (adminChoiceBank) {
-      const isBank = currentAccountType === "bank";
-      adminChoiceBank.classList.toggle("is-selected", isBank);
-      adminChoiceBank.setAttribute("aria-checked", isBank ? "true" : "false");
-    }
-    if (adminChoiceCashbox) {
-      const isCashbox = currentAccountType === "cashbox";
-      adminChoiceCashbox.classList.toggle("is-selected", isCashbox);
-      adminChoiceCashbox.setAttribute("aria-checked", isCashbox ? "true" : "false");
-    }
+    // Text inputs
+    if (adminSiteTitle) adminSiteTitle.value = settings.siteTitle || "SMC Hub";
+    if (adminSiteTagline) adminSiteTagline.value = settings.siteTagline || "";
+    if (adminContactEmail) adminContactEmail.value = settings.contactEmail || "";
+    if (adminContactPhone) adminContactPhone.value = settings.contactPhone || "";
 
-    if (adminAccountSummary) {
-      if (currentAccountType === "bank") {
-        adminAccountSummary.innerHTML = `
-          <strong>Currently Active: Bank Account Mode</strong><br>
-          Applicable Roles: 5 roles (Accounts Servant [21 videos], Secretary [21 videos], COBE [12 videos], BOE [8 videos], Auditor [10 videos]).<br>
-          Features: Includes S-26 bank record transactions, bank payment processing, and bank statement reconciliations.
-        `;
-      } else {
-        adminAccountSummary.innerHTML = `
-          <strong>Currently Active: Cashbox Mode</strong><br>
-          Applicable Roles: 6 roles (Includes Cashbox Holder & Backup [15 videos], Accounts Servant [24 videos], Secretary [24 videos], COBE [16 videos], BOE [9 videos], Auditor [10 videos]).<br>
-          Features: Includes cash box agreements, petty cash advances, cash box reconciliations, and mobile money branch transfers.
-        `;
-      }
+    // Maintenance Mode checkbox
+    if (adminMaintenanceToggle) {
+      adminMaintenanceToggle.checked = Boolean(settings.maintenanceMode);
     }
 
+    // Announcement Banner
     if (adminBannerToggle && settings.announcement) {
-      adminBannerToggle.checked = Boolean(settings.announcement.enabled);
+      const enabled = Boolean(settings.announcement.enabled);
+      adminBannerToggle.checked = enabled;
+      if (adminBannerInputsGroup) {
+        adminBannerInputsGroup.style.display = enabled ? "block" : "none";
+      }
     }
     if (adminBannerMessage && settings.announcement) {
       adminBannerMessage.value = settings.announcement.message || "";
@@ -1188,56 +1267,122 @@
     if (adminBannerType && settings.announcement) {
       adminBannerType.value = settings.announcement.type || "info";
     }
+
+    // Logo Buttons
+    if (adminLogoPicker) {
+      const buttons = adminLogoPicker.querySelectorAll(".logo-pick-btn");
+      buttons.forEach((btn) => {
+        const isMatch = btn.getAttribute("data-logo") === selectedAdminLogo;
+        btn.classList.toggle("is-active", isMatch);
+        btn.setAttribute("aria-checked", isMatch ? "true" : "false");
+      });
+    }
+
+    // Congregation Account Type simple toggle buttons
+    if (adminToggleBank && adminToggleCashbox) {
+      const isBank = selectedAccountType === "bank";
+      adminToggleBank.classList.toggle("is-active", isBank);
+      adminToggleBank.setAttribute("aria-pressed", isBank ? "true" : "false");
+      adminToggleCashbox.classList.toggle("is-active", !isBank);
+      adminToggleCashbox.setAttribute("aria-pressed", !isBank ? "true" : "false");
+    }
   }
 
   function initAdminControls() {
-    if (adminChoiceBank) {
-      adminChoiceBank.addEventListener("click", () => {
-        const settings = getAdminSettings();
-        if (settings.accountType !== "bank") {
+    // 1. Congregation Account Mode Toggle: Bank
+    if (adminToggleBank) {
+      adminToggleBank.addEventListener("click", () => {
+        if (selectedAccountType !== "bank") {
+          selectedAccountType = "bank";
+          adminToggleBank.classList.add("is-active");
+          adminToggleBank.setAttribute("aria-pressed", "true");
+          if (adminToggleCashbox) {
+            adminToggleCashbox.classList.remove("is-active");
+            adminToggleCashbox.setAttribute("aria-pressed", "false");
+          }
+          const settings = getAdminSettings();
           settings.accountType = "bank";
           saveAdminSettings(settings);
         }
       });
-      adminChoiceBank.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          adminChoiceBank.click();
-        }
-      });
     }
 
-    if (adminChoiceCashbox) {
-      adminChoiceCashbox.addEventListener("click", () => {
-        const settings = getAdminSettings();
-        if (settings.accountType !== "cashbox") {
+    // Congregation Account Mode Toggle: Cashbox
+    if (adminToggleCashbox) {
+      adminToggleCashbox.addEventListener("click", () => {
+        if (selectedAccountType !== "cashbox") {
+          selectedAccountType = "cashbox";
+          adminToggleCashbox.classList.add("is-active");
+          adminToggleCashbox.setAttribute("aria-pressed", "true");
+          if (adminToggleBank) {
+            adminToggleBank.classList.remove("is-active");
+            adminToggleBank.setAttribute("aria-pressed", "false");
+          }
+          const settings = getAdminSettings();
           settings.accountType = "cashbox";
           saveAdminSettings(settings);
         }
       });
-      adminChoiceCashbox.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          adminChoiceCashbox.click();
+    }
+
+    // 2. Logo Picker buttons
+    if (adminLogoPicker) {
+      const buttons = adminLogoPicker.querySelectorAll(".logo-pick-btn");
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          buttons.forEach((b) => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-checked", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-checked", "true");
+          selectedAdminLogo = btn.getAttribute("data-logo") || "hub";
+          // Preview immediately in header
+          if (brandIconBox && LOGO_ICONS[selectedAdminLogo]) {
+            brandIconBox.innerHTML = LOGO_ICONS[selectedAdminLogo];
+          }
+          updateFavicon(selectedAdminLogo);
+        });
+      });
+    }
+
+    // 3. Announcement Banner checkbox toggle
+    if (adminBannerToggle) {
+      adminBannerToggle.addEventListener("change", () => {
+        if (adminBannerInputsGroup) {
+          adminBannerInputsGroup.style.display = adminBannerToggle.checked ? "block" : "none";
         }
       });
     }
 
+    // 4. Save All Settings Button
     if (adminSaveBtn) {
       adminSaveBtn.addEventListener("click", () => {
         const settings = getAdminSettings();
+        if (adminSiteTitle) settings.siteTitle = adminSiteTitle.value.trim() || "SMC Hub";
+        if (adminSiteTagline) settings.siteTagline = adminSiteTagline.value.trim();
+        if (adminContactEmail) settings.contactEmail = adminContactEmail.value.trim();
+        if (adminContactPhone) settings.contactPhone = adminContactPhone.value.trim();
+        if (adminMaintenanceToggle) settings.maintenanceMode = adminMaintenanceToggle.checked;
+
+        settings.siteLogo = selectedAdminLogo || "hub";
+        settings.accountType = selectedAccountType || "bank";
+
+        if (!settings.announcement) settings.announcement = {};
         if (adminBannerToggle) settings.announcement.enabled = adminBannerToggle.checked;
         if (adminBannerMessage) settings.announcement.message = adminBannerMessage.value.trim();
         if (adminBannerType) settings.announcement.type = adminBannerType.value;
+
         saveAdminSettings(settings);
       });
     }
 
+    // 5. Reset Button
     if (adminResetBtn) {
       adminResetBtn.addEventListener("click", () => {
-        if (confirm("Reset all settings to default (Bank Account mode)?")) {
+        if (confirm("Reset all settings to default values?")) {
           saveAdminSettings({ ...DEFAULT_ADMIN_SETTINGS });
-          showToast("Settings reset to defaults.");
+          showToast("All settings reset to defaults.");
         }
       });
     }
@@ -1328,14 +1473,11 @@
 
   // --- 15. Branding Initialization ---
   function initBranding() {
-    if (siteTitleEl && formsConfig.siteTitle) {
-      siteTitleEl.textContent = formsConfig.siteTitle;
-      document.title = formsConfig.siteTitle;
-    }
+    applySiteSettings();
+
     if (currentYearEl) {
       currentYearEl.textContent = new Date().getFullYear();
     }
-    updateAnnouncementBanner();
 
     if (brandLink) {
       brandLink.addEventListener("click", (e) => {
