@@ -8,6 +8,7 @@
  *  - Guidelines Directory (First option: Accounting)
  *  - Accounting Guidelines with Role Selection & Video Guides List
  *  - Admin Settings for Congregation Account Type (Bank vs Cashbox)
+ *  - Simple Admin Passkey Verification ('1234')
  *  - Hash-Based Router with Navigation & Breadcrumbs
  *  - Dark / Light Theme & Responsive Mobile Controls
  * ====================================================================
@@ -27,7 +28,7 @@
     user: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>`,
     users: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`,
     message: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>`,
-    form: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>`,
+    form: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>`,
     truck: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.25V3.75A1.125 1.125 0 0 0 13.125 2.625h-9.75A1.125 1.125 0 0 0 2.25 3.75v10.5c0 .621.504 1.125 1.125 1.125h1.5" /></svg>`,
     bank: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" /></svg>`,
     box: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>`,
@@ -51,19 +52,17 @@
       id: "announcements",
       title: "Announcements",
       description: "Congregation notices, special reminders, weekly schedules, and branch correspondence.",
-      badge: "Coming Soon",
-      badgeType: "coming-soon",
+      comingSoon: true,
       icon: "megaphone",
       url: "#announcements",
       cardClass: "portal-card-announcements",
-      actionText: "Coming Soon"
+      actionText: "View Announcements"
     },
     {
       id: "guidelines",
       title: "Guidelines",
       description: "Standard congregation procedures, role instructions, and step-by-step video tutorials.",
-      badge: "Active",
-      badgeType: "popular",
+      comingSoon: false,
       icon: "book",
       url: "#guidelines",
       cardClass: "portal-card-guidelines",
@@ -73,8 +72,7 @@
       id: "forms",
       title: "Forms",
       description: "Official submission forms, meeting attendance logs, territory cards, and service applications.",
-      badge: "Active Directory",
-      badgeType: "active",
+      comingSoon: false,
       icon: "form",
       url: "#forms",
       cardClass: "portal-card-forms",
@@ -84,12 +82,11 @@
       id: "reports",
       title: "Reports",
       description: "Congregation statistics, service summaries, attendance graphs, and monthly accounts overviews.",
-      badge: "Coming Soon",
-      badgeType: "coming-soon",
+      comingSoon: true,
       icon: "chart",
       url: "#reports",
       cardClass: "portal-card-reports",
-      actionText: "Coming Soon"
+      actionText: "View Reports"
     }
   ];
 
@@ -104,6 +101,9 @@
   let videoSearchQuery = "";
   let activeRole = null;
   let currentRoute = "home";
+
+  // --- Passkey Security State ---
+  const ADMIN_PASSKEY = "1234";
 
   // --- DOM Elements ---
   const siteHeader = document.getElementById("siteHeader");
@@ -155,7 +155,7 @@
   const resetVideoSearchBtn = document.getElementById("resetVideoSearchBtn");
   const videoCountBadge = document.getElementById("videoCountBadge");
 
-  // Admin View Elements
+  // Admin Elements & Passkey Modal
   const adminChoiceBank = document.getElementById("adminChoiceBank");
   const adminChoiceCashbox = document.getElementById("adminChoiceCashbox");
   const adminAccountSummary = document.getElementById("adminAccountSummary");
@@ -165,6 +165,13 @@
   const adminSaveBtn = document.getElementById("adminSaveBtn");
   const adminResetBtn = document.getElementById("adminResetBtn");
   const adminHeaderBtn = document.getElementById("adminHeaderBtn");
+  const accountingChangeModeBtn = document.getElementById("accountingChangeModeBtn");
+
+  const passkeyModal = document.getElementById("passkeyModal");
+  const passkeyInput = document.getElementById("passkeyInput");
+  const passkeyForm = document.getElementById("passkeyForm");
+  const passkeyError = document.getElementById("passkeyError");
+  const passkeyModalCloseBtn = document.getElementById("passkeyModalCloseBtn");
 
   // --- 1. Admin Settings Manager (localStorage) ---
   const DEFAULT_ADMIN_SETTINGS = {
@@ -216,7 +223,132 @@
     }, 3200);
   }
 
-  // --- 2. Theme Management ---
+  // --- 2. Passkey Authentication Management ---
+  function isPasskeyAuthenticated() {
+    try {
+      return sessionStorage.getItem("smc-admin-auth") === "true";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function openPasskeyModal(targetHash = "#admin") {
+    if (isPasskeyAuthenticated()) {
+      window.location.hash = targetHash;
+      return;
+    }
+    if (!passkeyModal || !passkeyInput) return;
+    passkeyModal.setAttribute("data-target-hash", targetHash);
+    passkeyInput.value = "";
+    if (passkeyError) passkeyError.style.display = "none";
+    passkeyModal.style.display = "flex";
+    setTimeout(() => {
+      passkeyInput.focus();
+    }, 60);
+  }
+
+  function closePasskeyModal() {
+    if (!passkeyModal) return;
+    passkeyModal.style.display = "none";
+    if (passkeyInput) {
+      passkeyInput.value = "";
+      passkeyInput.classList.remove("input-error");
+    }
+    if (passkeyError) passkeyError.style.display = "none";
+
+    // If currently on #admin without authentication, revert to home
+    if (parseHashRoute() === "admin" && !isPasskeyAuthenticated()) {
+      window.location.hash = "#home";
+    }
+  }
+
+  function verifyPasskey() {
+    if (!passkeyInput) return;
+    const val = passkeyInput.value.trim();
+    if (val === ADMIN_PASSKEY) {
+      try {
+        sessionStorage.setItem("smc-admin-auth", "true");
+      } catch (e) {}
+      const target = (passkeyModal && passkeyModal.getAttribute("data-target-hash")) || "#admin";
+      closePasskeyModal();
+      window.location.hash = target;
+      showToast("Admin access granted.");
+    } else {
+      if (passkeyError) {
+        passkeyError.textContent = "Incorrect passkey. Please try again.";
+        passkeyError.style.display = "block";
+      }
+      passkeyInput.classList.add("input-error");
+      setTimeout(() => {
+        if (passkeyInput) passkeyInput.classList.remove("input-error");
+      }, 500);
+      if (passkeyInput.focus) passkeyInput.focus();
+      if (passkeyInput.select) passkeyInput.select();
+    }
+  }
+
+  function initPasskeyModal() {
+    if (adminHeaderBtn) {
+      adminHeaderBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (isPasskeyAuthenticated()) {
+          window.location.hash = "#admin";
+        } else {
+          openPasskeyModal("#admin");
+        }
+      });
+    }
+
+    if (accountingChangeModeBtn) {
+      accountingChangeModeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (isPasskeyAuthenticated()) {
+          window.location.hash = "#admin";
+        } else {
+          openPasskeyModal("#admin");
+        }
+      });
+    }
+
+    if (passkeyInput) {
+      passkeyInput.addEventListener("input", (e) => {
+        if (passkeyError) passkeyError.style.display = "none";
+        if (e.target.value === ADMIN_PASSKEY) {
+          verifyPasskey();
+        }
+      });
+    }
+
+    if (passkeyForm) {
+      passkeyForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        verifyPasskey();
+      });
+    }
+
+    if (passkeyModalCloseBtn) {
+      passkeyModalCloseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closePasskeyModal();
+      });
+    }
+
+    if (passkeyModal) {
+      passkeyModal.addEventListener("click", (e) => {
+        if (e.target === passkeyModal) {
+          closePasskeyModal();
+        }
+      });
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && passkeyModal && passkeyModal.style.display === "flex") {
+        closePasskeyModal();
+      }
+    });
+  }
+
+  // --- 3. Theme Management ---
   function initTheme() {
     const savedTheme = localStorage.getItem("smc-theme");
     const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -249,7 +381,7 @@
     localStorage.setItem("smc-theme", newTheme);
   }
 
-  // --- 3. Announcement Banner ---
+  // --- 4. Announcement Banner ---
   function updateAnnouncementBanner() {
     const settings = getAdminSettings();
     if (!announcementBanner) return;
@@ -263,7 +395,7 @@
     }
   }
 
-  // --- 4. Responsive Header Controls & Search Drawer Placement ---
+  // --- 5. Responsive Header Controls & Search Drawer Placement ---
   function updateSearchPlacement() {
     const isMobile = window.innerWidth <= 640;
     if (!searchBoxWrapper || !desktopSearchContainer || !mobileSearchDrawer) return;
@@ -315,7 +447,7 @@
     }
   }
 
-  // --- 5. Hash Router & Navigation Flow ---
+  // --- 6. Hash Router & Navigation Flow ---
   function parseHashRoute() {
     let hash = window.location.hash || "#home";
     if (hash.startsWith("#")) hash = hash.slice(1);
@@ -336,6 +468,12 @@
       siteHeader.classList.remove("is-search-open", "is-filter-open");
       if (mobileSearchToggleBtn) mobileSearchToggleBtn.classList.remove("active");
       if (filterToggleBtn) filterToggleBtn.classList.remove("active");
+    }
+
+    // Passkey Guard for Admin Route
+    if (route === "admin" && !isPasskeyAuthenticated()) {
+      openPasskeyModal("#admin");
+      return;
     }
 
     // Update body class for conditional header search/filters
@@ -458,12 +596,11 @@
     }).join("");
   }
 
-  // --- 6. VIEW 1: Render Portal Homepage ---
+  // --- 7. VIEW 1: Render Portal Homepage ---
   function renderPortalHome() {
     if (!portalGrid) return;
     portalGrid.innerHTML = "";
 
-    const formsCount = (formsConfig.forms || []).length;
     const fragment = document.createDocumentFragment();
 
     PORTAL_MODULES.forEach(module => {
@@ -473,9 +610,11 @@
       card.setAttribute("aria-label", `${module.title} - ${module.description}`);
 
       const iconSvg = ICONS[module.icon] || ICONS.book;
-      let badgeText = module.badge;
-      if (module.id === "forms" && formsCount > 0) {
-        badgeText = `${formsCount} Forms`;
+
+      // Only display top badge if explicitly marked as coming soon
+      let badgeHtml = "";
+      if (module.comingSoon) {
+        badgeHtml = `<span class="special-badge coming-soon">Coming Soon</span>`;
       }
 
       card.innerHTML = `
@@ -483,7 +622,7 @@
           <div class="portal-card-icon" aria-hidden="true">
             ${iconSvg}
           </div>
-          <span class="special-badge ${module.badgeType || "active"}">${escapeHtml(badgeText)}</span>
+          ${badgeHtml}
         </div>
 
         <div class="portal-card-body">
@@ -505,7 +644,7 @@
     portalGrid.appendChild(fragment);
   }
 
-  // --- 7. VIEW 2: Render Forms Directory ---
+  // --- 8. VIEW 2: Render Forms Directory ---
   function renderCategories() {
     if (!categoriesFilterBar) return;
     categoriesFilterBar.innerHTML = "";
@@ -664,7 +803,7 @@
     formsGrid.appendChild(fragment);
   }
 
-  // --- 8. VIEW 3: Render Guidelines Directory ---
+  // --- 9. VIEW 3: Render Guidelines Directory ---
   function renderGuidelines() {
     if (!guidelinesGrid) return;
     guidelinesGrid.innerHTML = "";
@@ -725,7 +864,7 @@
     guidelinesGrid.appendChild(fragment);
   }
 
-  // --- 9. VIEW 4: Render Accounting Roles ---
+  // --- 10. VIEW 4: Render Accounting Roles ---
   function renderAccountingRoles() {
     if (!accountingRolesGrid) return;
     accountingRolesGrid.innerHTML = "";
@@ -761,7 +900,6 @@
     const fragment = document.createDocumentFragment();
 
     applicableRoles.forEach(role => {
-      // Calculate video count for this role and account type from role2video
       const roleVideos = (accountingConfig.role2video || []).filter(
         item => item.accountType === accountType && item.roleId === role.id
       );
@@ -802,14 +940,13 @@
     accountingRolesGrid.appendChild(fragment);
   }
 
-  // --- 10. VIEW 5: Render Role Videos List ---
+  // --- 11. VIEW 5: Render Role Videos List ---
   function renderRoleVideos() {
     if (!roleVideosGrid || !activeRole) return;
 
     const settings = getAdminSettings();
     const accountType = settings.accountType || "bank";
 
-    // Find Role Object
     const roleObj = (accountingConfig.roles || []).find(r => r.id === activeRole) || {
       id: activeRole,
       name: "Role Tutorials",
@@ -818,7 +955,6 @@
       icon: "user"
     };
 
-    // Update Header Card
     const roleDetailsIcon = document.getElementById("roleDetailsIcon");
     const roleDetailsCategory = document.getElementById("roleDetailsCategory");
     const roleDetailsMode = document.getElementById("roleDetailsMode");
@@ -831,18 +967,15 @@
     if (roleDetailsTitle) roleDetailsTitle.textContent = roleObj.name;
     if (roleDetailsDesc) roleDetailsDesc.textContent = roleObj.description || "";
 
-    // Retrieve Videos assigned to this role and account type from role2video
     const mappings = (accountingConfig.role2video || []).filter(
       m => m.accountType === accountType && m.roleId === activeRole
     );
 
-    // Map video codes to full video objects in accountingConfig.videos
     const videoMap = new Map((accountingConfig.videos || []).map(v => [v.code, v]));
     const assignedVideos = mappings
       .map(m => videoMap.get(m.videoCode))
       .filter(Boolean);
 
-    // Filter by Video Search Query
     const query = videoSearchQuery.trim().toLowerCase();
     let filteredVideos = assignedVideos;
     if (query) {
@@ -854,7 +987,6 @@
       });
     }
 
-    // Update Video Count Badge
     if (videoCountBadge) {
       const total = assignedVideos.length;
       if (filteredVideos.length === total) {
@@ -864,7 +996,6 @@
       }
     }
 
-    // Check Empty State
     if (filteredVideos.length === 0) {
       roleVideosGrid.innerHTML = "";
       roleVideosGrid.style.display = "none";
@@ -882,7 +1013,6 @@
       const card = document.createElement("div");
       card.className = "video-card";
 
-      // Format code (e.g. tca_01 -> TCA-01)
       const formattedCode = (video.code || "").toUpperCase().replace("_", "-");
       const typeLabel = video.type === "both" ? "Both Modes" : (video.type === "bank" ? "Bank Account" : "Cashbox");
 
@@ -942,12 +1072,11 @@
     }
   }
 
-  // --- 11. VIEW 8: Render & Handle Admin Control Panel ---
+  // --- 12. VIEW 8: Render & Handle Admin Control Panel ---
   function renderAdminView() {
     const settings = getAdminSettings();
     const currentAccountType = settings.accountType || "bank";
 
-    // Update Choice Cards active state
     if (adminChoiceBank) {
       const isBank = currentAccountType === "bank";
       adminChoiceBank.classList.toggle("is-selected", isBank);
@@ -959,7 +1088,6 @@
       adminChoiceCashbox.setAttribute("aria-checked", isCashbox ? "true" : "false");
     }
 
-    // Update Summary Box
     if (adminAccountSummary) {
       if (currentAccountType === "bank") {
         adminAccountSummary.innerHTML = `
@@ -976,7 +1104,6 @@
       }
     }
 
-    // Update Announcement Banner form fields
     if (adminBannerToggle && settings.announcement) {
       adminBannerToggle.checked = Boolean(settings.announcement.enabled);
     }
@@ -1041,7 +1168,7 @@
     }
   }
 
-  // --- 12. Search Controls (Forms Directory) ---
+  // --- 13. Search Controls (Forms Directory) ---
   function initSearch() {
     if (!searchInput) return;
 
@@ -1081,10 +1208,9 @@
 
     // Keyboard shortcut: Pressing "/" or "Ctrl+K" focuses search on Forms
     window.addEventListener("keydown", (e) => {
-      if ((e.key === "/" && document.activeElement !== searchInput && document.activeElement !== videoSearchInput) ||
+      if ((e.key === "/" && document.activeElement !== searchInput && document.activeElement !== videoSearchInput && document.activeElement !== passkeyInput) ||
           ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
         e.preventDefault();
-        // If not on forms, navigate to forms
         if (currentRoute !== "forms") {
           window.location.hash = "#forms";
         }
@@ -1108,7 +1234,7 @@
     });
   }
 
-  // --- 13. Floating Back to Top Button ---
+  // --- 14. Floating Back to Top Button ---
   function initBackToTop() {
     if (!floatingBackToTopBtn) return;
 
@@ -1125,7 +1251,7 @@
     });
   }
 
-  // --- 14. Branding Initialization ---
+  // --- 15. Branding Initialization ---
   function initBranding() {
     if (siteTitleEl && formsConfig.siteTitle) {
       siteTitleEl.textContent = formsConfig.siteTitle;
@@ -1144,7 +1270,7 @@
     }
   }
 
-  // --- 15. Helper Utilities ---
+  // --- 16. Helper Utilities ---
   function escapeHtml(text) {
     if (!text) return "";
     return String(text)
@@ -1155,7 +1281,7 @@
       .replace(/'/g, "&#039;");
   }
 
-  // --- 16. Application Entrypoint ---
+  // --- 17. Application Entrypoint ---
   function init() {
     initTheme();
     initBranding();
@@ -1163,6 +1289,7 @@
     initSearch();
     initVideoSearch();
     initAdminControls();
+    initPasskeyModal();
     initBackToTop();
 
     // Listen for Hash Changes
