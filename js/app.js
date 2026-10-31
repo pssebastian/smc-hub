@@ -702,6 +702,12 @@
       return;
     }
 
+    // Ensure authenticated class is on both html and body
+    document.documentElement.classList.add("is-authenticated");
+    if (document.body) {
+      document.body.classList.add("is-authenticated");
+    }
+
     // Ensure elements are unhidden when authenticated
     if (welcomeView && welcomeView.style.display !== "none") {
       welcomeView.style.display = "none";

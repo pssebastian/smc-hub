@@ -2923,18 +2923,11 @@ html:not(.is-authenticated) #mainContent,
 html:not(.is-authenticated) .site-footer,
 html:not(.is-authenticated) #floatingBackToTopBtn,
 html:not(.is-authenticated) #pwaInstallBanner,
-html:not(.is-authenticated) #pwaInstallHeaderBtn,
-body:not(.is-authenticated) #siteHeader,
-body:not(.is-authenticated) #mainContent,
-body:not(.is-authenticated) .site-footer,
-body:not(.is-authenticated) #floatingBackToTopBtn,
-body:not(.is-authenticated) #pwaInstallBanner,
-body:not(.is-authenticated) #pwaInstallHeaderBtn {
+html:not(.is-authenticated) #pwaInstallHeaderBtn {
   display: none !important;
 }
 
-html.is-authenticated #welcomeView,
-body.is-authenticated #welcomeView {
+html.is-authenticated #welcomeView {
   display: none !important;
 }
 
