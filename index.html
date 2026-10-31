@@ -390,14 +390,36 @@
                   <input type="text" id="adminSiteTagline" class="admin-text-input" placeholder="e.g. Congregation Forms &amp; Guidelines Hub" />
                 </div>
 
-                <!-- Site Logo Image URL -->
+                <!-- Site Logo (Light Mode) -->
                 <div class="admin-field-group">
-                  <label for="adminSiteLogoUrl" class="admin-field-label">Site Logo Image Link</label>
-                  <div class="image-url-input-wrap">
-                    <input type="url" id="adminSiteLogoUrl" class="admin-text-input" placeholder="https://example.com/logo.png" />
-                    <div id="adminLogoPreviewBox" class="image-preview-thumb" title="Site logo preview" aria-label="Logo preview"></div>
+                  <div class="admin-label-with-mode">
+                    <label for="adminSiteLogoUrl" class="admin-field-label">Site Logo — Light Mode</label>
+                    <span class="mode-badge-indicator light-badge" title="Displayed when Light theme is active">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14-1.41 1.41"/></svg>
+                      Light
+                    </span>
                   </div>
-                  <span class="field-hint">Paste direct image link (PNG, JPG, SVG). Leave blank for default icon.</span>
+                  <div class="image-url-input-wrap">
+                    <input type="url" id="adminSiteLogoUrl" class="admin-text-input" placeholder="https://example.com/logo-light.png" />
+                    <div id="adminLogoPreviewBox" class="image-preview-thumb preview-light-surface" title="Light mode logo preview" aria-label="Light mode logo preview"></div>
+                  </div>
+                  <span class="field-hint">Direct image link (PNG, JPG, SVG). Used in light mode or as default if dark mode logo is unset.</span>
+                </div>
+
+                <!-- Site Logo (Dark Mode) -->
+                <div class="admin-field-group">
+                  <div class="admin-label-with-mode">
+                    <label for="adminSiteLogoDarkUrl" class="admin-field-label">Site Logo — Dark Mode</label>
+                    <span class="mode-badge-indicator dark-badge" title="Displayed when Dark theme is active">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>
+                      Dark
+                    </span>
+                  </div>
+                  <div class="image-url-input-wrap">
+                    <input type="url" id="adminSiteLogoDarkUrl" class="admin-text-input" placeholder="https://example.com/logo-dark.png" />
+                    <div id="adminLogoDarkPreviewBox" class="image-preview-thumb preview-dark-surface" title="Dark mode logo preview" aria-label="Dark mode logo preview"></div>
+                  </div>
+                  <span class="field-hint">Direct image link for dark mode. If left blank, the light mode logo will be used in both modes.</span>
                 </div>
 
                 <!-- Favicon Image URL -->

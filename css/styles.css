@@ -1180,6 +1180,28 @@ body:not(.is-forms-view) .forms-action-btn {
   display: block;
 }
 
+/* Header Dual-Logo Theme Switching */
+:root:not([data-theme="dark"]) .brand-logo-dark {
+  display: none !important;
+}
+
+:root:not([data-theme="dark"]) .brand-logo-light {
+  display: block !important;
+}
+
+[data-theme="dark"] .brand-logo-light:not(.brand-logo-fallback-always) {
+  display: none !important;
+}
+
+[data-theme="dark"] .brand-logo-dark {
+  display: block !important;
+}
+
+.brand-logo-single,
+.brand-logo-fallback-always {
+  display: block !important;
+}
+
 .brand-link:hover .brand-icon-box {
   transform: scale(1.02);
 }
@@ -2374,6 +2396,53 @@ body:not(.is-forms-view) .forms-action-btn {
   color: var(--text-muted);
 }
 
+.admin-label-with-mode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  gap: 0.5rem;
+}
+
+.admin-label-with-mode .admin-field-label {
+  margin-bottom: 0;
+}
+
+.mode-badge-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.mode-badge-indicator.light-badge {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.mode-badge-indicator.dark-badge {
+  background: #1e293b;
+  color: #93c5fd;
+  border: 1px solid #334155;
+}
+
+[data-theme="dark"] .mode-badge-indicator.light-badge {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+[data-theme="dark"] .mode-badge-indicator.dark-badge {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
 /* Image URL Input Wrap with Live Preview */
 .image-url-input-wrap {
   display: flex;
@@ -2411,6 +2480,24 @@ body:not(.is-forms-view) .forms-action-btn {
   width: 18px;
   height: 18px;
   color: var(--text-muted);
+}
+
+.image-preview-thumb.preview-light-surface {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.image-preview-thumb.preview-light-surface svg {
+  color: #64748b !important;
+}
+
+.image-preview-thumb.preview-dark-surface {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+.image-preview-thumb.preview-dark-surface svg {
+  color: #94a3b8 !important;
 }
 
 .field-hint {

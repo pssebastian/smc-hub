@@ -166,8 +166,10 @@
   const adminShowTitleToggle = document.getElementById("adminShowTitleToggle");
   const adminSiteTagline = document.getElementById("adminSiteTagline");
   const adminSiteLogoUrl = document.getElementById("adminSiteLogoUrl");
+  const adminSiteLogoDarkUrl = document.getElementById("adminSiteLogoDarkUrl");
   const adminFaviconUrl = document.getElementById("adminFaviconUrl");
   const adminLogoPreviewBox = document.getElementById("adminLogoPreviewBox");
+  const adminLogoDarkPreviewBox = document.getElementById("adminLogoDarkPreviewBox");
   const adminFaviconPreviewBox = document.getElementById("adminFaviconPreviewBox");
   const adminContactEmail = document.getElementById("adminContactEmail");
   const adminContactPhone = document.getElementById("adminContactPhone");
@@ -195,23 +197,47 @@
     hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`
   };
 
-  // Site Logo dynamic processor (Handles user-provided image link)
-  function applySiteLogo(logoUrl) {
+  // Site Logo dynamic processor (Handles light & dark mode image links)
+  function applySiteLogo(logoLightUrl, logoDarkUrl) {
     if (!brandIconBox) return;
-    const url = (logoUrl || "").trim();
-    if (url) {
-      brandIconBox.classList.add("has-custom-img");
+    const light = (logoLightUrl || "").trim();
+    const dark = (logoDarkUrl || "").trim();
+
+    if (!light && !dark) {
+      brandIconBox.classList.remove("has-custom-img");
+      brandIconBox.innerHTML = LOGO_ICONS.hub;
+      return;
+    }
+
+    brandIconBox.classList.add("has-custom-img");
+
+    if (light && dark) {
+      // Both logos provided: switch via CSS according to [data-theme="dark"]
       brandIconBox.innerHTML = `
         <img
-          src="${escapeHtml(url)}"
+          src="${escapeHtml(light)}"
           alt="Site Logo"
-          class="brand-logo-img"
-          onerror="this.onerror=null; this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub;"
+          class="brand-logo-img brand-logo-light"
+          onerror="this.style.display='none'; const d = this.parentElement.querySelector('.brand-logo-dark'); if (d) { d.classList.add('brand-logo-fallback-always'); } else { this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub; }"
+        />
+        <img
+          src="${escapeHtml(dark)}"
+          alt="Site Logo (Dark Mode)"
+          class="brand-logo-img brand-logo-dark"
+          onerror="this.style.display='none'; const l = this.parentElement.querySelector('.brand-logo-light'); if (l) { l.classList.add('brand-logo-fallback-always'); } else { this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub; }"
         />
       `;
     } else {
-      brandIconBox.classList.remove("has-custom-img");
-      brandIconBox.innerHTML = LOGO_ICONS.hub;
+      // Single logo provided (light or dark): display in both modes
+      const singleUrl = light || dark;
+      brandIconBox.innerHTML = `
+        <img
+          src="${escapeHtml(singleUrl)}"
+          alt="Site Logo"
+          class="brand-logo-img brand-logo-single"
+          onerror="this.onerror=null; this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub;"
+        />
+      `;
     }
   }
 
@@ -235,13 +261,14 @@
 
   // Live Image Previews in Admin Settings Form
   function updateAdminImagePreviews() {
+    // 1. Light Mode Logo Preview
     if (adminLogoPreviewBox && adminSiteLogoUrl) {
       const logoUrl = adminSiteLogoUrl.value.trim();
       if (logoUrl) {
         adminLogoPreviewBox.innerHTML = `
           <img
             src="${escapeHtml(logoUrl)}"
-            alt="Logo Preview"
+            alt="Light Logo Preview"
             onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#dc2626;font-weight:600;\\'>Invalid</span>';"
           />
         `;
@@ -250,6 +277,36 @@
       }
     }
 
+    // 2. Dark Mode Logo Preview
+    if (adminLogoDarkPreviewBox && adminSiteLogoDarkUrl) {
+      const darkLogoUrl = adminSiteLogoDarkUrl.value.trim();
+      if (darkLogoUrl) {
+        adminLogoDarkPreviewBox.innerHTML = `
+          <img
+            src="${escapeHtml(darkLogoUrl)}"
+            alt="Dark Logo Preview"
+            onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\\'font-size:0.6rem;color:#ef4444;font-weight:600;\\'>Invalid</span>';"
+          />
+        `;
+      } else {
+        const lightLogoUrl = adminSiteLogoUrl ? adminSiteLogoUrl.value.trim() : "";
+        if (lightLogoUrl) {
+          adminLogoDarkPreviewBox.innerHTML = `
+            <img
+              src="${escapeHtml(lightLogoUrl)}"
+              alt="Inherited Light Logo"
+              style="opacity: 0.55;"
+              title="Inherits light mode logo"
+              onerror="this.onerror=null; this.parentElement.innerHTML=LOGO_ICONS.hub;"
+            />
+          `;
+        } else {
+          adminLogoDarkPreviewBox.innerHTML = LOGO_ICONS.hub;
+        }
+      }
+    }
+
+    // 3. Favicon Preview
     if (adminFaviconPreviewBox && adminFaviconUrl) {
       const favUrl = adminFaviconUrl.value.trim();
       if (favUrl) {
@@ -271,7 +328,8 @@
     siteTitle: "SMC Hub",
     siteTagline: "Congregation Forms & Guidelines Hub",
     showSiteTitle: true, // boolean: display site title text in header
-    siteLogoUrl: "", // direct image URL
+    siteLogoUrl: "", // direct image URL (light mode / default)
+    siteLogoDarkUrl: "", // direct image URL for dark mode
     faviconUrl: "", // direct icon/image URL
     contactEmail: "",
     contactPhone: "",
@@ -320,8 +378,8 @@
       }
     }
 
-    // 3. Site Logo Image Link
-    applySiteLogo(settings.siteLogoUrl);
+    // 3. Site Logo Image Links (Light & Dark Mode)
+    applySiteLogo(settings.siteLogoUrl, settings.siteLogoDarkUrl);
 
     // 4. Favicon Image Link
     applyFavicon(settings.faviconUrl);
@@ -1373,6 +1431,7 @@
     }
     if (adminSiteTagline) adminSiteTagline.value = settings.siteTagline || "";
     if (adminSiteLogoUrl) adminSiteLogoUrl.value = settings.siteLogoUrl || "";
+    if (adminSiteLogoDarkUrl) adminSiteLogoDarkUrl.value = settings.siteLogoDarkUrl || "";
     if (adminFaviconUrl) adminFaviconUrl.value = settings.faviconUrl || "";
     if (adminContactEmail) adminContactEmail.value = settings.contactEmail || "";
     if (adminContactPhone) adminContactPhone.value = settings.contactPhone || "";
@@ -1456,7 +1515,16 @@
       });
     }
     if (adminSiteLogoUrl) {
-      adminSiteLogoUrl.addEventListener("input", updateAdminImagePreviews);
+      adminSiteLogoUrl.addEventListener("input", () => {
+        updateAdminImagePreviews();
+        applySiteLogo(adminSiteLogoUrl.value, adminSiteLogoDarkUrl ? adminSiteLogoDarkUrl.value : "");
+      });
+    }
+    if (adminSiteLogoDarkUrl) {
+      adminSiteLogoDarkUrl.addEventListener("input", () => {
+        updateAdminImagePreviews();
+        applySiteLogo(adminSiteLogoUrl ? adminSiteLogoUrl.value : "", adminSiteLogoDarkUrl.value);
+      });
     }
     if (adminFaviconUrl) {
       adminFaviconUrl.addEventListener("input", updateAdminImagePreviews);
@@ -1479,6 +1547,7 @@
         if (adminShowTitleToggle) settings.showSiteTitle = adminShowTitleToggle.checked;
         if (adminSiteTagline) settings.siteTagline = adminSiteTagline.value.trim();
         if (adminSiteLogoUrl) settings.siteLogoUrl = adminSiteLogoUrl.value.trim();
+        if (adminSiteLogoDarkUrl) settings.siteLogoDarkUrl = adminSiteLogoDarkUrl.value.trim();
         if (adminFaviconUrl) settings.faviconUrl = adminFaviconUrl.value.trim();
         if (adminContactEmail) settings.contactEmail = adminContactEmail.value.trim();
         if (adminContactPhone) settings.contactPhone = adminContactPhone.value.trim();
