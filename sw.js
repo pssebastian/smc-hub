@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smc-hub-v12';
+const CACHE_NAME = 'smc-hub-v15';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const PRECACHE_URLS = [
   './images/logo-light.png',
   './images/logo-dark.png',
   './images/favicon.png',
+  './images/favicon.ico',
   './icons/icon-192x192.png',
   './icons/icon-512x512.png'
 ];
@@ -60,7 +61,10 @@ self.addEventListener('fetch', (event) => {
         return caches.match(event.request).then((cachedResponse) => {
           if (cachedResponse) return cachedResponse;
           if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('./index.html') || caches.match('index.html') || caches.match('./');
+            return caches.match('./index.html').then((cachedHtml) => {
+              if (cachedHtml) return cachedHtml;
+              return caches.match('./');
+            });
           }
         });
       })

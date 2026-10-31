@@ -2916,21 +2916,8 @@ body:not(.is-forms-view) .forms-action-btn {
 
 
 /* ==========================================================================
-   GATEWAY / WELCOME PASSCODE SCREEN
+   GATEWAY / WELCOME PASSCODE SCREEN (MODAL OVERLAY)
    ========================================================================== */
-html:not(.is-authenticated) #siteHeader,
-html:not(.is-authenticated) #mainContent,
-html:not(.is-authenticated) .site-footer,
-html:not(.is-authenticated) #floatingBackToTopBtn,
-html:not(.is-authenticated) #pwaInstallBanner,
-html:not(.is-authenticated) #pwaInstallHeaderBtn {
-  display: none !important;
-}
-
-html.is-authenticated #welcomeView {
-  display: none !important;
-}
-
 .welcome-screen {
   position: fixed;
   top: 0;
@@ -2944,8 +2931,14 @@ html.is-authenticated #welcomeView {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  z-index: 9999;
+  z-index: 99999;
   overflow-y: auto;
+}
+
+.welcome-screen.hidden,
+html.is-authenticated .welcome-screen,
+html.is-authenticated #welcomeView {
+  display: none !important;
 }
 
 .welcome-card {

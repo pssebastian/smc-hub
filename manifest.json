@@ -2,9 +2,10 @@
   "name": "San Miguel Congregation Hub",
   "short_name": "SMC Hub",
   "description": "Access San Miguel Congregation forms, guidelines, accounting tutorials, and announcements.",
-  "start_url": "index.html",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0b1120",
+  "background_color": "#f8fafc",
   "theme_color": "#2563eb",
   "icons": [
     {

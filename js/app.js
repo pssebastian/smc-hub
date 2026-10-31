@@ -409,15 +409,22 @@
   // --- 2. Passkey Authentication Management (30-Day Persistence) ---
   function isPasskeyAuthenticated() {
     try {
+      const now = Date.now();
       const expiry = localStorage.getItem("smc-admin-auth-expiry");
       if (expiry) {
         const expTime = parseInt(expiry, 10);
-        if (expTime && Date.now() < expTime) {
+        if (expTime && now < expTime) {
           return true;
         } else {
           localStorage.removeItem("smc-admin-auth");
           localStorage.removeItem("smc-admin-auth-expiry");
         }
+      }
+      if (localStorage.getItem("smc-admin-auth") === "true") {
+        try {
+          localStorage.setItem("smc-admin-auth-expiry", (now + AUTH_DURATION_MS).toString());
+        } catch (e) {}
+        return true;
       }
       return sessionStorage.getItem("smc-admin-auth") === "true";
     } catch (e) {
@@ -427,18 +434,25 @@
 
   function isSiteAuthenticated() {
     try {
+      const now = Date.now();
       // If admin session is active, user is also site-authenticated
       if (isPasskeyAuthenticated()) return true;
 
       const expiry = localStorage.getItem("smc-site-auth-expiry");
       if (expiry) {
         const expTime = parseInt(expiry, 10);
-        if (expTime && Date.now() < expTime) {
+        if (expTime && now < expTime) {
           return true;
         } else {
           localStorage.removeItem("smc-site-auth");
           localStorage.removeItem("smc-site-auth-expiry");
         }
+      }
+      if (localStorage.getItem("smc-site-auth") === "true") {
+        try {
+          localStorage.setItem("smc-site-auth-expiry", (now + AUTH_DURATION_MS).toString());
+        } catch (e) {}
+        return true;
       }
       return sessionStorage.getItem("smc-site-auth") === "true" || sessionStorage.getItem("smc-admin-auth") === "true";
     } catch (e) {
@@ -450,14 +464,9 @@
     document.documentElement.classList.remove("is-authenticated");
     if (document.body) document.body.classList.remove("is-authenticated");
     if (welcomeView) {
+      welcomeView.classList.remove("hidden");
       welcomeView.style.display = "flex";
     }
-    if (siteHeader) siteHeader.style.display = "none";
-    if (mainContent) mainContent.style.display = "none";
-    const footer = document.querySelector(".site-footer");
-    if (footer) footer.style.display = "none";
-    if (floatingBackToTopBtn) floatingBackToTopBtn.style.display = "none";
-    if (pwaInstallBanner) pwaInstallBanner.style.display = "none";
 
     applySiteLogo();
 
@@ -477,12 +486,9 @@
     document.documentElement.classList.add("is-authenticated");
     if (document.body) document.body.classList.add("is-authenticated");
     if (welcomeView) {
+      welcomeView.classList.add("hidden");
       welcomeView.style.display = "none";
     }
-    if (siteHeader) siteHeader.style.display = "";
-    if (mainContent) mainContent.style.display = "";
-    const footer = document.querySelector(".site-footer");
-    if (footer) footer.style.display = "";
 
     if (welcomePasscodeInput) {
       welcomePasscodeInput.value = "";
@@ -708,19 +714,10 @@
       document.body.classList.add("is-authenticated");
     }
 
-    // Ensure elements are unhidden when authenticated
-    if (welcomeView && welcomeView.style.display !== "none") {
+    // Ensure welcome overlay is hidden
+    if (welcomeView) {
+      welcomeView.classList.add("hidden");
       welcomeView.style.display = "none";
-    }
-    if (siteHeader && siteHeader.style.display === "none") {
-      siteHeader.style.display = "";
-    }
-    if (mainContent && mainContent.style.display === "none") {
-      mainContent.style.display = "";
-    }
-    const footer = document.querySelector(".site-footer");
-    if (footer && footer.style.display === "none") {
-      footer.style.display = "";
     }
 
     const route = parseHashRoute();
