@@ -3,7 +3,7 @@
  * Enables offline access, fast loading, and native app installability.
  */
 
-const CACHE_NAME = 'smc-hub-v1';
+const CACHE_NAME = 'smc-hub-v2';
 
 const PRECACHE_ASSETS = [
   './',

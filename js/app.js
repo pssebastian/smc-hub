@@ -8,7 +8,7 @@
  *  - Guidelines Directory (First option: Accounting)
  *  - Accounting Guidelines with Role Selection & Video Guides List
  *  - Admin Settings for Congregation Account Type (Bank vs Cashbox)
- *  - Simple Admin Passkey Verification ('1234')
+ *  - Welcome Passcode Gateway ('sanmig3673') & Admin Passkey ('hub_admin_3673')
  *  - Hash-Based Router with Navigation & Breadcrumbs
  *  - Dark / Light Theme & Responsive Mobile Controls
  * ====================================================================
@@ -103,7 +103,16 @@
   let currentRoute = "home";
 
   // --- Passkey Security State ---
-  const ADMIN_PASSKEY = "1234";
+  const SITE_PASSCODE = "sanmig3673";
+  const ADMIN_PASSKEY = "hub_admin_3673";
+
+  // --- Welcome Gateway Elements ---
+  const welcomeView = document.getElementById("welcomeView");
+  const welcomeLogoBox = document.getElementById("welcomeLogoBox");
+  const welcomePasscodeInput = document.getElementById("welcomePasscodeInput");
+  const welcomePasscodeForm = document.getElementById("welcomePasscodeForm");
+  const welcomePasscodeError = document.getElementById("welcomePasscodeError");
+  const adminLockSiteBtn = document.getElementById("adminLockSiteBtn");
 
   // --- DOM Elements ---
   const siteHeader = document.getElementById("siteHeader");
@@ -191,7 +200,8 @@
 
   // Default Hub SVG Icon
   const LOGO_ICONS = {
-    hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`
+    hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`,
+    hubLarge: `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25V15.75Z" /></svg>`
   };
 
   // Preload cache for smooth zero-flicker logo switching
@@ -199,16 +209,9 @@
 
   // Site Logo dynamic processor (Handles light & dark mode image links)
   function applySiteLogo(logoLightUrl, logoDarkUrl) {
-    if (!brandIconBox) return;
     const settings = getAdminSettings();
     const light = (logoLightUrl !== undefined ? logoLightUrl : settings.siteLogoUrl || "").trim();
     const dark = (logoDarkUrl !== undefined ? logoDarkUrl : settings.siteLogoDarkUrl || "").trim();
-
-    if (!light && !dark) {
-      brandIconBox.classList.remove("has-custom-img");
-      brandIconBox.innerHTML = LOGO_ICONS.hub;
-      return;
-    }
 
     // Preload both images so switching theme has zero delay or flicker
     if (light && (!logoPreloadCache.light || logoPreloadCache.light.src !== light)) {
@@ -220,25 +223,59 @@
       logoPreloadCache.dark.src = dark;
     }
 
-    brandIconBox.classList.add("has-custom-img");
-
     const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
     const activeUrl = (currentTheme === "dark" && dark) ? dark : (light || dark);
 
-    let img = brandIconBox.querySelector(".brand-logo-img");
-    if (!img) {
-      brandIconBox.innerHTML = `
-        <img
-          id="brandLogoImg"
-          src="${escapeHtml(activeUrl)}"
-          alt="Site Logo"
-          class="brand-logo-img"
-          onerror="handleLogoError(this)"
-        />
-      `;
-    } else {
-      if (img.getAttribute("src") !== activeUrl) {
-        img.src = activeUrl;
+    // 1. Update Header Brand Icon
+    if (brandIconBox) {
+      if (!light && !dark) {
+        brandIconBox.classList.remove("has-custom-img");
+        brandIconBox.innerHTML = LOGO_ICONS.hub;
+      } else {
+        brandIconBox.classList.add("has-custom-img");
+        let img = brandIconBox.querySelector(".brand-logo-img");
+        if (!img) {
+          brandIconBox.innerHTML = `
+            <img
+              id="brandLogoImg"
+              src="${escapeHtml(activeUrl)}"
+              alt="Site Logo"
+              class="brand-logo-img"
+              onerror="handleLogoError(this)"
+            />
+          `;
+        } else {
+          if (img.getAttribute("src") !== activeUrl) {
+            img.src = activeUrl;
+          }
+        }
+      }
+    }
+
+    // 2. Update Welcome Page Logo
+    const welcomeLogoBox = document.getElementById("welcomeLogoBox");
+    if (welcomeLogoBox) {
+      if (!light && !dark) {
+        welcomeLogoBox.classList.remove("has-custom-img");
+        welcomeLogoBox.innerHTML = LOGO_ICONS.hubLarge;
+      } else {
+        welcomeLogoBox.classList.add("has-custom-img");
+        let welcomeImg = welcomeLogoBox.querySelector(".welcome-logo-img");
+        if (!welcomeImg) {
+          welcomeLogoBox.innerHTML = `
+            <img
+              id="welcomeLogoImg"
+              src="${escapeHtml(activeUrl)}"
+              alt="Site Logo"
+              class="welcome-logo-img"
+              onerror="handleLogoError(this)"
+            />
+          `;
+        } else {
+          if (welcomeImg.getAttribute("src") !== activeUrl) {
+            welcomeImg.src = activeUrl;
+          }
+        }
       }
     }
   }
@@ -257,7 +294,13 @@
     }
 
     // If both failed or single failed, fallback to default hub icon
-    if (brandIconBox) {
+    if (imgEl.classList.contains("welcome-logo-img")) {
+      const welcomeBox = document.getElementById("welcomeLogoBox");
+      if (welcomeBox) {
+        welcomeBox.classList.remove("has-custom-img");
+        welcomeBox.innerHTML = LOGO_ICONS.hubLarge;
+      }
+    } else if (brandIconBox) {
       brandIconBox.classList.remove("has-custom-img");
       brandIconBox.innerHTML = LOGO_ICONS.hub;
     }
@@ -447,25 +490,6 @@
     }
   }
 
-  function saveAdminSettings(newSettings, showFeedback = true) {
-    try {
-      localStorage.setItem("smc-admin-settings", JSON.stringify(newSettings));
-      applySiteSettings(newSettings);
-      if (showFeedback) {
-        showToast("Settings saved successfully!");
-      }
-      // Re-render views that depend on settings
-      if (currentRoute === "guidelines/accounting") {
-        renderAccountingRoles();
-      } else if (currentRoute.startsWith("guidelines/accounting/")) {
-        renderRoleVideos();
-      }
-      renderAdminView();
-    } catch (e) {
-      console.error("Failed to save admin settings:", e);
-    }
-  }
-
   function showToast(message) {
     if (!toastNotification) return;
     toastNotification.textContent = message;
@@ -476,11 +500,134 @@
   }
 
   // --- 2. Passkey Authentication Management ---
+  function isSiteAuthenticated() {
+    try {
+      return sessionStorage.getItem("smc-site-auth") === "true" || sessionStorage.getItem("smc-admin-auth") === "true";
+    } catch (e) {
+      return false;
+    }
+  }
+
   function isPasskeyAuthenticated() {
     try {
       return sessionStorage.getItem("smc-admin-auth") === "true";
     } catch (e) {
       return false;
+    }
+  }
+
+  function showWelcomeScreen() {
+    document.documentElement.classList.remove("is-authenticated");
+    if (document.body) document.body.classList.remove("is-authenticated");
+    if (welcomeView) {
+      welcomeView.style.display = "flex";
+    }
+    if (siteHeader) siteHeader.style.display = "none";
+    if (mainContent) mainContent.style.display = "none";
+    const footer = document.querySelector(".site-footer");
+    if (footer) footer.style.display = "none";
+    if (floatingBackToTopBtn) floatingBackToTopBtn.style.display = "none";
+    if (pwaInstallBanner) pwaInstallBanner.style.display = "none";
+
+    applySiteLogo();
+
+    if (welcomePasscodeInput) {
+      welcomePasscodeInput.value = "";
+      welcomePasscodeInput.classList.remove("input-error");
+      setTimeout(() => {
+        try { welcomePasscodeInput.focus(); } catch (e) {}
+      }, 100);
+    }
+    if (welcomePasscodeError) {
+      welcomePasscodeError.style.display = "none";
+    }
+  }
+
+  function unlockSite() {
+    document.documentElement.classList.add("is-authenticated");
+    if (document.body) document.body.classList.add("is-authenticated");
+    if (welcomeView) {
+      welcomeView.style.display = "none";
+    }
+    if (siteHeader) siteHeader.style.display = "";
+    if (mainContent) mainContent.style.display = "";
+    const footer = document.querySelector(".site-footer");
+    if (footer) footer.style.display = "";
+
+    if (welcomePasscodeInput) {
+      welcomePasscodeInput.value = "";
+      welcomePasscodeInput.classList.remove("input-error");
+    }
+    if (welcomePasscodeError) {
+      welcomePasscodeError.style.display = "none";
+    }
+
+    window.location.hash = "#home";
+    handleRouteChange();
+  }
+
+  function lockSite() {
+    try {
+      sessionStorage.removeItem("smc-site-auth");
+      sessionStorage.removeItem("smc-admin-auth");
+    } catch (e) {}
+    window.location.hash = "#home";
+    showWelcomeScreen();
+    showToast("Website locked. Passcode required to enter.");
+  }
+
+  function verifyWelcomePasscode() {
+    if (!welcomePasscodeInput) return;
+    const val = welcomePasscodeInput.value.trim();
+
+    if (val === SITE_PASSCODE) {
+      try {
+        sessionStorage.setItem("smc-site-auth", "true");
+      } catch (e) {}
+      unlockSite();
+    } else if (val === ADMIN_PASSKEY) {
+      try {
+        sessionStorage.setItem("smc-site-auth", "true");
+        sessionStorage.setItem("smc-admin-auth", "true");
+      } catch (e) {}
+      unlockSite();
+      showToast("Admin access granted.");
+    } else {
+      if (welcomePasscodeError) {
+        welcomePasscodeError.textContent = "Incorrect passcode. Please try again.";
+        welcomePasscodeError.style.display = "block";
+      }
+      welcomePasscodeInput.classList.add("input-error");
+      setTimeout(() => {
+        if (welcomePasscodeInput) welcomePasscodeInput.classList.remove("input-error");
+      }, 500);
+      if (welcomePasscodeInput.focus) welcomePasscodeInput.focus();
+      if (welcomePasscodeInput.select) welcomePasscodeInput.select();
+    }
+  }
+
+  function initWelcomeGateway() {
+    if (welcomePasscodeInput) {
+      welcomePasscodeInput.addEventListener("input", (e) => {
+        if (welcomePasscodeError) welcomePasscodeError.style.display = "none";
+        const val = e.target.value.trim();
+        if (val === SITE_PASSCODE || val === ADMIN_PASSKEY) {
+          verifyWelcomePasscode();
+        }
+      });
+    }
+
+    if (welcomePasscodeForm) {
+      welcomePasscodeForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        verifyWelcomePasscode();
+      });
+    }
+
+    if (adminLockSiteBtn) {
+      adminLockSiteBtn.addEventListener("click", () => {
+        lockSite();
+      });
     }
   }
 
@@ -520,6 +667,9 @@
     if (val === ADMIN_PASSKEY) {
       try {
         sessionStorage.setItem("smc-admin-auth", "true");
+        sessionStorage.setItem("smc-site-auth", "true");
+        document.documentElement.classList.add("is-authenticated");
+        if (document.body) document.body.classList.add("is-authenticated");
       } catch (e) {}
       const target = (passkeyModal && passkeyModal.getAttribute("data-target-hash")) || "#admin";
       closePasskeyModal();
@@ -722,6 +872,26 @@
   }
 
   function handleRouteChange() {
+    if (!isSiteAuthenticated()) {
+      showWelcomeScreen();
+      return;
+    }
+
+    // Ensure elements are unhidden when authenticated
+    if (welcomeView && welcomeView.style.display !== "none") {
+      welcomeView.style.display = "none";
+    }
+    if (siteHeader && siteHeader.style.display === "none") {
+      siteHeader.style.display = "";
+    }
+    if (mainContent && mainContent.style.display === "none") {
+      mainContent.style.display = "";
+    }
+    const footer = document.querySelector(".site-footer");
+    if (footer && footer.style.display === "none") {
+      footer.style.display = "";
+    }
+
     const route = parseHashRoute();
     currentRoute = route;
 
@@ -1606,7 +1776,8 @@
 
     // Keyboard shortcut: Pressing "/" or "Ctrl+K" focuses search on Forms
     window.addEventListener("keydown", (e) => {
-      if ((e.key === "/" && document.activeElement !== searchInput && document.activeElement !== videoSearchInput && document.activeElement !== passkeyInput) ||
+      if (!isSiteAuthenticated()) return;
+      if ((e.key === "/" && document.activeElement !== searchInput && document.activeElement !== videoSearchInput && document.activeElement !== passkeyInput && document.activeElement !== welcomePasscodeInput) ||
           ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
         e.preventDefault();
         if (currentRoute !== "forms") {
@@ -1786,6 +1957,7 @@
     initVideoSearch();
     initAdminControls();
     initPasskeyModal();
+    initWelcomeGateway();
     initBackToTop();
 
     // Listen for Hash Changes

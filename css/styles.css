@@ -2922,6 +2922,174 @@ body:not(.is-forms-view) .forms-action-btn {
 
 
 /* ==========================================================================
+   GATEWAY / WELCOME PASSCODE SCREEN
+   ========================================================================== */
+html:not(.is-authenticated) #siteHeader,
+html:not(.is-authenticated) #mainContent,
+html:not(.is-authenticated) .site-footer,
+html:not(.is-authenticated) #floatingBackToTopBtn,
+html:not(.is-authenticated) #pwaInstallBanner,
+html:not(.is-authenticated) #pwaInstallHeaderBtn,
+body:not(.is-authenticated) #siteHeader,
+body:not(.is-authenticated) #mainContent,
+body:not(.is-authenticated) .site-footer,
+body:not(.is-authenticated) #floatingBackToTopBtn,
+body:not(.is-authenticated) #pwaInstallBanner,
+body:not(.is-authenticated) #pwaInstallHeaderBtn {
+  display: none !important;
+}
+
+html.is-authenticated #welcomeView,
+body.is-authenticated #welcomeView {
+  display: none !important;
+}
+
+.welcome-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-app);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 2rem 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.12), 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+[data-theme="dark"] .welcome-card {
+  box-shadow: 0 24px 45px -12px rgba(0, 0, 0, 0.55), 0 8px 20px -6px rgba(0, 0, 0, 0.4);
+}
+
+.welcome-logo-box {
+  width: 72px;
+  height: 72px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.35);
+  transition: transform var(--transition-fast);
+}
+
+.welcome-logo-box.has-custom-img {
+  width: auto;
+  height: auto;
+  max-width: 220px;
+  max-height: 80px;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 1.35rem;
+}
+
+.welcome-logo-img {
+  max-height: 70px;
+  max-width: 200px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.welcome-heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin: 0 0 0.55rem 0;
+}
+
+.welcome-subheading {
+  font-size: 0.925rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0 0 1.75rem 0;
+}
+
+.welcome-form {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.welcome-passcode-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1.15rem;
+  font-size: 1.1rem;
+  text-align: center;
+  letter-spacing: 0.12em;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-subtle);
+  background: var(--bg-app);
+  color: var(--text-main);
+  outline: none;
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.welcome-passcode-input:focus {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.welcome-passcode-input.input-error {
+  border-color: #ef4444;
+  background: var(--bg-card);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  animation: modalShake 0.35s ease;
+}
+
+.welcome-passcode-error {
+  font-size: 0.825rem;
+  color: #ef4444;
+  margin-top: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .welcome-screen {
+    padding: 1rem;
+  }
+  .welcome-card {
+    padding: 2.25rem 1.35rem 2rem;
+  }
+  .welcome-heading {
+    font-size: 1.2rem;
+  }
+  .welcome-subheading {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* ==========================================================================
    ADMIN PASSKEY MODAL
    ========================================================================== */
 .passkey-modal-overlay {

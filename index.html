@@ -24,8 +24,44 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="./css/styles.css" />
+
+  <!-- Zero-FOUC Authentication State Initializer -->
+  <script>
+    (function() {
+      try {
+        if (sessionStorage.getItem("smc-site-auth") === "true" || sessionStorage.getItem("smc-admin-auth") === "true") {
+          document.documentElement.classList.add("is-authenticated");
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- ============================================================== -->
+  <!-- WELCOME / PASSCODE GATEWAY PAGE (First screen shown to user)    -->
+  <!-- ============================================================== -->
+  <div id="welcomeView" class="welcome-screen" role="dialog" aria-modal="true" aria-labelledby="welcomeHeading">
+    <div class="welcome-card">
+      <div id="welcomeLogoBox" class="welcome-logo-box" aria-hidden="true"></div>
+      <h1 id="welcomeHeading" class="welcome-heading">Welcome to San Miguel Congregation Hub!</h1>
+      <p class="welcome-subheading">Please enter the passcode to continue.</p>
+      <form id="welcomePasscodeForm" class="welcome-form" autocomplete="off" onsubmit="return false;">
+        <input
+          type="password"
+          id="welcomePasscodeInput"
+          class="welcome-passcode-input"
+          placeholder="Enter passcode"
+          autocomplete="current-password"
+          aria-label="Passcode"
+          autofocus
+        />
+        <div id="welcomePasscodeError" class="welcome-passcode-error" style="display: none;" role="alert">
+          Incorrect passcode. Please try again.
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Maintenance Mode Alert Banner -->
   <div id="maintenanceBanner" class="maintenance-banner" role="alert" style="display: none;">
@@ -513,6 +549,7 @@
               </svg>
               Save Settings
             </button>
+            <button id="adminLockSiteBtn" class="btn-secondary" type="button">Lock Hub (Sign Out)</button>
             <button id="adminResetBtn" class="btn-text-danger" type="button">Reset All Settings</button>
           </div>
         </div>
@@ -536,7 +573,7 @@
           type="password"
           id="passkeyInput"
           class="passkey-input-field"
-          placeholder="passkey"
+          placeholder="Enter admin passcode"
           autocomplete="off"
           aria-label="Admin passkey"
         />
