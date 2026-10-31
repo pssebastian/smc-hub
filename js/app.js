@@ -208,11 +208,25 @@
   // Preload cache for smooth zero-flicker logo switching
   const logoPreloadCache = { light: null, dark: null };
 
+  // Direct image URL normalizer (Converts Google Drive view/open links to direct high-res content URLs)
+  function normalizeImageUrl(url) {
+    if (!url) return "";
+    let clean = url.trim();
+    const driveMatch = clean.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([a-zA-Z0-9_-]+)/);
+    if (driveMatch && driveMatch[1]) {
+      return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+    }
+    return clean;
+  }
+
   // Site Logo dynamic processor (Handles light & dark mode image links)
   function applySiteLogo(logoLightUrl, logoDarkUrl) {
     const settings = getAdminSettings();
-    const light = (logoLightUrl !== undefined ? logoLightUrl : settings.siteLogoUrl || "").trim();
-    const dark = (logoDarkUrl !== undefined ? logoDarkUrl : settings.siteLogoDarkUrl || "").trim();
+    const rawLight = (logoLightUrl !== undefined ? logoLightUrl : settings.siteLogoUrl || "").trim();
+    const rawDark = (logoDarkUrl !== undefined ? logoDarkUrl : settings.siteLogoDarkUrl || "").trim();
+
+    const light = normalizeImageUrl(rawLight) || "./images/logo-light.png";
+    const dark = normalizeImageUrl(rawDark) || "./images/logo-dark.png";
 
     // Preload both images so switching theme has zero delay or flicker
     if (light && (!logoPreloadCache.light || logoPreloadCache.light.src !== light)) {
@@ -284,8 +298,8 @@
   function handleLogoError(imgEl) {
     if (!imgEl) return;
     const settings = getAdminSettings();
-    const light = (settings.siteLogoUrl || "").trim();
-    const dark = (settings.siteLogoDarkUrl || "").trim();
+    const light = normalizeImageUrl(settings.siteLogoUrl || "") || "./images/logo-light.png";
+    const dark = normalizeImageUrl(settings.siteLogoDarkUrl || "") || "./images/logo-dark.png";
     const currentSrc = imgEl.getAttribute("src");
 
     // If dark logo failed to load, fallback to light logo
@@ -316,20 +330,18 @@
       link.rel = "icon";
       document.head.appendChild(link);
     }
-    const url = (faviconUrl || "").trim();
-    if (url) {
-      link.href = url;
-    } else {
-      const defaultSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="%232563eb"/><path d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2zm10-10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V6zm0 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2z" fill="white"/></svg>`;
-      link.href = `data:image/svg+xml,${encodeURIComponent(defaultSvg)}`;
-    }
+    const settings = getAdminSettings();
+    const rawUrl = (faviconUrl !== undefined ? faviconUrl : settings.faviconUrl || "").trim();
+    const url = normalizeImageUrl(rawUrl) || "./images/favicon.png";
+    link.href = url;
   }
 
   // Live Image Previews in Admin Settings Form
   function updateAdminImagePreviews() {
     // 1. Light Mode Logo Preview
     if (adminLogoPreviewBox && adminSiteLogoUrl) {
-      const logoUrl = adminSiteLogoUrl.value.trim();
+      const rawUrl = adminSiteLogoUrl.value.trim();
+      const logoUrl = normalizeImageUrl(rawUrl) || "./images/logo-light.png";
       if (logoUrl) {
         adminLogoPreviewBox.innerHTML = `
           <img
@@ -345,7 +357,8 @@
 
     // 2. Dark Mode Logo Preview
     if (adminLogoDarkPreviewBox && adminSiteLogoDarkUrl) {
-      const darkLogoUrl = adminSiteLogoDarkUrl.value.trim();
+      const rawDarkUrl = adminSiteLogoDarkUrl.value.trim();
+      const darkLogoUrl = normalizeImageUrl(rawDarkUrl) || "./images/logo-dark.png";
       if (darkLogoUrl) {
         adminLogoDarkPreviewBox.innerHTML = `
           <img
@@ -355,7 +368,8 @@
           />
         `;
       } else {
-        const lightLogoUrl = adminSiteLogoUrl ? adminSiteLogoUrl.value.trim() : "";
+        const rawLightUrl = adminSiteLogoUrl ? adminSiteLogoUrl.value.trim() : "";
+        const lightLogoUrl = normalizeImageUrl(rawLightUrl) || "./images/logo-light.png";
         if (lightLogoUrl) {
           adminLogoDarkPreviewBox.innerHTML = `
             <img
@@ -374,7 +388,8 @@
 
     // 3. Favicon Preview
     if (adminFaviconPreviewBox && adminFaviconUrl) {
-      const favUrl = adminFaviconUrl.value.trim();
+      const rawFavUrl = adminFaviconUrl.value.trim();
+      const favUrl = normalizeImageUrl(rawFavUrl) || "./images/favicon.png";
       if (favUrl) {
         adminFaviconPreviewBox.innerHTML = `
           <img
@@ -393,10 +408,10 @@
   const DEFAULT_ADMIN_SETTINGS = {
     siteTitle: "SMC Hub",
     siteTagline: "Congregation Forms & Guidelines Hub",
-    showSiteTitle: true, // boolean: display site title text in header
-    siteLogoUrl: "", // direct image URL (light mode / default)
-    siteLogoDarkUrl: "", // direct image URL for dark mode
-    faviconUrl: "", // direct icon/image URL
+    showSiteTitle: false, // Default false: logo already contains congregation name
+    siteLogoUrl: "./images/logo-light.png", // Built-in direct logo (light mode)
+    siteLogoDarkUrl: "./images/logo-dark.png", // Built-in direct logo (dark mode)
+    faviconUrl: "./images/favicon.png", // Built-in direct favicon
     maintenanceMode: false,
     accountType: "bank", // "bank" or "cashbox"
     announcement: {
@@ -410,7 +425,21 @@
     try {
       const saved = localStorage.getItem("smc-admin-settings");
       if (saved) {
-        return { ...DEFAULT_ADMIN_SETTINGS, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        // Normalize any old Google Drive links or missing paths
+        if (!parsed.siteLogoUrl || parsed.siteLogoUrl.includes("drive.google.com/file")) {
+          parsed.siteLogoUrl = DEFAULT_ADMIN_SETTINGS.siteLogoUrl;
+        }
+        if (!parsed.siteLogoDarkUrl || parsed.siteLogoDarkUrl.includes("drive.google.com/file")) {
+          parsed.siteLogoDarkUrl = DEFAULT_ADMIN_SETTINGS.siteLogoDarkUrl;
+        }
+        if (!parsed.faviconUrl || parsed.faviconUrl.includes("drive.google.com/file")) {
+          parsed.faviconUrl = DEFAULT_ADMIN_SETTINGS.faviconUrl;
+        }
+        if (parsed.showSiteTitle === undefined) {
+          parsed.showSiteTitle = false;
+        }
+        return { ...DEFAULT_ADMIN_SETTINGS, ...parsed };
       }
     } catch (e) {
       console.warn("Could not parse saved admin settings:", e);
@@ -1751,9 +1780,9 @@
         if (adminSiteTitle) settings.siteTitle = adminSiteTitle.value.trim() || "SMC Hub";
         if (adminShowTitleToggle) settings.showSiteTitle = adminShowTitleToggle.checked;
         if (adminSiteTagline) settings.siteTagline = adminSiteTagline.value.trim();
-        if (adminSiteLogoUrl) settings.siteLogoUrl = adminSiteLogoUrl.value.trim();
-        if (adminSiteLogoDarkUrl) settings.siteLogoDarkUrl = adminSiteLogoDarkUrl.value.trim();
-        if (adminFaviconUrl) settings.faviconUrl = adminFaviconUrl.value.trim();
+        if (adminSiteLogoUrl) settings.siteLogoUrl = normalizeImageUrl(adminSiteLogoUrl.value.trim()) || "./images/logo-light.png";
+        if (adminSiteLogoDarkUrl) settings.siteLogoDarkUrl = normalizeImageUrl(adminSiteLogoDarkUrl.value.trim()) || "./images/logo-dark.png";
+        if (adminFaviconUrl) settings.faviconUrl = normalizeImageUrl(adminFaviconUrl.value.trim()) || "./images/favicon.png";
         if (adminMaintenanceToggle) settings.maintenanceMode = adminMaintenanceToggle.checked;
 
         settings.accountType = selectedAccountType || "bank";

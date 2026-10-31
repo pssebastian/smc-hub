@@ -3,7 +3,7 @@
  * Enables offline access, fast loading, and native app installability.
  */
 
-const CACHE_NAME = 'smc-hub-v3';
+const CACHE_NAME = 'smc-hub-v4';
 
 const PRECACHE_ASSETS = [
   './',
@@ -14,6 +14,9 @@ const PRECACHE_ASSETS = [
   './js/forms-data.js',
   './js/guidelines-data.js',
   './js/accounting-data.js',
+  './images/logo-light.png',
+  './images/logo-dark.png',
+  './images/favicon.png',
   './icons/icon-192x192.png',
   './icons/icon-512x512.png',
   './icons/icon-maskable-192x192.png',
