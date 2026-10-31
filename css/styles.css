@@ -960,11 +960,15 @@ input:focus-visible {
 
   .brand-icon-box.has-custom-img {
     max-width: 180px;
+    height: 35px;
+    min-width: 0;
   }
 
   .brand-logo-img {
     height: 35px;
     max-height: 35px;
+    max-width: 180px;
+    width: auto;
   }
 
   /* Show mobile search icon, hide desktop text in filter button */
@@ -1167,39 +1171,24 @@ body:not(.is-forms-view) .forms-action-btn {
   background: transparent;
   padding: 0;
   border: none;
+  min-width: 0;
+  width: auto;
   max-width: 260px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .brand-logo-img {
   height: 40px;
   max-height: 40px;
   width: auto;
-  max-width: 100%;
+  max-width: 260px;
   object-fit: contain;
   border-radius: var(--radius-xs);
   display: block;
-}
-
-/* Header Dual-Logo Theme Switching */
-:root:not([data-theme="dark"]) .brand-logo-dark {
-  display: none !important;
-}
-
-:root:not([data-theme="dark"]) .brand-logo-light {
-  display: block !important;
-}
-
-[data-theme="dark"] .brand-logo-light:not(.brand-logo-fallback-always) {
-  display: none !important;
-}
-
-[data-theme="dark"] .brand-logo-dark {
-  display: block !important;
-}
-
-.brand-logo-single,
-.brand-logo-fallback-always {
-  display: block !important;
+  flex-shrink: 0;
 }
 
 .brand-link:hover .brand-icon-box {

@@ -197,11 +197,15 @@
     hub: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>`
   };
 
+  // Preload cache for smooth zero-flicker logo switching
+  const logoPreloadCache = { light: null, dark: null };
+
   // Site Logo dynamic processor (Handles light & dark mode image links)
   function applySiteLogo(logoLightUrl, logoDarkUrl) {
     if (!brandIconBox) return;
-    const light = (logoLightUrl || "").trim();
-    const dark = (logoDarkUrl || "").trim();
+    const settings = getAdminSettings();
+    const light = (logoLightUrl !== undefined ? logoLightUrl : settings.siteLogoUrl || "").trim();
+    const dark = (logoDarkUrl !== undefined ? logoDarkUrl : settings.siteLogoDarkUrl || "").trim();
 
     if (!light && !dark) {
       brandIconBox.classList.remove("has-custom-img");
@@ -209,35 +213,56 @@
       return;
     }
 
+    // Preload both images so switching theme has zero delay or flicker
+    if (light && (!logoPreloadCache.light || logoPreloadCache.light.src !== light)) {
+      logoPreloadCache.light = new Image();
+      logoPreloadCache.light.src = light;
+    }
+    if (dark && (!logoPreloadCache.dark || logoPreloadCache.dark.src !== dark)) {
+      logoPreloadCache.dark = new Image();
+      logoPreloadCache.dark.src = dark;
+    }
+
     brandIconBox.classList.add("has-custom-img");
 
-    if (light && dark) {
-      // Both logos provided: switch via CSS according to [data-theme="dark"]
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+    const activeUrl = (currentTheme === "dark" && dark) ? dark : (light || dark);
+
+    let img = brandIconBox.querySelector(".brand-logo-img");
+    if (!img) {
       brandIconBox.innerHTML = `
         <img
-          src="${escapeHtml(light)}"
+          id="brandLogoImg"
+          src="${escapeHtml(activeUrl)}"
           alt="Site Logo"
-          class="brand-logo-img brand-logo-light"
-          onerror="this.style.display='none'; const d = this.parentElement.querySelector('.brand-logo-dark'); if (d) { d.classList.add('brand-logo-fallback-always'); } else { this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub; }"
-        />
-        <img
-          src="${escapeHtml(dark)}"
-          alt="Site Logo (Dark Mode)"
-          class="brand-logo-img brand-logo-dark"
-          onerror="this.style.display='none'; const l = this.parentElement.querySelector('.brand-logo-light'); if (l) { l.classList.add('brand-logo-fallback-always'); } else { this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub; }"
+          class="brand-logo-img"
+          onerror="handleLogoError(this)"
         />
       `;
     } else {
-      // Single logo provided (light or dark): display in both modes
-      const singleUrl = light || dark;
-      brandIconBox.innerHTML = `
-        <img
-          src="${escapeHtml(singleUrl)}"
-          alt="Site Logo"
-          class="brand-logo-img brand-logo-single"
-          onerror="this.onerror=null; this.parentElement.classList.remove('has-custom-img'); this.parentElement.innerHTML=LOGO_ICONS.hub;"
-        />
-      `;
+      if (img.getAttribute("src") !== activeUrl) {
+        img.src = activeUrl;
+      }
+    }
+  }
+
+  function handleLogoError(imgEl) {
+    if (!imgEl) return;
+    const settings = getAdminSettings();
+    const light = (settings.siteLogoUrl || "").trim();
+    const dark = (settings.siteLogoDarkUrl || "").trim();
+    const currentSrc = imgEl.getAttribute("src");
+
+    // If dark logo failed to load, fallback to light logo
+    if (currentSrc === dark && light && light !== dark) {
+      imgEl.src = light;
+      return;
+    }
+
+    // If both failed or single failed, fallback to default hub icon
+    if (brandIconBox) {
+      brandIconBox.classList.remove("has-custom-img");
+      brandIconBox.innerHTML = LOGO_ICONS.hub;
     }
   }
 
@@ -628,6 +653,7 @@
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
         if (!localStorage.getItem("smc-theme")) {
           document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+          applySiteLogo();
         }
       });
     }
@@ -638,6 +664,7 @@
     const newTheme = currentTheme === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("smc-theme", newTheme);
+    applySiteLogo();
   }
 
   // --- 4. Announcement Banner ---
