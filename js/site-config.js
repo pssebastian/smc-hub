@@ -31,7 +31,7 @@ const SITE_CONFIG = {
   // "https://drive.google.com/file/d/14D6qy2FNyMoywm3abY2jAl4EnfQnVisw/view?usp=drivesdk"
   logoLightUrl: "./images/logo-light.png",
   logoDarkUrl: "./images/logo-dark.png",
-  faviconUrl: "./images/favicon.png",
+  faviconUrl: "./images/favicon.ico",
 
   // ------------------------------------------------------------------
   // 3. CONGREGATION ACCOUNTING SETTINGS
