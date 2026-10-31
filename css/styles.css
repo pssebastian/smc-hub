@@ -1537,6 +1537,160 @@ body:not(.is-forms-view) .forms-action-btn {
   border-color: var(--primary-border);
 }
 
+/* Accounting Section Blocks & Section Labels */
+.accounting-section-block {
+  margin-bottom: 2.25rem;
+}
+
+.accounting-section-block:last-child {
+  margin-bottom: 0;
+}
+
+.section-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.015em;
+  margin-bottom: 0.85rem;
+}
+
+/* PDF & Document Guide Lists */
+.guide-doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.guide-doc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.guide-doc-item:hover {
+  border-color: var(--primary-border);
+  background: var(--bg-surface-hover);
+  transform: translateX(3px);
+  box-shadow: var(--shadow-md);
+}
+
+.guide-doc-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.guide-doc-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: #fee2e2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+[data-theme="dark"] .guide-doc-icon-box {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.guide-doc-item:hover .guide-doc-icon-box {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.guide-doc-icon-box svg {
+  width: 18px;
+  height: 18px;
+}
+
+.guide-doc-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.guide-doc-code {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.5rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+}
+
+.guide-doc-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.guide-doc-item:hover .guide-doc-title {
+  color: var(--primary);
+}
+
+.guide-doc-action {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+}
+
+.guide-doc-format {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.12rem 0.4rem;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+}
+
+.guide-doc-ext-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.guide-doc-item:hover .guide-doc-ext-icon {
+  color: var(--primary);
+}
+
+@media (max-width: 640px) {
+  .guide-doc-item {
+    padding: 0.75rem 0.9rem;
+  }
+  .guide-doc-icon-box {
+    width: 32px;
+    height: 32px;
+  }
+  .guide-doc-title {
+    font-size: 0.85rem;
+  }
+}
+
 /* ==========================================================================
    VIEW 5: ROLE DETAILS HEADER & VIDEO SEARCH
    ========================================================================== */

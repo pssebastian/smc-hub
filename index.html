@@ -190,21 +190,26 @@
             </div>
             <p class="mode-bar-desc" id="accountingModeDesc">Showing role-based video tutorials for congregation bank account management.</p>
           </div>
-          <button type="button" id="accountingChangeModeBtn" class="mode-admin-link" title="Change congregation account type in Admin Settings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-            </svg>
-            Change Mode in Admin
-          </button>
         </div>
 
-        <div class="section-intro-header">
-          <h2 class="section-heading">Congregation Accounting Roles</h2>
-          <p class="section-subtext">Select your assigned responsibility below to view all official step-by-step video tutorials and guidelines.</p>
+        <!-- Section 1: Video Guides -->
+        <div class="accounting-section-block">
+          <h3 class="section-label">Video Guides</h3>
+          <!-- Roles Grid (Formatted identically to Forms) -->
+          <div id="accountingRolesGrid" class="forms-grid" role="region" aria-label="Video Guides List"></div>
         </div>
 
-        <!-- Roles Grid (Formatted identically to Forms) -->
-        <div id="accountingRolesGrid" class="forms-grid" role="region" aria-label="Accounting Roles List"></div>
+        <!-- Section 2: Main Guide -->
+        <div class="accounting-section-block">
+          <h3 class="section-label">Main Guide</h3>
+          <div id="accountingMainGuideList" class="guide-doc-list" role="region" aria-label="Main Guide"></div>
+        </div>
+
+        <!-- Section 3: Additional Guides -->
+        <div class="accounting-section-block">
+          <h3 class="section-label">Additional Guides</h3>
+          <div id="accountingAdditionalGuidesList" class="guide-doc-list" role="region" aria-label="Additional Guides"></div>
+        </div>
       </section>
 
       <!-- ============================================================== -->
@@ -216,10 +221,6 @@
           <div class="role-header-top">
             <div class="role-header-icon" id="roleDetailsIcon"></div>
             <div class="role-header-info">
-              <div class="role-badges-row">
-                <span class="role-type-tag" id="roleDetailsCategory">Accounts Team</span>
-                <span class="role-mode-tag" id="roleDetailsMode">Bank Mode</span>
-              </div>
               <h2 class="role-title" id="roleDetailsTitle">Role Name</h2>
             </div>
           </div>
@@ -479,7 +480,7 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
-        <p>&copy; <span id="currentYear">2026</span> San Miguel Congregation Hub. Links open securely in a new tab.</p>
+        <p>&copy; <span id="currentYear">2026</span> San Miguel Congregation Hub.</p>
       </div>
     </div>
   </footer>

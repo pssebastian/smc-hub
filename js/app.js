@@ -148,6 +148,8 @@
   const portalGrid = document.getElementById("portalGrid");
   const guidelinesGrid = document.getElementById("guidelinesGrid");
   const accountingRolesGrid = document.getElementById("accountingRolesGrid");
+  const accountingMainGuideList = document.getElementById("accountingMainGuideList");
+  const accountingAdditionalGuidesList = document.getElementById("accountingAdditionalGuidesList");
   const roleVideosGrid = document.getElementById("roleVideosGrid");
   const roleVideosEmptyState = document.getElementById("roleVideosEmptyState");
   const videoSearchInput = document.getElementById("videoSearchInput");
@@ -881,11 +883,8 @@
     guidelinesGrid.appendChild(fragment);
   }
 
-  // --- 10. VIEW 4: Render Accounting Roles ---
+  // --- 10. VIEW 4: Render Accounting Roles & Full Guides ---
   function renderAccountingRoles() {
-    if (!accountingRolesGrid) return;
-    accountingRolesGrid.innerHTML = "";
-
     const settings = getAdminSettings();
     const accountType = settings.accountType || "bank"; // "bank" or "cashbox"
 
@@ -907,54 +906,119 @@
         : "Congregation operates with a cash box and petty cash system. Video guides cover cash agreements, advances, and reconciliations.";
     }
 
-    // Filter available roles according to accountType
-    const allRoles = accountingConfig.roles || [];
-    const applicableRoles = allRoles.filter(role => {
-      if (role.applicableAccountType === "both") return true;
-      return role.applicableAccountType === accountType;
-    });
+    // 1. Render Video Guides Roles Grid
+    if (accountingRolesGrid) {
+      accountingRolesGrid.innerHTML = "";
 
-    const fragment = document.createDocumentFragment();
+      // Filter available roles according to accountType
+      const allRoles = accountingConfig.roles || [];
+      const applicableRoles = allRoles.filter(role => {
+        if (role.applicableAccountType === "both") return true;
+        return role.applicableAccountType === accountType;
+      });
 
-    applicableRoles.forEach(role => {
-      const roleVideos = (accountingConfig.role2video || []).filter(
-        item => item.accountType === accountType && item.roleId === role.id
-      );
-      const videoCount = roleVideos.length;
+      const rolesFragment = document.createDocumentFragment();
 
-      const card = document.createElement("a");
-      card.href = `#guidelines/accounting/${role.id}`;
-      card.className = "form-card";
-      card.setAttribute("aria-label", `${role.name} (${videoCount} tutorial videos)`);
+      applicableRoles.forEach(role => {
+        const card = document.createElement("a");
+        card.href = `#guidelines/accounting/${role.id}`;
+        card.className = "form-card";
+        card.setAttribute("aria-label", `${role.name} - View video guides`);
 
-      const iconSvg = ICONS[role.icon] || ICONS.user;
+        const iconSvg = ICONS[role.icon] || ICONS.user;
 
-      card.innerHTML = `
-        <div class="card-top-row">
-          <div class="card-icon-box" aria-hidden="true">
-            ${iconSvg}
+        card.innerHTML = `
+          <div class="card-top-row">
+            <div class="card-icon-box" aria-hidden="true">
+              ${iconSvg}
+            </div>
           </div>
-          <div class="card-badges">
-            <span class="category-tag">${escapeHtml(role.category || "Role")}</span>
-            <span class="special-badge active">${videoCount} Video Guides</span>
+
+          <div class="card-body">
+            <h3 class="card-title">${escapeHtml(role.name)}</h3>
+            <p class="card-description">${escapeHtml(role.description || "")}</p>
           </div>
-        </div>
 
-        <div class="card-body">
-          <h3 class="card-title">${escapeHtml(role.name)}</h3>
-          <p class="card-description">${escapeHtml(role.description || "")}</p>
-        </div>
+          <div class="card-cta">
+            <span class="cta-action-text">View Video Guides</span>
+            ${ICONS.arrowRight}
+          </div>
+        `;
 
-        <div class="card-cta">
-          <span class="cta-action-text">View Guide Videos</span>
-          ${ICONS.arrowRight}
-        </div>
-      `;
+        rolesFragment.appendChild(card);
+      });
 
-      fragment.appendChild(card);
-    });
+      accountingRolesGrid.appendChild(rolesFragment);
+    }
 
-    accountingRolesGrid.appendChild(fragment);
+    // 2. Render Main Guide (Based on selected account mode: bank or cashbox)
+    if (accountingMainGuideList) {
+      accountingMainGuideList.innerHTML = "";
+      const mainGuides = (accountingConfig.mainGuides || []).filter(g => g.type === accountType);
+
+      mainGuides.forEach(guide => {
+        const item = document.createElement("a");
+        item.href = guide.link;
+        item.target = "_blank";
+        item.rel = "noopener noreferrer";
+        item.className = "guide-doc-item";
+        item.setAttribute("aria-label", `${guide.code ? guide.code + ': ' : ''}${guide.title} (Opens PDF in new tab)`);
+
+        item.innerHTML = `
+          <div class="guide-doc-left">
+            <div class="guide-doc-icon-box" aria-hidden="true">
+              ${ICONS.file}
+            </div>
+            <div class="guide-doc-info">
+              ${guide.code ? `<span class="guide-doc-code">${escapeHtml(guide.code)}</span>` : ""}
+              <span class="guide-doc-title">${escapeHtml(guide.title)}</span>
+            </div>
+          </div>
+          <div class="guide-doc-action">
+            <span class="guide-doc-format">PDF</span>
+            <span class="guide-doc-ext-icon" aria-hidden="true">
+              ${ICONS.externalLink}
+            </span>
+          </div>
+        `;
+
+        accountingMainGuideList.appendChild(item);
+      });
+    }
+
+    // 3. Render Additional / Auxiliary Guides
+    if (accountingAdditionalGuidesList) {
+      accountingAdditionalGuidesList.innerHTML = "";
+      const additionalGuides = accountingConfig.additionalGuides || [];
+
+      additionalGuides.forEach(guide => {
+        const item = document.createElement("a");
+        item.href = guide.link;
+        item.target = "_blank";
+        item.rel = "noopener noreferrer";
+        item.className = "guide-doc-item";
+        item.setAttribute("aria-label", `${guide.title} (Opens PDF in new tab)`);
+
+        item.innerHTML = `
+          <div class="guide-doc-left">
+            <div class="guide-doc-icon-box" aria-hidden="true">
+              ${ICONS.file}
+            </div>
+            <div class="guide-doc-info">
+              <span class="guide-doc-title">${escapeHtml(guide.title)}</span>
+            </div>
+          </div>
+          <div class="guide-doc-action">
+            <span class="guide-doc-format">PDF</span>
+            <span class="guide-doc-ext-icon" aria-hidden="true">
+              ${ICONS.externalLink}
+            </span>
+          </div>
+        `;
+
+        accountingAdditionalGuidesList.appendChild(item);
+      });
+    }
   }
 
   // --- 11. VIEW 5: Render Role Videos List ---
@@ -973,14 +1037,10 @@
     };
 
     const roleDetailsIcon = document.getElementById("roleDetailsIcon");
-    const roleDetailsCategory = document.getElementById("roleDetailsCategory");
-    const roleDetailsMode = document.getElementById("roleDetailsMode");
     const roleDetailsTitle = document.getElementById("roleDetailsTitle");
     const roleDetailsDesc = document.getElementById("roleDetailsDesc");
 
     if (roleDetailsIcon) roleDetailsIcon.innerHTML = ICONS[roleObj.icon] || ICONS.user;
-    if (roleDetailsCategory) roleDetailsCategory.textContent = roleObj.category || "Role";
-    if (roleDetailsMode) roleDetailsMode.textContent = accountType === "bank" ? "Bank Mode" : "Cashbox Mode";
     if (roleDetailsTitle) roleDetailsTitle.textContent = roleObj.name;
     if (roleDetailsDesc) roleDetailsDesc.textContent = roleObj.description || "";
 
@@ -1031,12 +1091,10 @@
       card.className = "video-card";
 
       const formattedCode = (video.code || "").toUpperCase().replace("_", "-");
-      const typeLabel = video.type === "both" ? "Both Modes" : (video.type === "bank" ? "Bank Account" : "Cashbox");
 
       card.innerHTML = `
         <div class="video-card-top">
           <span class="video-code-pill">${escapeHtml(formattedCode)}</span>
-          <span class="video-type-pill type-${video.type || "both"}">${escapeHtml(typeLabel)}</span>
         </div>
 
         <div class="video-card-body">

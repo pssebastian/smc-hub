@@ -1106,7 +1106,31 @@ const ACCOUNTING_CONFIG = {
     "roleId": "auditor",
     "videoCode": "tca_28"
   }
-]
+],
+
+  // Full / Main Guides (S-27b for Bank, S-27c for Cashbox)
+  mainGuides: [
+    {
+      code: "S-27b",
+      title: "Instructions for Congregation Accounting (Bank Account)",
+      type: "bank",
+      link: "https://docs.jw.org/finder?lank=cds-cnt-phl-3l2gblmwbdj7p6opqzy9qwmslwf&lang=E"
+    },
+    {
+      code: "S-27c",
+      title: "Instructions for Congregation Accounting (Cash Box)",
+      type: "cashbox",
+      link: "https://docs.jw.org/finder?lank=pub-s-27c_s-ph&lang=TG"
+    }
+  ],
+
+  // Additional / Auxiliary Guides
+  additionalGuides: [
+    {
+      title: "October 23, 2026—JW Hub Accounting Monthly Remittances",
+      link: "https://docs.jw.org/finder?lank=cds-cnt-phl-3l2gblmwbdj7p6opqzy9qwmslwf&lang=E"
+    }
+  ]
 };
 
 if (typeof window !== "undefined") {
