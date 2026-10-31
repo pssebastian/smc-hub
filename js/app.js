@@ -604,18 +604,43 @@
     const fragment = document.createDocumentFragment();
 
     PORTAL_MODULES.forEach(module => {
-      const card = document.createElement("a");
-      card.href = module.url;
-      card.className = `portal-card ${module.cardClass || ""}`;
-      card.setAttribute("aria-label", `${module.title} - ${module.description}`);
+      const isComingSoon = Boolean(module.comingSoon);
+      const card = document.createElement(isComingSoon ? "div" : "a");
+      card.className = `portal-card ${module.cardClass || ""} ${isComingSoon ? "is-coming-soon" : ""}`;
+
+      if (!isComingSoon) {
+        card.href = module.url;
+        card.setAttribute("aria-label", `${module.title} - ${module.description}`);
+      } else {
+        card.setAttribute("aria-label", `${module.title} (Coming Soon)`);
+        card.setAttribute("role", "article");
+      }
 
       const iconSvg = ICONS[module.icon] || ICONS.book;
 
       // Only display top badge if explicitly marked as coming soon
       let badgeHtml = "";
-      if (module.comingSoon) {
+      if (isComingSoon) {
         badgeHtml = `<span class="special-badge coming-soon">Coming Soon</span>`;
       }
+
+      const footerHtml = isComingSoon
+        ? `
+          <div class="portal-card-footer portal-card-footer-coming-soon">
+            <span class="portal-card-action-text">Coming Soon</span>
+            <span class="portal-card-clock" aria-hidden="true">
+              ${ICONS.clock}
+            </span>
+          </div>
+        `
+        : `
+          <div class="portal-card-footer">
+            <span class="portal-card-action-text">${escapeHtml(module.actionText || "Open Module")}</span>
+            <span class="portal-card-arrow" aria-hidden="true">
+              ${ICONS.arrowRight}
+            </span>
+          </div>
+        `;
 
       card.innerHTML = `
         <div class="portal-card-top">
@@ -630,12 +655,7 @@
           <p class="portal-card-desc">${escapeHtml(module.description)}</p>
         </div>
 
-        <div class="portal-card-footer">
-          <span class="portal-card-action-text">${escapeHtml(module.actionText || "Open Module")}</span>
-          <span class="portal-card-arrow" aria-hidden="true">
-            ${ICONS.arrowRight}
-          </span>
-        </div>
+        ${footerHtml}
       `;
 
       fragment.appendChild(card);
@@ -812,7 +832,7 @@
     const fragment = document.createDocumentFragment();
 
     guidelines.forEach(item => {
-      const isComingSoon = item.comingSoon || item.url === "#" || !item.url;
+      const isComingSoon = Boolean(item.comingSoon || item.url === "#" || !item.url);
       const card = document.createElement(isComingSoon ? "div" : "a");
       card.className = `form-card ${isComingSoon ? "is-coming-soon" : ""}`;
 
@@ -829,11 +849,11 @@
       }
 
       const iconSvg = ICONS[item.icon] || ICONS.book;
-      let badgeText = item.badge || (isComingSoon ? "Coming Soon" : "Active");
+
+      // Only display Coming Soon badge for unavailable options; suppress category tags and interactive guide
       let badgeHtml = "";
-      if (badgeText) {
-        const badgeClass = badgeText.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-        badgeHtml = `<span class="special-badge ${badgeClass}">${escapeHtml(badgeText)}</span>`;
+      if (isComingSoon) {
+        badgeHtml = `<span class="special-badge coming-soon">Coming Soon</span>`;
       }
 
       card.innerHTML = `
@@ -841,10 +861,7 @@
           <div class="card-icon-box" aria-hidden="true">
             ${iconSvg}
           </div>
-          <div class="card-badges">
-            <span class="category-tag">${escapeHtml(item.category || "Guidelines")}</span>
-            ${badgeHtml}
-          </div>
+          ${badgeHtml ? `<div class="card-badges">${badgeHtml}</div>` : ""}
         </div>
 
         <div class="card-body">

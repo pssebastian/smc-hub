@@ -24,7 +24,6 @@ const GUIDELINES_CONFIG = {
       category: "Accounting",
       url: "#guidelines/accounting",
       isInternalRoute: true,
-      badge: "Interactive Guide",
       icon: "bank",
       tags: ["accounting", "finance", "s-24", "s-26", "s-30", "audit", "bank", "cashbox", "tutorials", "videos", "roles"]
     },

@@ -1368,6 +1368,77 @@ body:not(.is-forms-view) .forms-action-btn {
   transform: translateX(3px);
 }
 
+/* Portal Card - Coming Soon / Unavailable State */
+.portal-card.is-coming-soon {
+  cursor: default;
+  opacity: 0.82;
+}
+
+.portal-card.is-coming-soon:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-subtle);
+}
+
+.portal-card.is-coming-soon:hover::before {
+  background: transparent;
+}
+
+.portal-card.is-coming-soon:hover .portal-card-title {
+  color: var(--text-main);
+}
+
+.portal-card.is-coming-soon:hover .portal-card-icon {
+  transform: none;
+}
+
+.portal-card.is-coming-soon.portal-card-announcements:hover .portal-card-icon {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.portal-card.is-coming-soon.portal-card-reports:hover .portal-card-icon {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+[data-theme="dark"] .portal-card.is-coming-soon.portal-card-announcements:hover .portal-card-icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .portal-card.is-coming-soon.portal-card-reports:hover .portal-card-icon {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+}
+
+.portal-card.is-coming-soon .portal-card-footer {
+  color: var(--text-muted);
+}
+
+.portal-card-clock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.portal-card-clock svg {
+  width: 14px;
+  height: 14px;
+}
+
+.portal-card.is-coming-soon:hover .portal-card-clock {
+  transform: none;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+}
+
 /* ==========================================================================
    SECTION HEADERS & INTRO
    ========================================================================== */
@@ -1381,6 +1452,10 @@ body:not(.is-forms-view) .forms-action-btn {
   color: var(--text-main);
   letter-spacing: -0.02em;
   margin-bottom: 0.3rem;
+}
+
+.section-intro-header .section-heading:last-child {
+  margin-bottom: 0;
 }
 
 .section-subtext {
