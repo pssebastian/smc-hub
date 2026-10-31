@@ -1242,7 +1242,7 @@ body:not(.is-forms-view) .forms-action-btn {
 
 .portal-card.portal-card-announcements:hover::before { background: #f59e0b; }
 .portal-card.portal-card-guidelines:hover::before { background: #10b981; }
-.portal-card.portal-card-forms:hover::before { background: #2563eb; }
+.portal-card.portal-card-forms:hover::before { background: #e11d48; }
 .portal-card.portal-card-reports:hover::before { background: #8b5cf6; }
 
 .portal-card-top {
@@ -1288,76 +1288,91 @@ body:not(.is-forms-view) .forms-action-btn {
   background: #10b981;
   color: #ffffff;
 }
+.portal-card.portal-card-guidelines:hover {
+  border-color: #10b981;
+}
+.portal-card.portal-card-guidelines:hover .portal-card-title {
+  color: #047857;
+}
+.portal-card.portal-card-guidelines:hover .portal-card-arrow {
+  background: #10b981;
+  color: #ffffff;
+}
 
-/* Forms Portal Card Specific Styling */
+[data-theme="dark"] .portal-card.portal-card-guidelines .portal-card-icon {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+[data-theme="dark"] .portal-card.portal-card-guidelines:hover {
+  border-color: #34d399;
+}
+[data-theme="dark"] .portal-card.portal-card-guidelines:hover::before {
+  background: #34d399;
+}
+[data-theme="dark"] .portal-card.portal-card-guidelines:hover .portal-card-icon {
+  background: #10b981;
+  color: #ffffff;
+}
+[data-theme="dark"] .portal-card.portal-card-guidelines:hover .portal-card-title {
+  color: #6ee7b7;
+}
+[data-theme="dark"] .portal-card.portal-card-guidelines:hover .portal-card-arrow {
+  background: #10b981;
+  color: #ffffff;
+}
+
+/* Forms Portal Card Specific Styling (Rose / Coral Theme - Not Blue) */
 .portal-card.portal-card-forms .portal-card-icon {
-  background: #dbeafe;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+  background: #ffe4e6;
+  color: #e11d48;
 }
 
 .portal-card.portal-card-forms:hover {
-  border-color: #3b82f6;
-  background: linear-gradient(180deg, #f0f7ff 0%, var(--bg-card) 100%);
-  box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.22), 0 4px 10px -2px rgba(37, 99, 235, 0.12);
-}
-
-.portal-card.portal-card-forms:hover::before {
-  background: #2563eb;
+  border-color: #f43f5e;
 }
 
 .portal-card.portal-card-forms:hover .portal-card-icon {
-  background: #2563eb;
+  background: #e11d48;
   color: #ffffff;
-  border-color: #2563eb;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
   transform: scale(1.06);
 }
 
 .portal-card.portal-card-forms:hover .portal-card-title {
-  color: #1d4ed8;
+  color: #e11d48;
 }
 
 .portal-card.portal-card-forms:hover .portal-card-arrow {
-  background: #2563eb;
+  background: #e11d48;
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
-/* Forms Portal Card - Dark Mode Distinct Highlighting */
+/* Forms Portal Card - Dark Mode Highlighting */
 [data-theme="dark"] .portal-card.portal-card-forms .portal-card-icon {
-  background: rgba(37, 99, 235, 0.24);
-  color: #60a5fa;
-  border: 1px solid rgba(96, 165, 250, 0.35);
+  background: rgba(225, 29, 72, 0.2);
+  color: #fb7185;
 }
 
 [data-theme="dark"] .portal-card.portal-card-forms:hover {
-  border-color: #60a5fa;
-  background: linear-gradient(180deg, rgba(37, 99, 235, 0.22) 0%, rgba(30, 41, 59, 0.95) 100%);
-  box-shadow: 0 16px 32px -4px rgba(37, 99, 235, 0.45), 0 0 24px rgba(59, 130, 246, 0.3);
+  border-color: #fb7185;
 }
 
 [data-theme="dark"] .portal-card.portal-card-forms:hover::before {
-  background: #60a5fa;
-  box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+  background: #fb7185;
 }
 
 [data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-icon {
-  background: #3b82f6;
+  background: #e11d48;
   color: #ffffff;
-  border-color: #93c5fd;
-  box-shadow: 0 0 18px rgba(59, 130, 246, 0.65);
   transform: scale(1.06);
 }
 
 [data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-title {
-  color: #93c5fd;
+  color: #fda4af;
 }
 
 [data-theme="dark"] .portal-card.portal-card-forms:hover .portal-card-arrow {
-  background: #3b82f6;
+  background: #e11d48;
   color: #ffffff;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
 }
 
 .portal-card.portal-card-reports .portal-card-icon {
