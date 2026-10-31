@@ -41,7 +41,7 @@ const SITE_CONFIG = {
   //             (Shows role guides for bank accounting, S-26, transfers)
   // "cashbox" - Congregation operates with a physical cash box and petty cash.
   //             (Shows role guides for cash agreements, advances, reconciliations)
-  accountType: "bank",
+  accountType: "cashbox",
 
   // ------------------------------------------------------------------
   // 4. MAINTENANCE MODE
