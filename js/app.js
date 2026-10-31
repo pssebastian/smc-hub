@@ -1519,6 +1519,16 @@
         navigator.serviceWorker.register("sw.js")
           .then((registration) => {
             console.log("[PWA] Service Worker registered with scope:", registration.scope);
+
+            // Proactively check for codebase updates on app launch
+            registration.update().catch(() => {});
+
+            // Proactively check for updates whenever user switches back to the app
+            document.addEventListener("visibilitychange", () => {
+              if (document.visibilityState === "visible") {
+                registration.update().catch(() => {});
+              }
+            });
           })
           .catch((error) => {
             console.warn("[PWA] Service Worker registration failed:", error);
