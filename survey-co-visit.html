@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="description" content="Publisher Feedback Survey: Panonood ng 'Ang Mabuting Balita Ayon kay Jesus' sa Panahon ng CO Visit - San Miguel Congregation." />
+  <meta name="theme-color" content="#2563eb" />
+  <title>Survey: Panonood ng Video sa CO Visit | SMC Hub</title>
+
+  <!-- PWA & Mobile Icons -->
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="./images/favicon.png" />
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./css/survey.css" />
+</head>
+<body>
+
+  <main class="survey-container">
+
+    <!-- Top Bar Navigation & Controls -->
+    <header class="survey-top-bar">
+      <a href="index.html#forms" class="back-to-hub" aria-label="Bumalik sa SMC Hub">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        <span>SMC Hub</span>
+      </a>
+
+      <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Palitan ang Tema (Dark/Light)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+      </button>
+    </header>
+
+    <!-- FORM VIEW CONTAINER -->
+    <div id="formCardContainer" class="form-cards-wrapper">
+      <form id="surveyForm" novalidate>
+
+        <!-- Heading Section (No Container) -->
+        <div class="survey-heading-section">
+          <h1 class="survey-title">Survey: Panonood ng &ldquo;Ang Mabuting Balita Ayon kay Jesus&rdquo; sa Panahon ng CO Visit</h1>
+          <p class="survey-purpose">
+            <strong>Layunin:</strong> Malaman ang inyong feedback tungkol sa naging arrangement noong dalaw ng Circuit Overseer kung saan pinalitan ng panonood ng video na &ldquo;Ang Mabuting Balita Ayon kay Jesus&rdquo; ang pahayag pangmadla.
+          </p>
+        </div>
+
+        <!-- Set 1 Card: Basic Information & Attendance -->
+        <section class="survey-card">
+          <!-- Field 1: Pangalan -->
+          <div class="form-group">
+            <label for="publisherName" class="form-label">
+              Pangalan <span class="required-star" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="publisherName"
+              name="publisherName"
+              class="text-input"
+              placeholder="Ilagay ang iyong pangalan"
+              autocomplete="name"
+              required
+            />
+            <div id="nameError" class="field-error-msg" role="alert"></div>
+          </div>
+
+          <!-- Field 2: Sino at ilan ang dumalo -->
+          <div class="form-group" style="margin-top: 8px;">
+            <label class="form-label">
+              Sino at ilan sa iyong mga inanyayahan ang dumalo sa pagpupulong? <span class="required-star" aria-hidden="true">*</span>
+            </label>
+            <p class="form-hint">
+              (Lagyan ng check ang applicable na options sa ibaba at ilagay sa tabi nito kung ilan sila.)
+            </p>
+
+            <div class="options-list" role="group" aria-label="Mga inanyayahang dumalo">
+
+              <!-- Option: Bible study -->
+              <div class="option-row">
+                <label class="option-main" for="chk_bible_study">
+                  <input type="checkbox" id="chk_bible_study" class="native-checkbox" />
+                  <span class="custom-checkbox" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="option-label-text">Bible study</span>
+                </label>
+                <div class="option-count-box">
+                  <span class="count-label">Bilang ng dumalo:</span>
+                  <div class="count-stepper">
+                    <button type="button" class="stepper-btn minus-btn" data-target="count_bible_study" aria-label="Bawasan ang bilang">-</button>
+                    <input type="number" id="count_bible_study" class="count-input" value="1" min="1" max="999" aria-label="Bilang ng Bible study na dumalo" />
+                    <button type="button" class="stepper-btn plus-btn" data-target="count_bible_study" aria-label="Dagdagan ang bilang">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option: Return visit -->
+              <div class="option-row">
+                <label class="option-main" for="chk_return_visit">
+                  <input type="checkbox" id="chk_return_visit" class="native-checkbox" />
+                  <span class="custom-checkbox" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="option-label-text">Return visit</span>
+                </label>
+                <div class="option-count-box">
+                  <span class="count-label">Bilang ng dumalo:</span>
+                  <div class="count-stepper">
+                    <button type="button" class="stepper-btn minus-btn" data-target="count_return_visit" aria-label="Bawasan ang bilang">-</button>
+                    <input type="number" id="count_return_visit" class="count-input" value="1" min="1" max="999" aria-label="Bilang ng Return visit na dumalo" />
+                    <button type="button" class="stepper-btn plus-btn" data-target="count_return_visit" aria-label="Dagdagan ang bilang">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option: Kamag-anak o kakilala -->
+              <div class="option-row">
+                <label class="option-main" for="chk_kamag_anak">
+                  <input type="checkbox" id="chk_kamag_anak" class="native-checkbox" />
+                  <span class="custom-checkbox" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="option-label-text">Kamag-anak o kakilala</span>
+                </label>
+                <div class="option-count-box">
+                  <span class="count-label">Bilang ng dumalo:</span>
+                  <div class="count-stepper">
+                    <button type="button" class="stepper-btn minus-btn" data-target="count_kamag_anak" aria-label="Bawasan ang bilang">-</button>
+                    <input type="number" id="count_kamag_anak" class="count-input" value="1" min="1" max="999" aria-label="Bilang ng kamag-anak o kakilala na dumalo" />
+                    <button type="button" class="stepper-btn plus-btn" data-target="count_kamag_anak" aria-label="Dagdagan ang bilang">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option: N/A (Hindi applicable) -->
+              <div class="option-row">
+                <label class="option-main" for="chk_na">
+                  <input type="checkbox" id="chk_na" class="native-checkbox" />
+                  <span class="custom-checkbox" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="option-label-text">N/A (Hindi applicable)</span>
+                </label>
+              </div>
+
+            </div>
+            <div id="attendeesError" class="field-error-msg" role="alert"></div>
+          </div>
+        </section>
+
+        <!-- Set 2 Card: Conditional Questions (Visible only when attendee option is selected) -->
+        <div id="conditionalSet2" class="conditional-wrapper is-hidden" aria-live="polite">
+          <section class="survey-card" style="margin-top: 16px;">
+            <div class="section-legend">Tungkol sa mga Inanyayahan Mo</div>
+
+            <!-- Question: Reaksiyon ng inanyayahan -->
+            <div class="form-group">
+              <label for="reaksiyonInanyayahan" class="form-label">
+                Ano ang naging reaksiyon ng iyong mga inanyayahan na nakadalo sa panonood ng video?
+              </label>
+              <textarea
+                id="reaksiyonInanyayahan"
+                name="reaksiyonInanyayahan"
+                class="text-area"
+                rows="3"
+                placeholder="Isulat dito ang kanilang reaksiyon o komento..."
+              ></textarea>
+            </div>
+
+            <!-- Question: Positibong resulta / komento -->
+            <div class="form-group">
+              <label for="positibongResulta" class="form-label">
+                May positibong resulta ka bang napansin o positibong komento mula sa kanila matapos ang espesyal na pagpupulong?
+              </label>
+              <textarea
+                id="positibongResulta"
+                name="positibongResulta"
+                class="text-area"
+                rows="3"
+                placeholder="Isulat dito ang anumang magandang karanasan o puna..."
+              ></textarea>
+            </div>
+          </section>
+        </div>
+
+        <!-- Set 3 Card: General Arrangement Questions -->
+        <section class="survey-card" style="margin-top: 16px;">
+          <div class="section-legend">Ang Iyong Feedback</div>
+
+          <!-- Question 6 -->
+          <div class="form-group">
+            <label for="masasabiArrangement" class="form-label">
+              Ano ang masasabi mo sa arrangement na ito?
+            </label>
+            <textarea
+              id="masasabiArrangement"
+              name="masasabiArrangement"
+              class="text-area"
+              rows="3"
+              placeholder="Isulat dito ang iyong personal na obserbasyon o pananaw..."
+            ></textarea>
+          </div>
+
+          <!-- Question 7 -->
+          <div class="form-group">
+            <label for="mungkahiKapakinabangan" class="form-label">
+              Anong mga puwede naming gawin para maging mas kapaki-pakinabang ang ganitong arrangement?
+            </label>
+            <textarea
+              id="mungkahiKapakinabangan"
+              name="mungkahiKapakinabangan"
+              class="text-area"
+              rows="3"
+              placeholder="Isulat dito ang iyong mga mungkahi o suhestiyon..."
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Network / Submission Error Alert (Hidden by default) -->
+        <div id="formAlert" class="form-alert" role="alert" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+          <span id="formAlertText"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="margin-top: 20px;">
+          <button type="submit" id="submitBtn" class="submit-btn">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-text">Submit</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- SUCCESS CONFIRMATION VIEW -->
+    <div id="successCard" class="success-card">
+      <div class="success-icon-wrap" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+      </div>
+      <h2 class="success-title">Maraming salamat!</h2>
+      <p class="success-desc">
+        Matagumpay na naipadala ang inyong feedback tungkol sa panonood ng video noong CO visit. Ang inyong mga sagot ay malaking tulong sa kongregasyon.
+      </p>
+      <button type="button" id="resetBtn" class="reset-btn">
+        Magsumite ng panibagong tugon
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Site Footer (Matches SMC Hub) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; <span id="currentYear">2026</span> San Miguel Congregation Hub.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Survey Application Controller -->
+  <script src="./js/survey.js"></script>
+</body>
+</html>

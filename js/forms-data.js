@@ -56,6 +56,15 @@ const FORMS_CONFIG = {
       icon: "clipboard",
       tags: ["attendance", "meeting", "count", "log", "midweek", "weekend"]
     },
+    {
+      id: "co-visit-video-survey",
+      title: "Survey: Panonood ng Jesus Video sa CO Visit",
+      description: "Feedback survey para sa mga mamamahayag tungkol sa naging panonood ng video noong dalaw ng Circuit Overseer.",
+      category: "Meetings",
+      url: "survey-co-visit.html",
+      icon: "message",
+      tags: ["survey", "feedback", "co visit", "circuit overseer", "jesus", "video"]
+    },
 
     // ------------------------------------------------------------------
     // FINANCIAL
